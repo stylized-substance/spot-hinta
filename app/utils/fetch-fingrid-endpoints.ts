@@ -1,19 +1,22 @@
-async function fetchAllData(apiUrl, pages) {
-  let allData = [];
+async function fetchAllData(apiUrl: string, maxPages?: number) {
+  if (!process.env.FINGRID_APIKEY) {
+    throw new Error("Fingrid API key missing");
+  }
+
+  let allData: unknown[] = [];
   let page = 1; // Start with the first page
   let hasMoreData = true; // Flag to check if there are more pages
 
-  if (page >= pages) {
-    return
-  }
-
   while (hasMoreData) {
+    if (maxPages && page >= maxPages) {
+      break;
+    }
+
     try {
       const response = await fetch(`${apiUrl}?page=${page}`, {
         method: "GET",
         headers: {
           "x-api-key": process.env.FINGRID_APIKEY, // Include the API key in the headers
-          // 'Content-Type': 'application/json' // Optional: specify content type
         },
       });
 
@@ -28,9 +31,11 @@ async function fetchAllData(apiUrl, pages) {
       // Check if there is a next page
       hasMoreData = data.pagination.nextPage !== null; // Adjust based on the actual response structure
       if (hasMoreData) {
-        console.log(`Currrent page: ${page}`)
-        console.log('API has more pages, waiting 2 seconds before sending new request')
-        await new Promise(resolve => setTimeout(resolve, 2000))
+        console.log(`Currrent page: ${page}`);
+        console.log(
+          "API has more pages, waiting 2 seconds before sending new request",
+        );
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         page++; // Move to the next page
       }
     } catch (error) {
