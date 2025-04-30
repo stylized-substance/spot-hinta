@@ -1,4 +1,4 @@
-async function fetchAllData(apiUrl: string, maxPages?: number) {
+export async function fetchAllData(apiUrl: string = "https://data.fingrid.fi/api/datasets", maxPages?: number) {
   if (!process.env.FINGRID_APIKEY) {
     throw new Error("Fingrid API key missing");
   }
@@ -26,7 +26,7 @@ async function fetchAllData(apiUrl: string, maxPages?: number) {
       }
 
       const data = await response.json();
-      allData = allData.concat(data); // Adjust based on the actual response structure
+      allData = allData.concat(data.data); // Adjust based on the actual response structure
 
       // Check if there is a next page
       hasMoreData = data.pagination.nextPage !== null; // Adjust based on the actual response structure
@@ -44,15 +44,7 @@ async function fetchAllData(apiUrl: string, maxPages?: number) {
     }
   }
 
-  return allData;
-}
+  const stringified = JSON.stringify(allData, null, 2)
 
-// Example usage
-const apiUrl = "https://data.fingrid.fi/api/datasets";
-fetchAllData(apiUrl)
-  .then((allData) => {
-    console.log(JSON.stringify(allData, null, 2));
-  })
-  .catch((error) => {
-    console.error("Error:", error);
-  });
+  return stringified;
+}
