@@ -40,7 +40,7 @@ export async function GET(request: Request) {
 
   console.log(today.toLocaleString(), "- Fetching price data from ENTSO-E");
 
-  const entsoUrl = `https://web-api.tp.entsoe.eu/api?documentType=A44&periodStart=${periodStart}&periodEnd=${periodEnd}&out_Domain=10YFI-1--------U&in_Domain=10YFI-1--------U&securityToken=${process.env.ENTSO_E_APIKEY}`;
+  const entsoUrl = `https://web-api.tp.entsoe.eu/api?documentType=A44&periodStart=${periodStart}&periodEnd=${periodEnd}&out_Domain=10YFI-1--------U&in_Domain=10YFI-1--------U&contract_MarketAgreement.type=A01&securityToken=${process.env.ENTSO_E_APIKEY}`;
 
   const response = await fetch(entsoUrl, {
     method: "GET",
