@@ -3,12 +3,12 @@ import { XMLParser } from 'fast-xml-parser'
 // Fetch price data from ENTSO-E
 export async function GET(request: Request) {
   // Check for existence of Vercel cron secret in authorization header
-  // const authHeader = request.headers.get('authorization');
-  // if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-  //     return new Response('Unauthorized', {
-  //         status: 401,
-  //       });
-  //     }
+  const authHeader = request.headers.get('authorization');
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}` && process.env.NODE_ENV !== 'development') {
+      return new Response('Unauthorized', {
+          status: 401,
+        });
+      }
 
   if (!process.env.ENTSO_E_APIKEY) {
     throw new Error('ENTSO-E API key missing')
