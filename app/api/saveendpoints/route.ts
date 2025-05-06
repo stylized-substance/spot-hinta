@@ -1,7 +1,7 @@
 import { fetchAllData } from "@/app/utils/fetch-fingrid-endpoints";
 import fs from "fs";
 
-export async function GET(request: Request) {
+export async function GET() {
   const endpoints = await fetchAllData();
   fs.writeFileSync(
     "data/fingrid-endpoints.json",

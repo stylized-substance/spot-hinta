@@ -1,18 +1,24 @@
-import sql from '@/app/db/db'
+import postgres from "postgres";
 
-export async function up() {
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export async function up(sql: postgres.Sql<{}>) {
   const result = await sql`
     CREATE TABLE IF NOT EXISTS price_data (
       id SERIAL PRIMARY KEY,
       timestamp TIMESTAMP UNIQUE NOT NULL,
       price INTEGER NOT NULL
     )
-    `
+    `;
 
-  console.log(result)
+  console.log(result);
 }
 
-export async function down() {
-  const result = await sql`DROP TABLE price_data`
-  console.log(result)
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export async function down(sql: postgres.Sql<{}>) {
+  const result = await sql`DROP TABLE IF EXISTS price_data`;
+  console.log(result);
 }
+
+const migration = { up, down }
+
+export default migration
