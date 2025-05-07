@@ -1,24 +1,29 @@
 import postgres from "postgres";
-import fs from "fs";
-import path from "path";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
 
 if (!process.env.POSTGRES_URL) {
   throw new Error("POSTGRES_URL environment variable is not defined.");
 }
+const migrations = [
+  {
+    name: "Create price_data table",
+    content: `
+    CREATE TABLE IF NOT EXISTS price_data (
+    id SERIAL PRIMARY KEY,
+    timestamp TIMESTAMP UNIQUE NOT NULL,
+    price INTEGER
+    );
+  `,
+  },
+];
 
 const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
 
 export async function runMigrations() {
-  const currentFile = fileURLToPath(import.meta.url);
-  const migrationsDirectory = path.join(dirname(currentFile), "migrations");
-  const migrationFiles = fs
-    .readdirSync(migrationsDirectory)
-    .filter((file) => file.endsWith(".sql"));
-
-  for (const file of migrationFiles) {
-    await sql.file(`${migrationsDirectory}/${file}`);
+  console.log("Running database migrations");
+  for (const migration of migrations) {
+    console.log(migration.name);
+    await sql.unsafe(migration.content)
+    console.log('Done');
   }
 }
 
