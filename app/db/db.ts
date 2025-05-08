@@ -9,8 +9,8 @@ const migrations = [
     content: `
     CREATE TABLE IF NOT EXISTS price_data (
     id SERIAL PRIMARY KEY,
-    timestamp TIMESTAMP UNIQUE NOT NULL,
-    price INTEGER
+    timestamp TIMESTAMPTZ UNIQUE NOT NULL,
+    price NUMERIC(6, 2)
     );
   `,
   },
