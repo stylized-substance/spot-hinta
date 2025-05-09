@@ -1,4 +1,7 @@
-export async function fetchAllData(apiUrl: string = "https://data.fingrid.fi/api/datasets", maxPages?: number) {
+export async function fetchAllData(
+  apiUrl: string = "https://data.fingrid.fi/api/datasets",
+  maxPages?: number,
+) {
   if (!process.env.FINGRID_APIKEY) {
     throw new Error("Fingrid API key missing");
   }
@@ -44,7 +47,7 @@ export async function fetchAllData(apiUrl: string = "https://data.fingrid.fi/api
     }
   }
 
-  const stringified = JSON.stringify(allData, null, 2)
+  const stringified = JSON.stringify(allData, null, 2);
 
   return stringified;
 }

@@ -7,6 +7,6 @@ export async function GET() {
     "data/fingrid-endpoints.json",
     JSON.stringify(endpoints, null, 2),
   );
-  
+
   return new Response("Endpoints written to file");
 }

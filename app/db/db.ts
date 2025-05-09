@@ -22,8 +22,8 @@ export async function runMigrations() {
   console.log("Running database migrations");
   for (const migration of migrations) {
     console.log(migration.name);
-    await sql.unsafe(migration.content)
-    console.log('Done');
+    await sql.unsafe(migration.content);
+    console.log("Done");
   }
 }
 
