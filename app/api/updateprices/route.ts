@@ -81,16 +81,17 @@ export async function GET(request: Request) {
   // Build price data rows and save to database
   const hoursArray = [];
   const firstHour = new Date(priceData.timeInterval.start);
+  firstHour.setHours(firstHour.getHours() + 2); // Correct time returned by API
 
   for (const hour of priceData.Point) {
     // Increment time by 1 hour for each datapoint in sequence
     const timestamp = new Date(
-      firstHour.getTime() + (hour.position - 1) * 60 * 60 * 1000,
+      firstHour.getTime() + hour.position * 60 * 60 * 1000,
     );
 
     hoursArray.push({
       timestamp: timestamp.toISOString(),
-      price: hour["price.amount"] / 10, // Convert price to cents/kWh
+      price: (hour["price.amount"] / 10) * 1.255, // Convert price to cents/kWh and add VAT
     });
   }
 
@@ -104,7 +105,8 @@ export async function GET(request: Request) {
 
     console.log("Price data inserted into database");
   } catch (error) {
-    console.error("Error while inserting price data into database:", error);
+    console.error("Error while inserting price data into database");
+    throw error;
   }
 
   return new Response("Price data updated");
