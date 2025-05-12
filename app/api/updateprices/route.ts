@@ -76,6 +76,9 @@ export async function GET(request: Request) {
     Point,
   };
 
+    console.log("Price data from API:\n", priceData)
+
+
   ApiPriceData.parse(priceData);
 
   // Build price data rows and save to database
@@ -96,6 +99,7 @@ export async function GET(request: Request) {
   }
 
   const values = hoursArray.map((hour) => [hour.timestamp, hour.price]);
+
 
   try {
     await sql`
