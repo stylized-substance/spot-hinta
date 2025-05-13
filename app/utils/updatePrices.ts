@@ -65,7 +65,7 @@ export async function updatePrices() {
     Point,
   };
 
-  console.log("Price data from API:\n", priceData);
+  console.log("Price data from ENTSO-E API:\n", priceData);
 
   ApiPriceData.parse(priceData);
 
@@ -88,14 +88,10 @@ export async function updatePrices() {
 
   const values = hoursArray.map((hour) => [hour.timestamp, hour.price]);
 
-  try {
-    await sql`
+  await sql`
       INSERT INTO price_data (timestamp, price)
       VALUES ${sql(values)}
     `;
 
-    return "Price data inserted into database";
-  } catch (error) {
-    throw error;
-  }
+  console.log("Price data inserted into database");
 }

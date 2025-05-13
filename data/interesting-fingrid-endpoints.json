@@ -1,0 +1,94 @@
+[
+  {
+    "id": 74,
+    "nameFi": "Sähköntuotanto suomessa"
+  },
+  {
+    "id": 192,
+    "nameFi": "Sähköntuotanto suomessa - reaaliaikatieto"
+  },
+  {
+    "id": 193,
+    "nameFi": "Sähköntuotanto suomessa - reaaliaikatieto"
+  },
+  {
+    "id": 75,
+    "nameFi": "Tuulivoimatuotanto - varttitieto"
+  },
+  {
+    "id": 181,
+    "nameFi": "Tuulivoimatuotanto - reaalitieto"
+  },
+  {
+    "id": 188,
+    "nameFi": "Ydinvoimatuotanto, reaaliaikatieto"
+  },
+  {
+    "id": 191,
+    "nameFi": "Vesivoimatuotanto, reaaliaikatieto"
+  },
+  {
+    "id": 124,
+    "nameFi": "Sähkönkulutus suomessa"
+  },
+  {
+    "id": 165,
+    "nameFi": "Kulutusennuste - seuraava vuorokausi"
+  },
+  {
+    "id": 166,
+    "nameFi": "Kulutusennuste - päivittyvä energiatieto"
+  },
+  {
+    "id": 178,
+    "nameFi": "Lämpötila Helsingissä, reaaliaikatieto"
+  },
+  {
+    "id": 182,
+    "nameFi": "Lämpötila Jyväskylässä, reaaliaikatieto"
+  },
+  {
+    "id": 185,
+    "nameFi": "Lämpötila Rovaniemellä, reaaliaikatieto"
+  },
+  {
+    "id": 196,
+    "nameFi": "Lämpötila Oulussa, reaaliaikatieto"
+  },
+  {
+    "id": 183,
+    "nameFi": "Tehoreservi - reaaliaikatieto"
+  },
+  {
+    "id": 186,
+    "nameFi": "Tuotantoyli/alijäämä kumulatiivinen - reaaliaikatieto"
+  },
+  {
+    "id": 198,
+    "nameFi": "Sähköntuotanto, yli/alijäämä - reaaliaikatieto"
+  },
+  {
+    "id": 209,
+    "nameFi": "Sähköjärjestelmän käyttötilanne (liikennevalot) - reaaliaikatieto"
+  },
+  {
+    "id": 241,
+    "nameFi": "Sähköntuotantoennuste - päivittyvä energiatieto"
+  },
+  {
+    "id": 245,
+    "nameFi": "Tuulivoiman tuotantoennuste - päivitys 15 minuutin välein"
+  },
+  {
+    "id": 246,
+    "nameFi": "Tuulivoiman tuotantoennuste - päivitys kerran vuorokaudessa"
+  },
+  {
+    "id": 247,
+    "nameFi": "Aurinkovoiman tuotantoennuste - päivitys kerran vuorokaudessa"
+  },
+  {
+    "id": 248,
+    "nameFi": "Aurinkovoiman tuotantoennuste - päivitys 15 minuutin välein"
+  }
+]

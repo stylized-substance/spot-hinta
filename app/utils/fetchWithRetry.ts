@@ -3,7 +3,7 @@ export async function fetchWithRetry(
   retries: number,
   options?: object,
 ): Promise<Response> {
-  const backoff = 5000;
+  const backoff = 1000;
 
   try {
     const response = await fetch(url, options);
@@ -15,8 +15,9 @@ export async function fetchWithRetry(
     return response;
   } catch (error) {
     if (retries > 0) {
-      console.warn("Fetch failed, retrying in 5 seconds");
-      await new Promise((res) => setTimeout(res, backoff));
+      console.error("Fetch error:", error)
+      console.warn(`${url}:\n Fetch failed, retrying`);
+      await new Promise((resolve) => setTimeout(resolve, backoff));
 
       return fetchWithRetry(url, retries - 1, options);
     } else {

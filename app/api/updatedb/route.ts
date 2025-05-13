@@ -1,4 +1,5 @@
-import { updatePrices } from '@/app/utils/updatePrices'
+import { updatePrices } from "@/app/utils/updatePrices";
+import { fetchFingridData } from "@/app/utils/fetchFingridData";
 
 export async function GET(request: Request) {
   // Check for existence of Vercel cron secret in authorization header
@@ -12,20 +13,26 @@ export async function GET(request: Request) {
     });
   }
 
-  const results = [];
-  const errors = [];
+  let updatePricesResult;
+  let fetchFingridDataResult;
 
   try {
-    const result = await updatePrices();
-    results.push({ updatePrices: result });
+    await updatePrices();
+    updatePricesResult = { status: "Success" };
   } catch (error) {
-    errors.push({ updatePrices: error });
     console.error(`Error while updating price data: ${error}`);
+    updatePricesResult = { status: "Failure", error: String(error) };
+  }
+
+  try {
+    fetchFingridDataResult = await fetchFingridData();
+  } catch (error) {
+    fetchFingridDataResult = error;
   }
 
   return Response.json({
     message: "DB operations complete",
-    results: results,
-    errors: errors,
+    updatePricesResult: updatePricesResult,
+    fetchFingridDataResult: fetchFingridDataResult,
   });
 }
