@@ -3,38 +3,26 @@ import { z } from "zod";
 import sql from "@/app/db/db";
 import { fetchWithRetry } from "@/app/utils/fetchWithRetry";
 
-const ApiPriceData = z.object({
-  timeInterval: z.object({
-    start: z.string(),
-    end: z.string(),
-  }),
-  resolution: z.string(),
-  Point: z.array(
-    z.object({
-      position: z.number(),
-      "price.amount": z.number(),
-    }),
-  ),
-});
-
-// Fetch price data from ENTSO-E
-export async function GET(request: Request) {
-  // Check for existence of Vercel cron secret in authorization header
-  const authHeader = request.headers.get("authorization");
-  if (
-    authHeader !== `Bearer ${process.env.CRON_SECRET}` &&
-    process.env.NODE_ENV !== "development"
-  ) {
-    return new Response("Unauthorized", {
-      status: 401,
-    });
-  }
-
+async function updatePrices() {
   if (!process.env.ENTSO_E_APIKEY) {
     throw new Error("ENTSO-E API key missing");
   }
 
   const xmlParser = new XMLParser();
+
+  const ApiPriceData = z.object({
+    timeInterval: z.object({
+      start: z.string(),
+      end: z.string(),
+    }),
+    resolution: z.string(),
+    Point: z.array(
+      z.object({
+        position: z.number(),
+        "price.amount": z.number(),
+      }),
+    ),
+  });
 
   // Build date strings that comply with API
   const today = new Date();
@@ -76,8 +64,7 @@ export async function GET(request: Request) {
     Point,
   };
 
-    console.log("Price data from API:\n", priceData)
-
+  console.log("Price data from API:\n", priceData);
 
   ApiPriceData.parse(priceData);
 
@@ -100,18 +87,45 @@ export async function GET(request: Request) {
 
   const values = hoursArray.map((hour) => [hour.timestamp, hour.price]);
 
-
   try {
     await sql`
       INSERT INTO price_data (timestamp, price)
       VALUES ${sql(values)}
     `;
 
-    console.log("Price data inserted into database");
+    return "Price data inserted into database";
   } catch (error) {
-    console.error("Error while inserting price data into database");
     throw error;
   }
+}
 
-  return new Response("Price data updated");
+// Fetch price data from ENTSO-E
+export async function GET(request: Request) {
+  // Check for existence of Vercel cron secret in authorization header
+  const authHeader = request.headers.get("authorization");
+  if (
+    authHeader !== `Bearer ${process.env.CRON_SECRET}` &&
+    process.env.NODE_ENV !== "development"
+  ) {
+    return new Response("Unauthorized", {
+      status: 401,
+    });
+  }
+
+  const results = [];
+  const errors = [];
+
+  try {
+    const result = await updatePrices();
+    results.push({ updatePrices: result });
+  } catch (error) {
+    errors.push({ updatePrices: error });
+    console.error(`Error while updating price data: ${error}`);
+  }
+
+  return Response.json({
+    message: "DB operations complete",
+    results: results,
+    errors: errors,
+  });
 }
