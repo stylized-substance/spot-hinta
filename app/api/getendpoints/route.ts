@@ -5,12 +5,14 @@ export function GET() {
   interface Endpoint {
     id: number;
     nameFi: string;
+    nameEn: string;
     descriptionFi: string;
   }
 
   const response: Endpoint[] = data.map((item: Endpoint) => ({
     id: item.id,
     nameFi: item.nameFi,
+    nameEn: item.nameEn,
     descriptionFi: item.descriptionFi,
   }));
 

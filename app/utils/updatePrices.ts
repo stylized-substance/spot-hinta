@@ -4,7 +4,9 @@ import sql from "@/app/db/db";
 import { fetchWithRetry } from "@/app/utils/fetchWithRetry";
 
 // Fetch price data from ENTSO-E
-export async function updatePrices() {
+export async function updatePrices(
+  apiUrl: string = "https://web-api.tp.entsoe.eu/api",
+) {
   if (!process.env.ENTSO_E_APIKEY) {
     throw new Error("ENTSO-E API key missing");
   }
@@ -13,8 +15,8 @@ export async function updatePrices() {
 
   const ApiPriceData = z.object({
     timeInterval: z.object({
-      start: z.string(),
-      end: z.string(),
+      start: z.string().datetime(),
+      end: z.string().datetime(),
     }),
     resolution: z.string(),
     Point: z.array(
@@ -24,6 +26,8 @@ export async function updatePrices() {
       }),
     ),
   });
+
+  type EntryForDb = [string, number];
 
   // Build date strings that comply with API
   const today = new Date();
@@ -43,11 +47,13 @@ export async function updatePrices() {
 
   console.log(today.toLocaleString(), "- Fetching price data from ENTSO-E");
 
-  const entsoUrl = `https://web-api.tp.entsoe.eu/api?documentType=A44&periodStart=${periodStart}&periodEnd=${periodEnd}&out_Domain=10YFI-1--------U&in_Domain=10YFI-1--------U&contract_MarketAgreement.type=A01&securityToken=${process.env.ENTSO_E_APIKEY}`;
-
-  const response = await fetchWithRetry(entsoUrl, 3, {
-    method: "GET",
-  });
+  const response = await fetchWithRetry(
+    `${apiUrl}?documentType=A44&periodStart=${periodStart}&periodEnd=${periodEnd}&out_Domain=10YFI-1--------U&in_Domain=10YFI-1--------U&contract_MarketAgreement.type=A01&securityToken=${process.env.ENTSO_E_APIKEY}`,
+    3,
+    {
+      method: "GET",
+    },
+  );
 
   const xmlResponse = await response.text();
   const parsedXml = xmlParser.parse(xmlResponse);
@@ -65,12 +71,14 @@ export async function updatePrices() {
     Point,
   };
 
-  console.log("Price data from ENTSO-E API:\n", priceData);
-
   ApiPriceData.parse(priceData);
 
   // Build price data rows and save to database
-  const hoursArray = [];
+  const hoursArray: {
+    timestamp: string;
+    price: number;
+  }[] = [];
+
   const firstHour = new Date(priceData.timeInterval.start);
   firstHour.setHours(firstHour.getHours() + 2); // Correct time returned by API
 
@@ -86,7 +94,10 @@ export async function updatePrices() {
     });
   }
 
-  const values = hoursArray.map((hour) => [hour.timestamp, hour.price]);
+  const values: EntryForDb[] = hoursArray.map((hour) => [
+    hour.timestamp,
+    hour.price,
+  ]);
 
   await sql`
       INSERT INTO price_data (timestamp, price)

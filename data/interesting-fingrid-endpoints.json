@@ -36,10 +36,6 @@
     "nameFi": "Kulutusennuste - seuraava vuorokausi"
   },
   {
-    "id": 166,
-    "nameFi": "Kulutusennuste - päivittyvä energiatieto"
-  },
-  {
     "id": 178,
     "nameFi": "Lämpötila Helsingissä, reaaliaikatieto"
   },
@@ -76,19 +72,11 @@
     "nameFi": "Sähköntuotantoennuste - päivittyvä energiatieto"
   },
   {
-    "id": 245,
-    "nameFi": "Tuulivoiman tuotantoennuste - päivitys 15 minuutin välein"
-  },
-  {
     "id": 246,
     "nameFi": "Tuulivoiman tuotantoennuste - päivitys kerran vuorokaudessa"
   },
   {
     "id": 247,
     "nameFi": "Aurinkovoiman tuotantoennuste - päivitys kerran vuorokaudessa"
-  },
-  {
-    "id": 248,
-    "nameFi": "Aurinkovoiman tuotantoennuste - päivitys 15 minuutin välein"
-  }
+  }  
 ]

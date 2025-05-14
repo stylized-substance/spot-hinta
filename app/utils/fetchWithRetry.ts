@@ -15,7 +15,7 @@ export async function fetchWithRetry(
     return response;
   } catch (error) {
     if (retries > 0) {
-      console.error("Fetch error:", error)
+      console.error("Fetch error:", error);
       console.warn(`${url}:\n Fetch failed, retrying`);
       await new Promise((resolve) => setTimeout(resolve, backoff));
 
