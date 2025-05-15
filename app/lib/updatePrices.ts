@@ -1,7 +1,7 @@
 import { XMLParser } from "fast-xml-parser";
 import { z } from "zod";
-import sql from "@/app/db/db";
-import { fetchWithRetry } from "@/app/utils/fetchWithRetry";
+import sql from "@/app/lib/db";
+import { fetchWithRetry } from "@/app/lib/fetchWithRetry";
 
 // Fetch price data from ENTSO-E
 export async function updatePrices(

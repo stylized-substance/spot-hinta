@@ -1,4 +1,4 @@
-import { fetchAllData } from "@/app/utils/fetch-fingrid-endpoints";
+import { fetchAllData } from "@/app/lib/fetch-fingrid-endpoints";
 import fs from "fs";
 
 export async function GET() {

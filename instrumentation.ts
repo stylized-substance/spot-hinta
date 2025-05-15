@@ -1,5 +1,5 @@
-import { runMigrations } from '@/app/db/db'
+import { runMigrations } from "@/app/lib/db";
 
 export async function register() {
-  await runMigrations()
+  await runMigrations();
 }

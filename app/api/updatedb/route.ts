@@ -1,5 +1,5 @@
-import { updatePrices } from "@/app/utils/updatePrices";
-import { fetchFingridData } from "@/app/utils/updateFingridForecast";
+import { updatePrices } from "@/app/lib/updatePrices";
+import { fetchFingridData } from "@/app/lib/updateFingridForecast";
 
 export async function GET(request: Request) {
   // Check for existence of Vercel cron secret in authorization header
@@ -26,7 +26,7 @@ export async function GET(request: Request) {
 
   try {
     await fetchFingridData();
-    fetchFingridDataResult = { status: "Success"}
+    fetchFingridDataResult = { status: "Success" };
   } catch (error) {
     console.error("Error while fetching Fingrid data:", error);
     fetchFingridDataResult = { status: "Failure", error: error };

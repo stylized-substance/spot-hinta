@@ -1,6 +1,6 @@
 import { z } from "zod";
-import sql from "@/app/db/db";
-import { fetchWithRetry } from "@/app/utils/fetchWithRetry";
+import sql from "@/app/lib/db";
+import { fetchWithRetry } from "@/app/lib/fetchWithRetry";
 
 // Fetch electricity data from Fingrid API
 export async function fetchFingridData(
@@ -75,7 +75,6 @@ export async function fetchFingridData(
   `;
 
   console.log("Power forecast data inserted into database");
-
 
   return data;
 }
