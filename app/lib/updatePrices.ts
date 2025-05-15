@@ -1,7 +1,7 @@
 import { XMLParser } from "fast-xml-parser";
-import { z } from "zod";
 import sql from "@/app/lib/db";
 import { fetchWithRetry } from "@/app/lib/fetchWithRetry";
+import { ApiPriceData } from "@/app/lib/types";
 
 // Fetch price data from ENTSO-E
 export async function updatePrices(
@@ -12,22 +12,6 @@ export async function updatePrices(
   }
 
   const xmlParser = new XMLParser();
-
-  const ApiPriceData = z.object({
-    timeInterval: z.object({
-      start: z.string().datetime(),
-      end: z.string().datetime(),
-    }),
-    resolution: z.string(),
-    Point: z.array(
-      z.object({
-        position: z.number(),
-        "price.amount": z.number(),
-      }),
-    ),
-  });
-
-  type EntryForDb = [string, number];
 
   // Build date strings that comply with API
   const today = new Date();
@@ -94,10 +78,7 @@ export async function updatePrices(
     });
   }
 
-  const values: EntryForDb[] = hoursArray.map((hour) => [
-    hour.timestamp,
-    hour.price,
-  ]);
+  const values = hoursArray.map((hour) => [hour.timestamp, hour.price]);
 
   await sql`
       INSERT INTO price_data (timestamp, price)

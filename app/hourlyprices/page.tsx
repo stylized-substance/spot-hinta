@@ -1,11 +1,8 @@
-import sql from "@/app/lib/db";
-import { HourPrice } from "@/app/lib/types";
+import { fetchPrices } from "@/app/lib/fetchPrices";
+import { PriceData } from "@/app/lib/types";
 
 export default async function PriceTable() {
-  const priceData = await sql<
-    HourPrice[]
-  >`SELECT timestamp, price FROM price_data`;
-  console.log(priceData);
+  const priceData: PriceData = await fetchPrices();
 
   return (
     <div>
@@ -19,12 +16,10 @@ export default async function PriceTable() {
         </thead>
         <tbody>
           {priceData.map((row) => (
-            <>
-              <tr>
-                <td>{`${String(row.timestamp.getUTCHours()).padStart(2, "0")}:00`}</td>
-                <td>{row.price}</td>
-              </tr>
-            </>
+            <tr key={row.id}>
+              <td>{`${String(row.timestamp.getUTCHours()).padStart(2, "0")}:00`}</td>
+              <td>{row.price}</td>
+            </tr>
           ))}
         </tbody>
       </table>
