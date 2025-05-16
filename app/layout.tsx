@@ -53,7 +53,7 @@ export default function RootLayout({
               className="drawer-overlay"
             ></label>
             {/* Sidebar*/}
-            <aside className="bg-base-100 grid min-h-full grid-rows-[auto_1fr] gap-5 overflow-hidden p-4">
+            <aside className="bg-base-300 grid min-h-full grid-rows-[auto_1fr] gap-5 overflow-hidden p-4">
               <div className="grid justify-items-center">
                 <Image
                   src="/images/lightning-charge-fill-600x600.png"
