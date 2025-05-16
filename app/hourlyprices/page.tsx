@@ -26,7 +26,7 @@ export default async function PriceTable() {
         <thead>
           <tr>
             <th>Time</th>
-            <th>Price - c/kWh</th>
+            <th>Price with VAT - c/kWh</th>
           </tr>
         </thead>
         <tbody>
