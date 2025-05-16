@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
+import Link from 'next/link'
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -34,14 +35,14 @@ export default function RootLayout({
             </div>
             <ul className="ms-2 mt-4 text-lg">
               <li>
-                <a href="#" className="hover:bg-base-300 block p-2">
+                <Link href="/chart" className="hover:bg-base-300 block p-2">
                   Chart
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:bg-base-300 block p-2">
+                <Link href="/hourlyprices" className="hover:bg-base-300 block p-2">
                   Hourly prices
-                </a>
+                </Link>
               </li>
             </ul>
           </aside>
