@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
-import Link from 'next/link'
+import Link from "next/link";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -21,8 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${quicksand.className} antialiased`}>
-        <div className="grid h-screen grid-cols-[0.08fr_minmax(0,1fr)] grid-rows-1">
-          <aside className="mt-4 grid grid-rows-[auto_1fr] gap-5">
+        <div className="grid h-screen grid-cols-[1fr_6fr] xl:grid-cols-[1fr_12fr]">
+          {/* Sidebar*/}
+          <aside className="mt-4 grid grid-rows-[auto_1fr] gap-5 overflow-hidden">
             <div className="grid justify-items-center">
               <Image
                 src="/images/lightning-charge-fill-600x600.png"
@@ -40,13 +41,17 @@ export default function RootLayout({
                 </Link>
               </li>
               <li>
-                <Link href="/hourlyprices" className="hover:bg-base-300 block p-2">
+                <Link
+                  href="/hourlyprices"
+                  className="hover:bg-base-300 block p-2"
+                >
                   Hourly prices
                 </Link>
               </li>
             </ul>
           </aside>
-          {children}
+          {/* Main content*/}
+          <main className="overflow-y-auto">{children}</main>
         </div>
       </body>
     </html>
