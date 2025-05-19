@@ -1,9 +1,10 @@
 import sql from "@/app/lib/db";
-import { PriceDataSchema, PriceData } from "@/app/lib/types";
+import { PriceDataArraySchema, PriceDataArray } from "@/app/lib/types";
 
-export async function fetchPrices(days = 7): Promise<PriceData | []> {
+export async function fetchPrices(days = 7): Promise<PriceDataArray> {
   const interval = sql.unsafe(`'${days} days'`);
   //TODO: fix sql
+  //TODO: add VAT to prices
   try {
     const priceData = await sql`
     SELECT id, timestamp, price
@@ -14,7 +15,7 @@ export async function fetchPrices(days = 7): Promise<PriceData | []> {
     ORDER BY TIMESTAMP ASC
     `;
 
-    const parsed = PriceDataSchema.parse(priceData);
+    const parsed = PriceDataArraySchema.parse(priceData);
     return parsed;
   } catch (error) {
     console.error("Error while fetching prices:", error);

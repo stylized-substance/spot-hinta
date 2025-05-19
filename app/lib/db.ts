@@ -10,7 +10,8 @@ const migrations = [
     CREATE TABLE IF NOT EXISTS price_data (
     id SERIAL PRIMARY KEY,
     timestamp TIMESTAMPTZ UNIQUE NOT NULL,
-    price NUMERIC(6, 2)
+    price NUMERIC(7, 3),
+    added_on TIMESTAMPTZ
     );
   `,
   },
@@ -19,11 +20,13 @@ const migrations = [
     content: `
     CREATE TABLE IF NOT EXISTS power_forecast (
     id SERIAL PRIMARY KEY,
-    timestamp TIMESTAMPTZ UNIQUE NOT NULL,
+    startTime TIMESTAMPTZ UNIQUE NOT NULL,
+    endTime TIMESTAMPTZ UNIQUE NOT NULL,
     consumption NUMERIC(6, 0),
     production_total NUMERIC(6, 0),
     production_wind NUMERIC(6, 0),
-    production_solar NUMERIC(6, 0)
+    production_solar NUMERIC(6, 0),
+    added_on TIMESTAMPTZ
     );
     `,
   },

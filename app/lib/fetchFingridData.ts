@@ -1,6 +1,10 @@
-import { z } from "zod";
+import { DateTime } from "luxon";
 import sql from "@/app/lib/db";
 import { fetchWithRetry } from "@/app/lib/fetchWithRetry";
+import {
+  ApiForecastDataArraySchema,
+  ApiForecastDataArray,
+} from "@/app/lib/types";
 
 // Fetch electricity data from Fingrid API
 export async function fetchFingridData(
@@ -10,20 +14,12 @@ export async function fetchFingridData(
     throw new Error("Fingrid API key missing");
   }
 
-  const ApiForecastData = z.array(
-    z.object({
-      startTime: z.string().datetime(),
-      endTime: z.string(),
-      "Electricity consumption forecast - next 24 hours": z.number(),
-      "Electricity production prediction - updated every 15 minutes":
-        z.number(),
-      "Wind power generation forecast - updated once a day": z.number(),
-      "Solar power generation forecast - updated once a day": z.number(),
-    }),
-  );
+  const test = await sql`select * from power_forecast`
+  console.log('test', test)
 
-  type ApiForecastData = z.infer<typeof ApiForecastData>;
-  type EntryForDb = [string, number, number, number, number];
+  // TODO: refactor to use luxon
+  // Current UTC time
+  const utcTime = DateTime.utc();
 
   // Build date strings that comply with API
   const today = new Date();
@@ -50,28 +46,31 @@ export async function fetchFingridData(
     },
   );
 
-  const { data }: { data: ApiForecastData } = await response.json();
-
-  ApiForecastData.parse(data);
+  const { data }: { data: ApiForecastDataArray } = await response.json();
+  ApiForecastDataArraySchema.parse(data);
 
   //Build data rows and save to database
-  const values: EntryForDb[] = data.map((entry) => [
+  const valuesForDb = data.map((entry) => [
     entry.startTime,
+    entry.endTime,
     entry["Electricity consumption forecast - next 24 hours"],
     entry["Electricity production prediction - updated every 15 minutes"],
     entry["Wind power generation forecast - updated once a day"],
     entry["Solar power generation forecast - updated once a day"],
+    utcTime.toISO(),
   ]);
 
   await sql`
     INSERT INTO power_forecast (
-    timestamp,
+    startTime,
+    endTime,
     consumption,
     production_total,
     production_wind,
-    production_solar
+    production_solar,
+    added_on
     )
-    VALUES ${sql(values)}
+    VALUES ${sql(valuesForDb)}
   `;
 
   console.log("Power forecast data inserted into database");

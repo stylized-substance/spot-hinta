@@ -1,9 +1,10 @@
 import { fetchPrices } from "@/app/lib/fetchPrices";
-import { PriceData } from "@/app/lib/types";
+import { PriceDataRowArray } from "@/app/lib/types";
 
 export default async function PriceTable() {
   // Fetch prices for the last week
-  const priceData: PriceData | [] = await fetchPrices(7);
+  const priceData: PriceDataRowArray | [] = await fetchPrices(7);
+  // console.log(JSON.stringify(priceData, 0, 2))
   console.log(priceData)
 
   function formatTitle() {
