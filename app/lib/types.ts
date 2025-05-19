@@ -44,7 +44,7 @@ export const ApiForecastDataSchema = z.object({
 export const ApiForecastDataArraySchema = z.array(ApiForecastDataSchema);
 export type ApiForecastDataArray = z.infer<typeof ApiForecastDataArraySchema>;
 
-// Forecast data in database
+// Power forecast data in database
 export const ForecastDataSchema = z.object({
   id: z.number().optional(),
   startTime: z.date(),

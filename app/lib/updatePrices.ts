@@ -18,7 +18,7 @@ export async function updatePrices(
   const utcTime = DateTime.utc();
 
   // Build date strings that comply with API
-  const today = utcTime;
+  const today = DateTime.utc();
   const yesterday = today.minus({ days: 1 });
 
   // Set beginning and end time to fetch

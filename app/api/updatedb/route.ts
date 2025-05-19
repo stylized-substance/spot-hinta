@@ -1,5 +1,5 @@
 import { updatePrices } from "@/app/lib/updatePrices";
-import { fetchFingridData } from "@/app/lib/fetchFingridData";
+import { fetchFingridData } from "@/app/lib/updateFingridData";
 
 export async function GET(request: Request) {
   // Check for existence of Vercel cron secret in authorization header

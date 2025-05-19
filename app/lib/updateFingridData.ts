@@ -14,24 +14,14 @@ export async function fetchFingridData(
     throw new Error("Fingrid API key missing");
   }
 
-  const test = await sql`select * from power_forecast`
-  console.log('test', test)
-
-  // TODO: refactor to use luxon
   // Current UTC time
   const utcTime = DateTime.utc();
 
-  // Build date strings that comply with API
-  const today = new Date();
-  const todayYear = today.getFullYear().toString();
-  const todayMonth = (today.getMonth() + 1).toString().padStart(2, "0");
-  const todayDate = today.getDate().toString().padStart(2, "0");
-
   // Set beginning and end time to fetch
-  const startTime = `${todayYear}-${todayMonth}-${todayDate}T00:00`;
-  const endTime = `${todayYear}-${todayMonth}-${todayDate}T23:59`;
+  const startTime = utcTime.startOf("day");
+  const endTime = utcTime.endOf("day");
 
-  console.log(today.toLocaleString(), "- Fetching data from Fingrid API");
+  console.log(utcTime.toISO(), "- Fetching data from Fingrid API");
 
   const datasetIds = [165, 241, 246, 247];
 
