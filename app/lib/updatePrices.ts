@@ -25,7 +25,7 @@ export async function updatePrices(
   const periodStart = yesterday.toFormat("yyyyLLdd'2200'");
   const periodEnd = today.toFormat("yyyyLLdd'2200'");
 
-  console.log(`${today.toISO()} - Fetching price data from ENTSO-E`);
+  console.log(`${utcTime.toISO()} - Fetching price data from ENTSO-E`);
 
   const response = await fetchWithRetry(
     `${apiUrl}?documentType=A44&periodStart=${periodStart}&periodEnd=${periodEnd}&out_Domain=10YFI-1--------U&in_Domain=10YFI-1--------U&contract_MarketAgreement.type=A01&securityToken=${process.env.ENTSO_E_APIKEY}`,
@@ -52,24 +52,25 @@ export async function updatePrices(
   ApiPriceDataSchema.parse(priceData);
 
   // Build price data rows and save to database
-  const firstHour = DateTime.fromISO(priceData.timeInterval.start, {
-    zone: "utc",
-  });
-
+  const firstHour = DateTime.fromISO(priceData.timeInterval.start).toUTC();
+  if (!firstHour.isValid) {
+    throw new Error("Invalid timestamp on power forecast data")
+  }
+  
   const priceArray = priceData.Point.map((hour) => ({
     // Increment time by 1 hour for each datapoint in sequence and by 1 hour to correct for time zone difference between ENTSO-E data (Central European time) and UTC
     // Example: When API returns "timeInterval: { start: '2025-05-18T22:00Z' }", timestamp for the first hour is "2025-05-19T00:00Z" in UTC
     // Add added_on timestatmp
-    timestamp: firstHour.plus({ hours: hour.position + 1 }).toJSDate(),
+    timestamp: firstHour.plus({ hours: hour.position + 1 }),
     price: hour["price.amount"] / 10, // Convert price to cents/kWh
-    added_on: utcTime.toJSDate(),
+    added_on: utcTime,
   }));
 
   // Date objects are converted to strings for batch database insert to work
   const valuesForDb = priceArray.map((hour) => [
-    hour.timestamp.toISOString(),
+    hour.timestamp.toISO(),
     hour.price,
-    hour.added_on.toISOString()
+    hour.added_on.toISO(),
   ]);
 
   await sql`
