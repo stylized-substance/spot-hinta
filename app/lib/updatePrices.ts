@@ -65,14 +65,15 @@ export async function updatePrices(
     price: hour["price.amount"] / 10, // Convert price to cents/kWh
     added_on: utcTime,
   }));
-
+  
   // Date objects are converted to strings for batch database insert to work
+  // Datetime objects are converted to JS dates
   const valuesForDb = priceArray.map((hour) => [
     hour.timestamp.toISO(),
     hour.price,
     hour.added_on.toISO(),
   ]);
-
+  
   await sql`
       INSERT INTO price_data (timestamp, price, added_on)
       VALUES ${sql(valuesForDb)}
