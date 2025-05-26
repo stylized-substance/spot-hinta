@@ -21,7 +21,7 @@ export const PriceDataSchema = z.object({
   id: z.number().optional(),
   timestamp: z.date(),
   price: z.string(),
-  added_on: z.date(),
+  added_on: z.date().optional(),
 });
 export type PriceData = z.infer<typeof PriceDataSchema>;
 
