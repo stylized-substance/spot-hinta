@@ -53,7 +53,7 @@ export const ForecastDataSchema = z.object({
   "Electricity production prediction - updated every 15 minutes": z.number(),
   "Wind power generation forecast - updated once a day": z.number(),
   "Solar power generation forecast - updated once a day": z.number(),
-  added_on: z.date(),
+  added_on: z.date().optional(),
 });
 
 export const ForecastDataArraySchema = z.array(ForecastDataSchema);
