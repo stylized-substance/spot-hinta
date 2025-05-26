@@ -35,7 +35,7 @@ export type PriceDataArray = z.infer<typeof PriceDataArraySchema>;
 export const ApiForecastDataSchema = z.object({
   startTime: z.string().datetime(),
   endTime: z.string().datetime(),
-  "Electricity consumption forecast - next 24 hours": z.number(),
+  "Electricity consumption forecast - updated once a day": z.number(),
   "Electricity production prediction - updated every 15 minutes": z.number(),
   "Wind power generation forecast - updated once a day": z.number(),
   "Solar power generation forecast - updated once a day": z.number(),
@@ -49,7 +49,7 @@ export const ForecastDataSchema = z.object({
   id: z.number().optional(),
   startTime: z.date(),
   endTime: z.date(),
-  "Electricity consumption forecast - next 24 hours": z.number(),
+  "Electricity consumption forecast - updated once a day": z.number(),
   "Electricity production prediction - updated every 15 minutes": z.number(),
   "Wind power generation forecast - updated once a day": z.number(),
   "Solar power generation forecast - updated once a day": z.number(),

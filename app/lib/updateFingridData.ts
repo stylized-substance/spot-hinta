@@ -43,7 +43,7 @@ export async function fetchFingridData(
   const valuesForDb = data.map((entry) => [
     entry.startTime,
     entry.endTime,
-    entry["Electricity consumption forecast - next 24 hours"],
+    entry["Electricity consumption forecast - updated once a day"],
     entry["Electricity production prediction - updated every 15 minutes"],
     entry["Wind power generation forecast - updated once a day"],
     entry["Solar power generation forecast - updated once a day"],
