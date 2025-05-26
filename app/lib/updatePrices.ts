@@ -48,7 +48,6 @@ export async function updatePrices(
     timeInterval: timeSeriesData.timeInterval,
     Point: timeSeriesData.Point,
   };
-
   ApiPriceDataSchema.parse(priceData);
 
   // Build price data rows and save to database
@@ -58,10 +57,10 @@ export async function updatePrices(
   }
   
   const priceArray = priceData.Point.map((hour) => ({
-    // Increment time by 1 hour for each datapoint in sequence and by 1 hour to correct for time zone difference between ENTSO-E data (Central European time) and UTC
+    // Increment time by 1 hour for each datapoint in sequence and by 2 hours to correct for time zone difference between ENTSO-E data (Central European time) and UTC
     // Example: When API returns "timeInterval: { start: '2025-05-18T22:00Z' }", timestamp for the first hour is "2025-05-19T00:00Z" in UTC
     // Add added_on timestatmp
-    timestamp: firstHour.plus({ hours: hour.position + 1 }),
+    timestamp: firstHour.plus({ hours: hour.position + 2 }),
     price: hour["price.amount"] / 10, // Convert price to cents/kWh
     added_on: utcTime,
   }));

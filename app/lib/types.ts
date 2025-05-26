@@ -20,7 +20,9 @@ export type ApiPriceData = z.infer<typeof ApiPriceDataSchema>;
 export const PriceDataSchema = z.object({
   id: z.number().optional(),
   timestamp: z.date(),
-  price: z.string(),
+  price: z.string().refine((value) => !isNaN(parseFloat(value)), {
+    message: "Price must be a valid floating point number",
+  }),
   added_on: z.date().optional(),
 });
 export type PriceData = z.infer<typeof PriceDataSchema>;

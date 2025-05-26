@@ -1,11 +1,18 @@
 import { fetchPrices } from "@/app/lib/fetchPrices";
-import { PriceDataRowArray } from "@/app/lib/types";
+import { PriceDataArray } from "@/app/lib/types";
 
 export default async function PriceTable() {
   // Fetch prices for the last week
-  const priceData: PriceDataRowArray | [] = await fetchPrices(7);
-  // console.log(JSON.stringify(priceData, 0, 2))
-  console.log(priceData)
+  const priceData: PriceDataArray | [] = await fetchPrices(7);
+
+  // Add Finnish VAT to prices and round to two decimals
+  const pricesWithVAT: PriceDataArray = priceData.map((dataRow) => {
+    const price = (Number(dataRow.price) * 1.255).toFixed(2).toString();
+    return {
+      ...dataRow,
+      price: price,
+    };
+  });
 
   function formatTitle() {
     const { timestamp }: { timestamp: Date } = priceData[0];
@@ -18,11 +25,12 @@ export default async function PriceTable() {
 
   function formatHours(timestamp: Date): string {
     const startHour = `${timestamp.getUTCHours().toString().padStart(2, "0")}:00`;
-    const endHour = `${(timestamp.getUTCHours() + 1).toString().padStart(2, "0")}:00`;
+    // Hour is wrapped  with modulo to hack hour number '24' into '00'
+    const endHour = `${((timestamp.getUTCHours() + 1) % 24).toString().padStart(2, "0")}:00`;
     return `${startHour} - ${endHour}`;
   }
 
-  if (priceData.length === 0) {
+  if (pricesWithVAT.length === 0) {
     return <div>No price data found</div>;
   }
 
@@ -33,11 +41,11 @@ export default async function PriceTable() {
         <thead>
           <tr>
             <th>Time</th>
-            <th>Price with VAT - c/kWh</th>
+            <th>Price with 25.5% VAT - c/kWh</th>
           </tr>
         </thead>
         <tbody>
-          {priceData.map((row) => (
+          {pricesWithVAT.map((row) => (
             <tr key={row.id}>
               <td>{formatHours(row.timestamp)}</td>
               <td>{row.price}</td>
