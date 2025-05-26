@@ -1,7 +1,8 @@
 import { fetchPrices } from "@/app/lib/fetchPrices";
 import { PriceDataArray } from "@/app/lib/types";
+import { Suspense } from "react";
 
-export default async function PriceTable() {
+async function PriceTable() {
   // Fetch prices for the last week
   const priceData: PriceDataArray | [] = await fetchPrices(7);
 
@@ -53,6 +54,23 @@ export default async function PriceTable() {
           ))}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+export default async function HourlyPrices() {
+  return (
+    <div>
+      <Suspense
+        fallback={
+          <div>
+            <div>Loading...</div>
+            <span className="loading loading-spinner loading-xl"></span>
+          </div>
+        }
+      >
+        <PriceTable />
+      </Suspense>
     </div>
   );
 }

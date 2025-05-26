@@ -13,8 +13,7 @@ export async function fetchPrices(days = 7): Promise<PriceDataArray> {
     ORDER BY TIMESTAMP ASC
     `;
 
-    const parsed = PriceDataArraySchema.parse(priceData);
-    return parsed;
+    return PriceDataArraySchema.parse(priceData);
   } catch (error) {
     console.error("Error while fetching prices:", error);
     throw error;
