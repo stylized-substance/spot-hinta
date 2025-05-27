@@ -10,8 +10,8 @@ const migrations = [
     CREATE TABLE IF NOT EXISTS price_data (
     id SERIAL PRIMARY KEY,
     timestamp TIMESTAMPTZ UNIQUE NOT NULL,
-    price NUMERIC(7, 3),
-    added_on TIMESTAMPTZ
+    price NUMERIC(7, 3) NOT NULL,
+    added_on TIMESTAMPTZ NOT NULL
     );
   `,
   },
@@ -22,11 +22,11 @@ const migrations = [
     id SERIAL PRIMARY KEY,
     startTime TIMESTAMPTZ UNIQUE NOT NULL,
     endTime TIMESTAMPTZ UNIQUE NOT NULL,
-    consumption NUMERIC(6, 0),
-    production_total NUMERIC(6, 0),
-    production_wind NUMERIC(6, 0),
-    production_solar NUMERIC(6, 0),
-    added_on TIMESTAMPTZ
+    consumption NUMERIC(6, 0) NOT NULL,
+    production_total NUMERIC(6, 0) NOT NULL,
+    production_wind NUMERIC(6, 0) NOT NULL,
+    production_solar NUMERIC(6, 0) NOT NULL,
+    added_on TIMESTAMPTZ NOT NULL
     );
     `,
   },

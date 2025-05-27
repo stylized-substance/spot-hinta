@@ -1,7 +1,7 @@
 import { Suspense } from "react";
-import PriceTable from "@/app/ui/hourlyprices/PriceTable";
+import HourlyPrices from "@/app/ui/hourlyprices/HourlyPrices";
 
-export default async function HourlyPrices() {
+export default async function Page() {
   return (
     <div>
       <Suspense
@@ -11,7 +11,7 @@ export default async function HourlyPrices() {
           </div>
         }
       >
-        <PriceTable />
+        <HourlyPrices />
       </Suspense>
     </div>
   );
