@@ -10,10 +10,12 @@ export default function PriceTable({ data }: { data: PriceDataGroupedByDate }) {
     return `${startHour} - ${endHour}`;
   }
   const currentTime = DateTime.now();
+  console.log(currentTime)
 
   // TODO: improve bg color on table row
   return (
     <>
+      {currentTime.toISO()}
       <h1 className="mb-4 text-center text-2xl font-bold">{data.dateTitle}</h1>
       <table className="table-zebra table">
         <thead>
