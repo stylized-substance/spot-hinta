@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { fetchPrices } from "@/app/lib/fetchPrices";
 import { PriceDataArray } from "@/app/lib/types";
 import { Suspense } from "react";
@@ -7,11 +8,15 @@ async function PriceTable() {
   const priceData: PriceDataArray | [] = await fetchPrices(7);
 
   // Add Finnish VAT to prices and round to two decimals
-  const pricesWithVAT: PriceDataArray = priceData.map((dataRow) => {
+  // Convert timestamps to Finnish timezone
+  const localizedPriceData: PriceDataArray = priceData.map((dataRow) => {
     const price = (Number(dataRow.price) * 1.255).toFixed(2).toString();
     return {
       ...dataRow,
       price: price,
+      timestamp: DateTime.fromJSDate(dataRow.timestamp)
+        .setZone("Europe/Helsinki")
+        .toJSDate(),
     };
   });
 
@@ -25,13 +30,13 @@ async function PriceTable() {
   }
 
   function formatHours(timestamp: Date): string {
-    const startHour = `${timestamp.getUTCHours().toString().padStart(2, "0")}:00`;
-    // Hour is wrapped  with modulo to hack hour number '24' into '00'
-    const endHour = `${((timestamp.getUTCHours() + 1) % 24).toString().padStart(2, "0")}:00`;
+    const dateTime = DateTime.fromJSDate(timestamp);
+    const startHour = dateTime.toFormat("HH:00");
+    const endHour = dateTime.plus({ hours: 1 }).toFormat("HH:00");
     return `${startHour} - ${endHour}`;
   }
 
-  if (pricesWithVAT.length === 0) {
+  if (localizedPriceData.length === 0) {
     return <div>No price data found</div>;
   }
 
@@ -46,7 +51,7 @@ async function PriceTable() {
           </tr>
         </thead>
         <tbody>
-          {pricesWithVAT.map((row) => (
+          {localizedPriceData.map((row) => (
             <tr key={row.id}>
               <td>{formatHours(row.timestamp)}</td>
               <td>{row.price}</td>

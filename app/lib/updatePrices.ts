@@ -51,20 +51,19 @@ export async function updatePrices(
   ApiPriceDataSchema.parse(priceData);
 
   // Build price data rows and save to database
-  const firstHour = DateTime.fromISO(priceData.timeInterval.start).toUTC();
+  const firstHour = DateTime.fromISO(priceData.timeInterval.start);
   if (!firstHour.isValid) {
-    throw new Error("Invalid timestamp on power forecast data")
+    throw new Error("Invalid timestamp on power forecast data");
   }
-  
+
   const priceArray = priceData.Point.map((hour) => ({
-    // Increment time by 1 hour for each datapoint in sequence and by 2 hours to correct for time zone difference between ENTSO-E data (Central European time) and UTC
-    // Example: When API returns "timeInterval: { start: '2025-05-18T22:00Z' }", timestamp for the first hour is "2025-05-19T00:00Z" in UTC
+    // Increment time by 1 hour for each datapoint in sequence
     // Add added_on timestatmp
-    timestamp: firstHour.plus({ hours: hour.position + 2 }),
+    timestamp: firstHour.plus({ hours: hour.position - 1 }),
     price: hour["price.amount"] / 10, // Convert price to cents/kWh
     added_on: utcTime,
   }));
-  
+
   // Date objects are converted to strings for batch database insert to work
   // Datetime objects are converted to JS dates
   const valuesForDb = priceArray.map((hour) => [
@@ -72,7 +71,7 @@ export async function updatePrices(
     hour.price,
     hour.added_on.toISO(),
   ]);
-  
+
   await sql`
       INSERT INTO price_data (timestamp, price, added_on)
       VALUES ${sql(valuesForDb)}
