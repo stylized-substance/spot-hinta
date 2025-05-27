@@ -9,6 +9,8 @@ export default function PriceTable({ data }: { data: PriceDataGroupedByDate }) {
     const endHour = timestamp.plus({ hours: 1 }).toFormat("HH:00");
     return `${startHour} - ${endHour}`;
   }
+
+  // TODO: set time to finnish tz when running in production
   const currentTime = DateTime.now();
 
   // TODO: improve bg color on table row

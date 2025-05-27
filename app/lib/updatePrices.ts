@@ -71,6 +71,7 @@ export async function updatePrices(
     hour.price,
     hour.added_on.toISO(),
   ]);
+  // TODO: add handling for existing timestamps
 
   await sql`
       INSERT INTO price_data (timestamp, price, added_on)
