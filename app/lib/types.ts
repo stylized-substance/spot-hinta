@@ -34,13 +34,14 @@ export type PriceDataArray = z.infer<typeof PriceDataArraySchema>;
 ////////////////////////////////////////////////////////////////////
 
 // Power forecast data from Fingrid API
+// Null values from API are converted to '0' to avoid errors when saving to database
 export const ApiForecastDataSchema = z.object({
   startTime: z.string().datetime(),
   endTime: z.string().datetime(),
-  "Electricity consumption forecast - updated once a day": z.number(),
-  "Electricity production prediction - updated every 15 minutes": z.number(),
-  "Wind power generation forecast - updated once a day": z.number(),
-  "Solar power generation forecast - updated once a day": z.number(),
+  "Electricity consumption forecast - updated once a day": z.nullable(z.number()).transform((value) => value ?? 0),
+  "Electricity production prediction - updated every 15 minutes": z.nullable(z.number()).transform((value) => value ?? 0),
+  "Wind power generation forecast - updated once a day": z.nullable(z.number()).transform((value) => value ?? 0),
+  "Solar power generation forecast - updated once a day": z.nullable(z.number()).transform((value) => value ?? 0),
 });
 
 export const ApiForecastDataArraySchema = z.array(ApiForecastDataSchema);
