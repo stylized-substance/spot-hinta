@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import { fetchPrices } from "@/app/lib/fetchPrices";
-import PriceTableForDate from "@/app/ui/hourlyprices/PriceTableForDate";
+import PriceTable from "@/app/ui/hourlyprices/PriceTable";
 import {
   PriceDataArray,
   PriceDataInFrontend,
@@ -25,7 +25,7 @@ export default async function HourlyPrices() {
     };
   });
 
-  // Group price data by date and add dateTitle property for comsumption by PriceTableForDate component
+  // Group price data by date and add dateTitle property for comsumption by PriceTable component
   const pricesGroupedByDate: PriceDataGroupedByDate[] = [];
 
   for (const object of localizedPriceData) {
@@ -56,7 +56,7 @@ export default async function HourlyPrices() {
       <h1>Prices include 25.5% VAT</h1>
       {pricesGroupedByDate.map((date) => (
         <div key={date.date}>
-          <PriceTableForDate data={date} />
+          <PriceTable data={date} />
         </div>
       ))}
     </div>

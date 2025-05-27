@@ -2,7 +2,7 @@ import { DateTime } from "luxon";
 import { PriceDataGroupedByDate } from "@/app/types/priceData";
 
 // Render price table for a single date
-export default function PriceTableForDate({
+export default function PriceTable({
   data,
 }: {
   data: PriceDataGroupedByDate;
