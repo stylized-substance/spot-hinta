@@ -2,7 +2,7 @@ import { DateTime } from "luxon";
 import { XMLParser } from "fast-xml-parser";
 import sql from "@/app/lib/db";
 import { fetchWithRetry } from "@/app/lib/fetchWithRetry";
-import { ApiPriceDataSchema, ApiPriceData } from "@/app/lib/types";
+import { ApiPriceDataSchema, ApiPriceData } from "@/app/types/entso-e";
 
 // Fetch price data from ENTSO-E
 export async function updatePrices(

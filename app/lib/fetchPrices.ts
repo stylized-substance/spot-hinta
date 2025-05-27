@@ -1,5 +1,5 @@
 import sql from "@/app/lib/db";
-import { PriceDataArraySchema, PriceDataArray } from "@/app/lib/types";
+import { PriceDataArraySchema, PriceDataArray } from "@/app/types/entso-e";
 
 // Fetch price data from database
 export async function fetchPrices(days = 7): Promise<PriceDataArray> {
