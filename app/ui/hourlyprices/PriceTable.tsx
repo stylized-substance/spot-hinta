@@ -15,7 +15,7 @@ export default function PriceTable({
 
   return (
     <>
-      <h1>{data.dateTitle}</h1>
+      <h1 className="font-bold text-2xl text-center mb-4">{data.dateTitle}</h1>
       <table className="table-zebra table">
         <thead>
           <tr>
