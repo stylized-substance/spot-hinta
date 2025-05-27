@@ -9,7 +9,9 @@ export default function PriceTable({ data }: { data: PriceDataGroupedByDate }) {
     const endHour = timestamp.plus({ hours: 1 }).toFormat("HH:00");
     return `${startHour} - ${endHour}`;
   }
+  const currentTime = DateTime.now();
 
+  // TODO: improve bg color on table row
   return (
     <>
       <h1 className="mb-4 text-center text-2xl font-bold">{data.dateTitle}</h1>
@@ -21,23 +23,27 @@ export default function PriceTable({ data }: { data: PriceDataGroupedByDate }) {
           </tr>
         </thead>
         <tbody>
-          {data.prices.map((row) => (
-            <tr key={row.id}>
-              <td>{formatHours(row.timestamp)}</td>
-              <td
-                className={clsx(
-                  Number(row.price) < 0.1 && "text-success",
-                  Number(row.price) > 0.1 &&
-                    Number(row.price) < 0.2 &&
-                    "text-warning",
-                  Number(row.price) > 0.2 && "text-error",
-                )}
-              >
-                {row.price}
-              </td>
-              {/* <td className="text-accent">{row.price}</td> */}
-            </tr>
-          ))}
+          {data.prices.map((row) => {
+            const isCurrentHour =
+              row.timestamp.hasSame(currentTime, "day") &&
+              row.timestamp.hour === currentTime.hour;
+            return (
+              <tr className={clsx(isCurrentHour && "bg-accent")} key={row.id}>
+                <td>{formatHours(row.timestamp)}</td>
+                <td
+                  className={clsx(
+                    Number(row.price) < 0.1 && "text-success",
+                    Number(row.price) > 0.1 &&
+                      Number(row.price) < 0.2 &&
+                      "text-warning",
+                    Number(row.price) > 0.2 && "text-error",
+                  )}
+                >
+                  {row.price}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </>
