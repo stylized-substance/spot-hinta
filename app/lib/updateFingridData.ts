@@ -61,6 +61,7 @@ export async function fetchFingridData(
     added_on
     )
     VALUES ${sql(valuesForDb)}
+    ON CONFLICT DO NOTHING;
   `;
 
   console.log("Power forecast data inserted into database");
