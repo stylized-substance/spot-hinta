@@ -75,8 +75,7 @@ export async function updatePrices(
   await sql`
       INSERT INTO price_data (timestamp, price, added_on)
       VALUES ${sql(valuesForDb)}
-      ON CONFLICT (timestamp)
-      DO NOTHING;
+      ON CONFLICT (timestamp) DO NOTHING;
     `;
 
   console.log("Price data inserted into database");
