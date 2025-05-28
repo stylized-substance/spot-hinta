@@ -18,8 +18,15 @@ export async function fetchFingridData(
   const utcTime = DateTime.utc();
 
   // Set beginning and end time to fetch
-  const startTime = utcTime.startOf("day");
-  const endTime = utcTime.endOf("day");
+  const startTime = utcTime.set({
+    hour: 12,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+  });
+  const endTime = utcTime
+    .plus({ days: 1 })
+    .set({ hour: 12, minute: 0, second: 0, millisecond: 0 });
 
   console.log(utcTime.toISO(), "- Fetching data from Fingrid API");
 
@@ -37,6 +44,7 @@ export async function fetchFingridData(
   );
 
   const { data }: { data: ApiForecastDataArray } = await response.json();
+  // TODO: handle null values from API
   ApiForecastDataArraySchema.parse(data);
 
   //Build data rows and save to database
