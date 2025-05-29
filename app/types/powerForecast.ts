@@ -7,15 +7,19 @@ export const ApiForecastDataSchema = z.object({
   endTime: z.string().datetime(),
   "Electricity consumption forecast - updated once a day": z
     .number()
+    .nullable()
     .transform((value) => value ?? 0),
   "Electricity production prediction - updated every 15 minutes": z
     .number()
+    .nullable()
     .transform((value) => value ?? 0),
   "Wind power generation forecast - updated once a day": z
     .number()
+    .nullable()
     .transform((value) => value ?? 0),
   "Solar power generation forecast - updated once a day": z
     .number()
+    .nullable()
     .transform((value) => value ?? 0),
 });
 

@@ -43,12 +43,11 @@ export async function fetchFingridData(
     },
   );
 
-  const { data }: { data: ApiForecastDataArray } = await response.json();
-  // TODO: handle null values from API
-  ApiForecastDataArraySchema.parse(data);
+  const { data } = await response.json();
+  const parsedData: ApiForecastDataArray = ApiForecastDataArraySchema.parse(data)
 
   //Build data rows and save to database
-  const valuesForDb = data.map((entry) => [
+  const valuesForDb = parsedData.map((entry) => [
     entry.startTime,
     entry.endTime,
     entry["Electricity consumption forecast - updated once a day"],
