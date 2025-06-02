@@ -47,13 +47,18 @@ export default async function HourlyPrices() {
     }
   }
 
+  // Sort date groups in descending order
+  pricesGroupedByDate.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  );
+
   if (localizedPriceData.length === 0) {
     return <div>No price data found</div>;
   }
 
   return (
     <section>
-      <h1 className="mt-4 mb-6 me-4 text-end">Prices include 25.5% VAT</h1>
+      <h1 className="me-4 mt-4 mb-6 text-end">Prices include 25.5% VAT</h1>
       <div className="grid place-items-center gap-8">
         {pricesGroupedByDate.map((date) => (
           <div key={date.date} className="w-full max-w-2xl">
