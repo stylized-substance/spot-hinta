@@ -43,7 +43,12 @@ export default async function HourlyPrices() {
         };
         pricesGroupedByDate.push(group);
       }
+      
+      // Add prices to group and hours in descending order
       group.prices.push(object);
+      group.prices.sort(
+        (a, b) => b.timestamp.toMillis() - a.timestamp.toMillis(),
+      );
     }
   }
 
