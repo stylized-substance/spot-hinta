@@ -11,11 +11,12 @@ export default function PriceTable({ data }: { data: PriceDataGroupedByDate }) {
   }
 
   // TODO: set time to finnish tz when running in production
-  const currentTime = DateTime.now();
+  const currentTime = DateTime.now().setZone("Europe/Helsinki");
 
   // TODO: improve bg color on table row
   return (
     <>
+      <h1>{currentTime.toISO()}</h1>
       <h1 className="mb-4 text-center text-2xl font-bold">{data.dateTitle}</h1>
       <table className="table-zebra table">
         <thead>
