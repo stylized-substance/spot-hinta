@@ -3,22 +3,23 @@ import { PriceDataGroupedByDate } from "@/app/types/priceData";
 import clsx from "clsx";
 
 // Render price table for a single date
-export default function PriceTable({ data }: { data: PriceDataGroupedByDate }) {
+export default function PriceTable({
+  data,
+  currentTimeInFinland,
+}: {
+  data: PriceDataGroupedByDate;
+  currentTimeInFinland: DateTime;
+}) {
   function formatHours(timestamp: DateTime): string {
     const startHour = timestamp.toFormat("HH:00");
     const endHour = timestamp.plus({ hours: 1 }).toFormat("HH:00");
     return `${startHour} - ${endHour}`;
   }
 
-  // TODO: set time to finnish tz when running in production
-  const currentTime = DateTime.now().setZone("Europe/Helsinki");
-
-  // TODO: improve bg color on table row
   return (
     <>
-      <h1>{currentTime.toISO()}</h1>
       <h1 className="mb-4 text-center text-2xl font-bold">{data.dateTitle}</h1>
-      <table className="table-zebra table">
+      <table className="table">
         <thead>
           <tr>
             <th>Time</th>
@@ -28,10 +29,15 @@ export default function PriceTable({ data }: { data: PriceDataGroupedByDate }) {
         <tbody>
           {data.prices.map((row) => {
             const isCurrentHour =
-              row.timestamp.hasSame(currentTime, "day") &&
-              row.timestamp.hour === currentTime.hour;
+              row.timestamp.hasSame(currentTimeInFinland, "day") &&
+              row.timestamp.hour === currentTimeInFinland.hour;
             return (
-              <tr className={clsx(isCurrentHour && "bg-accent")} key={row.id}>
+              <tr
+                className={clsx(
+                  isCurrentHour && "border-info border-2 border-dotted",
+                )}
+                key={row.id}
+              >
                 <td>{formatHours(row.timestamp)}</td>
                 <td
                   className={clsx(
