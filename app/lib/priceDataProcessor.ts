@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import { PriceDataArray, PriceDataInFrontend } from "../types/priceData";
+import { ChartData } from "@/app/types/chart/chart";
 
 export function formatPriceData(
   priceData: PriceDataArray,
@@ -30,4 +31,17 @@ export function findHourPrice(priceData: PriceDataInFrontend[]): string {
   );
 
   return currentHour ? String(currentHour.price) : "NaN";
+}
+
+// Format price data for rendering in nivo line chart
+export function formatPricesForChart(priceData: PriceDataArray): ChartData {
+  return [
+    {
+      id: "Electricity prices",
+      data: priceData.map((hour) => ({
+        x: hour.timestamp.toISOString(),
+        y: hour.price,
+      })),
+    },
+  ];
 }

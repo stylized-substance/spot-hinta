@@ -1,134 +1,135 @@
 "use client";
 
 import { Line, ResponsiveLine } from "@nivo/line";
+import { ChartData } from "@/app/types/chart/chart";
 
-type ChartData = {
-  id: string | number;
-  data: {
-    x: number | string | Date;
-    y: number | string | Date;
-  }[];
-}[];
-
-// TODO: inherit background color from daisyui theme
-const chartTheme = {
-  background: "#241f31",
-  text: {
-    fontSize: 12,
-    fill: "#ffffff",
-    outlineWidth: 0,
-    outlineColor: "#000000",
-  },
-  axis: {
-    domain: {
-      line: {
-        stroke: "#777777",
-        strokeWidth: 1,
-      },
-    },
-    legend: {
-      text: {
-        fontSize: 12,
-        fill: "#ffffff",
-        outlineWidth: 0,
-        outlineColor: "#ffffff",
-      },
-    },
-    ticks: {
-      line: {
-        stroke: "#777777",
-        strokeWidth: 1,
-      },
-      text: {
-        fontSize: 12,
-        fill: "#ffffff",
-        outlineWidth: 0,
-        outlineColor: "#ffffff",
-      },
-    },
-  },
-  grid: {
-    line: {
-      stroke: "#3d3846",
-      strokeWidth: 1,
-    },
-  },
-  legends: {
-    title: {
-      text: {
-        fontSize: 12,
-        fill: "#ffffff",
-        outlineWidth: 0,
-        outlineColor: "#ffffff",
-      },
-    },
+export default function LineChart({ data }: { data: ChartData }) {
+  // TODO: inherit background color from daisyui theme
+  const chartTheme = {
+    background: "#241f31",
     text: {
       fontSize: 12,
       fill: "#ffffff",
       outlineWidth: 0,
-      outlineColor: "#ffffff",
+      outlineColor: "#000000",
     },
-    ticks: {
-      line: {},
+    axis: {
+      domain: {
+        line: {
+          stroke: "#777777",
+          strokeWidth: 1,
+        },
+      },
+      legend: {
+        text: {
+          fontSize: 12,
+          fill: "#ffffff",
+          outlineWidth: 0,
+          outlineColor: "#ffffff",
+        },
+      },
+      ticks: {
+        line: {
+          stroke: "#777777",
+          strokeWidth: 1,
+        },
+        text: {
+          fontSize: 12,
+          fill: "#ffffff",
+          outlineWidth: 0,
+          outlineColor: "#ffffff",
+        },
+      },
+    },
+    grid: {
+      line: {
+        stroke: "#3d3846",
+        strokeWidth: 1,
+      },
+    },
+    legends: {
+      title: {
+        text: {
+          fontSize: 12,
+          fill: "#ffffff",
+          outlineWidth: 0,
+          outlineColor: "#ffffff",
+        },
+      },
       text: {
-        fontSize: 10,
-        fill: "#333333",
+        fontSize: 12,
+        fill: "#ffffff",
         outlineWidth: 0,
         outlineColor: "#ffffff",
       },
+      ticks: {
+        line: {},
+        text: {
+          fontSize: 10,
+          fill: "#333333",
+          outlineWidth: 0,
+          outlineColor: "#ffffff",
+        },
+      },
     },
-  },
-  annotations: {
-    text: {
-      fontSize: 13,
-      fill: "#333333",
-      outlineWidth: 2,
-      outlineColor: "#ffffff",
-      outlineOpacity: 1,
+    annotations: {
+      text: {
+        fontSize: 13,
+        fill: "#333333",
+        outlineWidth: 2,
+        outlineColor: "#ffffff",
+        outlineOpacity: 1,
+      },
+      link: {
+        stroke: "#000000",
+        strokeWidth: 1,
+        outlineWidth: 2,
+        outlineColor: "#ffffff",
+        outlineOpacity: 1,
+      },
+      outline: {
+        stroke: "#000000",
+        strokeWidth: 2,
+        outlineWidth: 2,
+        outlineColor: "#ffffff",
+        outlineOpacity: 1,
+      },
+      symbol: {
+        fill: "#000000",
+        outlineWidth: 2,
+        outlineColor: "#ffffff",
+        outlineOpacity: 1,
+      },
     },
-    link: {
-      stroke: "#000000",
-      strokeWidth: 1,
-      outlineWidth: 2,
-      outlineColor: "#ffffff",
-      outlineOpacity: 1,
+    tooltip: {
+      wrapper: {},
+      container: {
+        background: "#ffffff",
+        color: "#333333",
+        fontSize: 12,
+      },
+      basic: {},
+      chip: {},
+      table: {},
+      tableCell: {},
+      tableCellValue: {},
     },
-    outline: {
-      stroke: "#000000",
-      strokeWidth: 2,
-      outlineWidth: 2,
-      outlineColor: "#ffffff",
-      outlineOpacity: 1,
-    },
-    symbol: {
-      fill: "#000000",
-      outlineWidth: 2,
-      outlineColor: "#ffffff",
-      outlineOpacity: 1,
-    },
-  },
-  tooltip: {
-    wrapper: {},
-    container: {
-      background: "#ffffff",
-      color: "#333333",
-      fontSize: 12,
-    },
-    basic: {},
-    chip: {},
-    table: {},
-    tableCell: {},
-    tableCellValue: {},
-  },
-};
+  };
 
-export default function LineChart({
-  data,
-  /* see data tab */
-}: {
-  data: ChartData;
-}) {
-  console.log(data);
+  // Render dummy values in chart if input data is not defined
+  if (!data) {
+    data = [
+      {
+        id: 0,
+        data: [
+          {
+            x: 0,
+            y: 0,
+          },
+        ],
+      },
+    ];
+  }
 
   return (
     <>
@@ -151,7 +152,7 @@ export default function LineChart({
         axisBottom={{
           legend: "Time",
           legendOffset: 35,
-          tickValues: "every 15 minutes",
+          tickValues: "every dayr",
         }}
         axisLeft={{ legend: "Price - c/kWh", legendOffset: -45 }}
         enablePoints={false}
