@@ -20,14 +20,38 @@ export function formatPriceData(
   return localizedPriceData;
 }
 
-export function findHourPrice(priceData: PriceDataInFrontend[]): string {
+export function findHourPrices(
+  priceData: PriceDataInFrontend[],
+): {
+  previousHourPrice: string;
+  currentHourPrice: string;
+  nextHourPrice: string;
+} {
   // Create DateTime object from current time in Finland.
   const currentTimeInFinland = DateTime.now().setZone("Europe/Helsinki");
 
-  // Find price for the current hour
+  // Find price for previous hour
+  const previousHour = priceData.find((hour) =>
+    hour.timestamp.equals(
+      currentTimeInFinland.startOf("hour").minus({ hours: 1 }),
+    ),
+  );
+
+  // Find price for current hour
   const currentHour = priceData.find((hour) =>
     hour.timestamp.equals(currentTimeInFinland.startOf("hour")),
   );
 
-  return currentHour ? String(currentHour.price) : "NaN";
+  // Find price for next hour
+  const nextHour = priceData.find((hour) =>
+    hour.timestamp.equals(
+      currentTimeInFinland.startOf("hour").plus({ hours: 1 }),
+    ),
+  );
+
+  return {
+    previousHourPrice: previousHour ? String(previousHour.price) : "NaN",
+    currentHourPrice: currentHour ? String(currentHour.price) : "NaN",
+    nextHourPrice: nextHour ? String(nextHour.price) : "NaN",
+  };
 }
