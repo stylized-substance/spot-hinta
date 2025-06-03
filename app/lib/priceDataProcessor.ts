@@ -24,10 +24,6 @@ export function findHourPrice(priceData: PriceDataInFrontend[]): string {
   // Create DateTime object from current time in Finland.
   const currentTimeInFinland = DateTime.now().setZone("Europe/Helsinki");
 
-  console.log(priceData.find((hour) => 
-    hour.timestamp.equals(currentTimeInFinland.startOf("hour")),
-  ))
-
   // Find price for the current hour
   const currentHour = priceData.find((hour) =>
     hour.timestamp.equals(currentTimeInFinland.startOf("hour")),
