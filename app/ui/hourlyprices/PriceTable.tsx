@@ -3,13 +3,10 @@ import { PriceDataGroupedByDate } from "@/app/types/priceData";
 import clsx from "clsx";
 
 // Render price table for a single date
-export default function PriceTable({
-  data,
-  currentTimeInFinland,
-}: {
-  data: PriceDataGroupedByDate;
-  currentTimeInFinland: DateTime;
-}) {
+export default function PriceTable({ data }: { data: PriceDataGroupedByDate }) {
+  // Create DateTime object from current time in Finland. Used for highlighting current hour in table
+  const currentTimeInFinland: DateTime = DateTime.now().setZone("Europe/Helsinki");
+
   function formatHours(timestamp: DateTime): string {
     const startHour = timestamp.toFormat("HH:00");
     const endHour = timestamp.plus({ hours: 1 }).toFormat("HH:00");

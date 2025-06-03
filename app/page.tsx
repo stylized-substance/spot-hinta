@@ -1,33 +1,17 @@
 import { Suspense } from "react";
 import { fetchPrices } from "@/app/lib/fetchPrices";
+import { formatPriceData, findHourPrice } from "@/app/lib/priceDataProcessor"
 import { PriceDataArray, PriceDataInFrontend } from "./types/priceData";
-import { DateTime } from "luxon";
 
 export default async function Page() {
-  // Create DateTime object from current time in Finland. Used for highlighting current hour in PriceTable component
-  const currentTimeInFinland = DateTime.now().setZone("Europe/Helsinki");
-
   // Fetch electricity prices for last day
   const priceData: PriceDataArray | [] = await fetchPrices(1);
 
-  // Add Finnish VAT to prices and round to two decimals
-  // Convert timestamps to Finnish timezone
-  const localizedPriceData: PriceDataInFrontend[] = priceData.map((dataRow) => {
-    const price = (Number(dataRow.price) * 1.255).toFixed(2).toString();
-    return {
-      id: dataRow.id,
-      timestamp: DateTime.fromJSDate(dataRow.timestamp).setZone(
-        "Europe/Helsinki",
-      ),
-      price: price,
-    };
-  });
+  // Localize price data
+  const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData)
 
   // Find price for the current hour
-  const currentHour = localizedPriceData.find((hour) =>
-    hour.timestamp.equals(currentTimeInFinland.startOf("hour")),
-  );
-  const currentPrice = currentHour ? String(currentHour.price) : "NaN";
+  const currentPrice: string = findHourPrice(formattedPriceData)
 
   return (
     <div className="m-6 grid grid-cols-6 justify-items-center">
