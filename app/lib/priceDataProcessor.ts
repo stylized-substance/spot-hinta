@@ -7,13 +7,14 @@ export function formatPriceData(
   // Add Finnish VAT to prices and round to two decimals
   // Convert timestamps to Finnish timezone
   const localizedPriceData: PriceDataInFrontend[] = priceData.map((dataRow) => {
-    const price = (Number(dataRow.price) * 1.255).toFixed(2).toString();
+    const priceString = (Number(dataRow.price) * 1.255).toFixed(2).toString();
     return {
       id: dataRow.id,
       timestamp: DateTime.fromJSDate(dataRow.timestamp).setZone(
         "Europe/Helsinki",
       ),
-      price: price,
+      price: parseFloat(priceString),
+      priceString: priceString
     };
   });
 
@@ -50,8 +51,16 @@ export function findHourPrices(
   );
 
   return {
-    previousHourPrice: previousHour ? String(previousHour.price) : "NaN",
-    currentHourPrice: currentHour ? String(currentHour.price) : "NaN",
-    nextHourPrice: nextHour ? String(nextHour.price) : "NaN",
+    previousHourPrice: previousHour ? previousHour.priceString : "NaN",
+    currentHourPrice: currentHour ? currentHour.priceString : "NaN",
+    nextHourPrice: nextHour ? nextHour.priceString : "NaN",
   };
+}
+
+export function findHighestHourPrice(priceData: PriceDataInFrontend[]): string {
+  console.log(priceData.forEach((hour) => {
+    console.log(hour.price)
+    console.log(hour.priceString)
+  }))
+  return "NaN"
 }

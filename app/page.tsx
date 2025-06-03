@@ -1,6 +1,10 @@
 import { Suspense } from "react";
 import { fetchPrices } from "@/app/lib/fetchPrices";
-import { formatPriceData, findHourPrices } from "@/app/lib/priceDataProcessor";
+import {
+  formatPriceData,
+  findHourPrices,
+  findHighestHourPrice,
+} from "@/app/lib/priceDataProcessor";
 import { PriceDataArray, PriceDataInFrontend } from "./types/priceData";
 
 export default async function Page() {
@@ -11,7 +15,11 @@ export default async function Page() {
   const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
 
   // Find prices for previous, current and next hour
-  const { previousHourPrice, currentHourPrice, nextHourPrice } = findHourPrices(formattedPriceData);
+  const { previousHourPrice, currentHourPrice, nextHourPrice } =
+    findHourPrices(formattedPriceData);
+
+  // Find highest hour price today
+  const highestHourPrice = findHighestHourPrice(formattedPriceData);
 
   return (
     <div className="m-6 grid grid-cols-6 justify-items-center">
@@ -33,7 +41,7 @@ export default async function Page() {
       </div>
       <div className="stat">
         <div className="stat-title">Highest price today</div>
-        <div className="stat-value">123</div>
+        <div className="stat-value">{highestHourPrice}</div>
       </div>
       <div className="stat">
         <div className="stat-title">Lowest price today</div>

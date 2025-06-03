@@ -40,7 +40,8 @@ export type PriceDataArray = z.infer<typeof PriceDataArraySchema>;
 export type PriceDataInFrontend = {
   id: number;
   timestamp: DateTime<true> | DateTime<false>;
-  price: string;
+  price: number
+  priceString: string;
 };
 
 export type PriceDataGroupedByDate = {
