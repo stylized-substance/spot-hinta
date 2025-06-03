@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import { fetchPrices } from "@/app/lib/fetchPrices";
+import { formatPriceData } from "@/app/lib/priceDataProcessor";
 import PriceTable from "@/app/ui/hourlyprices/PriceTable";
 import {
   PriceDataArray,
@@ -9,29 +10,16 @@ import {
 
 // Render hourly electricity price tables grouped by date
 export default async function HourlyPrices() {
-  // Create DateTime object from current time in Finland. Used for highlighting current hour in PriceTable component
-  const currentTimeInFinland = DateTime.now().setZone("Europe/Helsinki");
-
   // Fetch prices for the last week
   const priceData: PriceDataArray | [] = await fetchPrices(7);
 
-  // Add Finnish VAT to prices and round to two decimals
-  // Convert timestamps to Finnish timezone
-  const localizedPriceData: PriceDataInFrontend[] = priceData.map((dataRow) => {
-    const price = (Number(dataRow.price) * 1.255).toFixed(2).toString();
-    return {
-      id: dataRow.id,
-      timestamp: DateTime.fromJSDate(dataRow.timestamp).setZone(
-        "Europe/Helsinki",
-      ),
-      price: price,
-    };
-  });
+  // Localize price data
+  const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
 
   // Group price data by date and add dateTitle property for comsumption by PriceTable component
   const pricesGroupedByDate: PriceDataGroupedByDate[] = [];
 
-  for (const object of localizedPriceData) {
+  for (const object of formattedPriceData) {
     const date = object.timestamp.toISODate();
     const dateTitle = object.timestamp.toLocaleString(DateTime.DATE_FULL);
 
@@ -60,7 +48,7 @@ export default async function HourlyPrices() {
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   );
 
-  if (localizedPriceData.length === 0) {
+  if (formattedPriceData.length === 0) {
     return <div>No price data found</div>;
   }
 
@@ -70,10 +58,7 @@ export default async function HourlyPrices() {
       <div className="grid place-items-center gap-8">
         {pricesGroupedByDate.map((date) => (
           <div key={date.date} className="w-full max-w-2xl">
-            <PriceTable
-              data={date}
-              currentTimeInFinland={currentTimeInFinland}
-            />
+            <PriceTable data={date} />
           </div>
         ))}
       </div>
