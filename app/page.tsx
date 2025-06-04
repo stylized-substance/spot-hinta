@@ -4,6 +4,8 @@ import {
   formatPriceData,
   findHourPrices,
   findHighestHourPrice,
+  findLowestHourPrice,
+  findAverageHourPrice,
 } from "@/app/lib/priceDataProcessor";
 import { PriceDataArray, PriceDataInFrontend } from "./types/priceData";
 
@@ -18,35 +20,42 @@ export default async function Page() {
   const { previousHourPrice, currentHourPrice, nextHourPrice } =
     findHourPrices(formattedPriceData);
 
-  // Find highest hour price today
+  // Find highest, lowest and average hour price today
   const highestHourPrice = findHighestHourPrice(formattedPriceData);
+  const lowestHourPrice = findLowestHourPrice(formattedPriceData);
+  const averageHourPrice = findAverageHourPrice(formattedPriceData);
 
+  // TODO: move "Prices include 25.5% VAT" into main layout
   return (
-    <div className="m-6 grid grid-cols-6 justify-items-center">
-      <div className="stat">
-        <div className="stat-title">Price now</div>
-        <div className="stat-value">{currentHourPrice}</div>
+    <>
+      <h1 className="me-4 mt-4 mb-6 text-end">Prices include 25.5% VAT</h1>
+      <h1 className="mt-6 text-center">Prices - c/kWh</h1>
+      <div className="m-6 grid grid-cols-6 justify-items-center">
+        <div className="stat">
+          <div className="stat-title">Price now</div>
+          <div className="stat-value">{currentHourPrice}</div>
+        </div>
+        <div className="stat">
+          <div className="stat-title">Price last hour</div>
+          <div className="stat-value">{previousHourPrice}</div>
+        </div>
+        <div className="stat">
+          <div className="stat-title">Price next hour</div>
+          <div className="stat-value">{nextHourPrice}</div>
+        </div>
+        <div className="stat">
+          <div className="stat-title">Average price today</div>
+          <div className="stat-value">{averageHourPrice}</div>
+        </div>
+        <div className="stat">
+          <div className="stat-title">Highest price today</div>
+          <div className="stat-value">{highestHourPrice}</div>
+        </div>
+        <div className="stat">
+          <div className="stat-title">Lowest price today</div>
+          <div className="stat-value">{lowestHourPrice}</div>
+        </div>
       </div>
-      <div className="stat">
-        <div className="stat-title">Price last hour</div>
-        <div className="stat-value">{previousHourPrice}</div>
-      </div>
-      <div className="stat">
-        <div className="stat-title">Price next hour</div>
-        <div className="stat-value">{nextHourPrice}</div>
-      </div>
-      <div className="stat">
-        <div className="stat-title">Average price today</div>
-        <div className="stat-value">123</div>
-      </div>
-      <div className="stat">
-        <div className="stat-title">Highest price today</div>
-        <div className="stat-value">{highestHourPrice}</div>
-      </div>
-      <div className="stat">
-        <div className="stat-title">Lowest price today</div>
-        <div className="stat-value">123</div>
-      </div>
-    </div>
+    </>
   );
 }
