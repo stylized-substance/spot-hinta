@@ -54,7 +54,6 @@ export default async function HourlyPrices() {
 
   return (
     <section>
-      <h1 className="me-4 mt-4 mb-6 text-end">Prices include 25.5% VAT</h1>
       <div className="grid place-items-center gap-8">
         {pricesGroupedByDate.map((date) => (
           <div key={date.date} className="w-full max-w-2xl">

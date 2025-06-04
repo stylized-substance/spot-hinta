@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import "./globals.css";
 import SideBar from "@/app/ui/sidebar"
+import Header from "@/app/ui/header"
+
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -42,6 +44,7 @@ export default function RootLayout({
                 />
               </svg>
             </label>
+            <Header />
             {/* Main content*/}
             <main className="overflow-y-auto">{children}</main>
           </div>
