@@ -30,6 +30,10 @@ export default function LineChart({ data }: { data: ChartData }) {
         // defaultHeight={400}
         // defaultWidth={800}
         margin={{ top: 50, right: 110, bottom: 100, left: 60 }}
+        xScale={{
+          type: "time",
+          precision: "hour",
+        }}
         yScale={{
           type: "linear",
           min: "auto",
@@ -41,7 +45,8 @@ export default function LineChart({ data }: { data: ChartData }) {
         axisBottom={{
           legend: "Time",
           legendOffset: 35,
-          tickValues: "every dayr",
+          format: "%H:%M",
+          tickValues: "every hour",
         }}
         axisLeft={{ legend: "Price - c/kWh", legendOffset: -45 }}
         enablePoints={false}

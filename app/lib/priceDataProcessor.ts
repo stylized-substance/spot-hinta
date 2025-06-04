@@ -31,7 +31,7 @@ export function findHourPrices(priceData: PriceDataInFrontend[]): {
 } {
   // Create DateTime object from current time in Finland.
   const currentTimeInFinland: DateTime =
-    DateTime.now().setZone("Europe/Helsinki");
+    DateTime.utc().setZone("Europe/Helsinki");
 
   // Find price for previous hour
   const previousHour: PriceDataInFrontend | undefined = priceData.find((hour) =>
@@ -59,7 +59,9 @@ export function findHourPrices(priceData: PriceDataInFrontend[]): {
   };
 }
 
-export function findHighestPricedHour(priceData: PriceDataInFrontend[]): PriceDataInFrontend | undefined {
+export function findHighestPricedHour(
+  priceData: PriceDataInFrontend[],
+): PriceDataInFrontend | undefined {
   if (priceData.length === 0) {
     return undefined;
   }
@@ -74,23 +76,27 @@ export function findHighestPricedHour(priceData: PriceDataInFrontend[]): PriceDa
     },
   );
 
-  return highestPricedHour
+  return highestPricedHour;
 }
 
-export function findLowestPricedHour(priceData: PriceDataInFrontend[]): PriceDataInFrontend | undefined {
+export function findLowestPricedHour(
+  priceData: PriceDataInFrontend[],
+): PriceDataInFrontend | undefined {
   if (priceData.length === 0) {
     return undefined;
   }
 
-  const lowestPricedHour: PriceDataInFrontend = priceData.reduce((acc, hour) => {
-    if (hour.price < acc.price) {
-      return hour;
-    }
+  const lowestPricedHour: PriceDataInFrontend = priceData.reduce(
+    (acc, hour) => {
+      if (hour.price < acc.price) {
+        return hour;
+      }
 
-    return acc;
-  });
+      return acc;
+    },
+  );
 
-  return lowestPricedHour
+  return lowestPricedHour;
 }
 
 export function findAverageHourPrice(priceData: PriceDataInFrontend[]): string {
@@ -110,12 +116,14 @@ export function findAverageHourPrice(priceData: PriceDataInFrontend[]): string {
 }
 
 // Format price data for rendering in nivo line chart
-export function formatPricesForChart(priceData: PriceDataArray): ChartData {
+export function formatPricesForChart(
+  priceData: PriceDataInFrontend[],
+): ChartData {
   return [
     {
-      id: "Electricity prices",
+      id: "Electricity price",
       data: priceData.map((hour) => ({
-        x: hour.timestamp.toISOString(),
+        x: hour.timestamp.toJSDate(),
         y: hour.price,
       })),
     },
