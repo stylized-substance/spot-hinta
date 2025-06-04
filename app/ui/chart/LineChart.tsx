@@ -4,9 +4,7 @@ import { Line, ResponsiveLine } from "@nivo/line";
 import { ChartData } from "@/app/types/chart/chart";
 
 export default function LineChart({ data }: { data: ChartData }) {
-  // TODO: inherit background color from daisyui theme
   const chartTheme = {
-    background: "#241f31",
     text: {
       fontSize: 12,
       fill: "#ffffff",
