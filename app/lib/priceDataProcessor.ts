@@ -59,12 +59,12 @@ export function findHourPrices(priceData: PriceDataInFrontend[]): {
   };
 }
 
-export function findHighestHourPrice(priceData: PriceDataInFrontend[]): string {
+export function findHighestPricedHour(priceData: PriceDataInFrontend[]): PriceDataInFrontend | undefined {
   if (priceData.length === 0) {
-    return "NaN";
+    return undefined;
   }
 
-  const highestPriceHour: PriceDataInFrontend = priceData.reduce(
+  const highestPricedHour: PriceDataInFrontend = priceData.reduce(
     (acc, hour) => {
       if (hour.price > acc.price) {
         return hour;
@@ -74,15 +74,15 @@ export function findHighestHourPrice(priceData: PriceDataInFrontend[]): string {
     },
   );
 
-  return highestPriceHour ? highestPriceHour.priceString : "NaN";
+  return highestPricedHour
 }
 
-export function findLowestHourPrice(priceData: PriceDataInFrontend[]): string {
+export function findLowestPricedHour(priceData: PriceDataInFrontend[]): PriceDataInFrontend | undefined {
   if (priceData.length === 0) {
-    return "NaN";
+    return undefined;
   }
 
-  const lowestPriceHour: PriceDataInFrontend = priceData.reduce((acc, hour) => {
+  const lowestPricedHour: PriceDataInFrontend = priceData.reduce((acc, hour) => {
     if (hour.price < acc.price) {
       return hour;
     }
@@ -90,7 +90,7 @@ export function findLowestHourPrice(priceData: PriceDataInFrontend[]): string {
     return acc;
   });
 
-  return lowestPriceHour ? lowestPriceHour.priceString : "NaN";
+  return lowestPricedHour
 }
 
 export function findAverageHourPrice(priceData: PriceDataInFrontend[]): string {
