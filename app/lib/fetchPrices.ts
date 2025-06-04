@@ -2,8 +2,14 @@ import sql from "@/app/lib/db";
 import { PriceDataArraySchema, PriceDataArray } from "@/app/types/priceData";
 
 // Fetch price data from database
-export async function fetchPrices(days = 7): Promise<PriceDataArray> {
+// Fetching with days = 0 returns prices from beginning of today to end of today
+export async function fetchPrices(days = 0): Promise<PriceDataArray> {
+  if (days < 0) {
+    throw new Error("Interval for price query must be a positive number");
+  }
+
   const interval = sql.unsafe(`'${days} days'`);
+  
   try {
     const priceData = await sql`
     SELECT *

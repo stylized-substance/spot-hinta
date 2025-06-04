@@ -11,7 +11,8 @@ import { PriceDataArray, PriceDataInFrontend } from "./types/priceData";
 
 export default async function Page() {
   // Fetch electricity prices for last day
-  const priceData: PriceDataArray | [] = await fetchPrices(1);
+  const priceData: PriceDataArray | [] = await fetchPrices(0);
+  console.log(priceData)
 
   // Localize price data
   const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
