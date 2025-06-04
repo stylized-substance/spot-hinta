@@ -3,16 +3,17 @@ import { fetchPrices } from "@/app/lib/fetchPrices";
 import {
   formatPriceData,
   findHourPrices,
-  findHighestHourPrice,
-  findLowestHourPrice,
+  findHighestPricedHour,
+  findLowestPricedHour,
   findAverageHourPrice,
 } from "@/app/lib/priceDataProcessor";
+import { formatHours } from "@/app/lib/formatHours";
 import { PriceDataArray, PriceDataInFrontend } from "./types/priceData";
 
 export default async function Page() {
   // Fetch electricity prices for last day
   const priceData: PriceDataArray | [] = await fetchPrices(0);
-  console.log(priceData)
+  console.log(priceData);
 
   // Localize price data
   const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
@@ -22,8 +23,8 @@ export default async function Page() {
     findHourPrices(formattedPriceData);
 
   // Find highest, lowest and average hour price today
-  const highestHourPrice = findHighestHourPrice(formattedPriceData);
-  const lowestHourPrice = findLowestHourPrice(formattedPriceData);
+  const highestPricedHour = findHighestPricedHour(formattedPriceData);
+  const lowestPricedHour = findLowestPricedHour(formattedPriceData);
   const averageHourPrice = findAverageHourPrice(formattedPriceData);
 
   return (
@@ -46,13 +47,36 @@ export default async function Page() {
           <div className="stat-title">Average price today</div>
           <div className="stat-value">{averageHourPrice}</div>
         </div>
+        {/* Lowest and highest price stat element contents are dynamically rendered. "NaN" is used as fallback*/}
         <div className="stat">
           <div className="stat-title">Highest price today</div>
-          <div className="stat-value">{highestHourPrice}</div>
+          {highestPricedHour ? (
+            <>
+              <div className="stat-value">{highestPricedHour.priceString}</div>
+              <div className="stat-desc">
+                {formatHours(highestPricedHour.timestamp)}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="stat-value">NaN</div>
+            </>
+          )}
         </div>
         <div className="stat">
           <div className="stat-title">Lowest price today</div>
-          <div className="stat-value">{lowestHourPrice}</div>
+          {lowestPricedHour ? (
+            <>
+              <div className="stat-value">{lowestPricedHour.priceString}</div>
+              <div className="stat-desc">
+                {formatHours(lowestPricedHour.timestamp)}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="stat-value">NaN</div>
+            </>
+          )}
         </div>
       </div>
     </>

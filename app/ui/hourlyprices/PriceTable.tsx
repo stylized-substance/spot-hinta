@@ -1,17 +1,12 @@
 import { DateTime } from "luxon";
 import { PriceDataGroupedByDate } from "@/app/types/priceData";
+import { formatHours } from "@/app/lib/formatHours"
 import clsx from "clsx";
 
 // Render price table for a single date
 export default function PriceTable({ data }: { data: PriceDataGroupedByDate }) {
   // Create DateTime object from current time in Finland. Used for highlighting current hour in table
   const currentTimeInFinland: DateTime = DateTime.now().setZone("Europe/Helsinki");
-
-  function formatHours(timestamp: DateTime): string {
-    const startHour = timestamp.toFormat("HH:00");
-    const endHour = timestamp.plus({ hours: 1 }).toFormat("HH:00");
-    return `${startHour} - ${endHour}`;
-  }
 
   return (
     <>
@@ -35,6 +30,7 @@ export default function PriceTable({ data }: { data: PriceDataGroupedByDate }) {
                 )}
                 key={row.id}
               >
+                {/* Format hours to format eg. 10:00 - 20:00 */}
                 <td>{formatHours(row.timestamp)}</td>
                 <td
                   className={clsx(
