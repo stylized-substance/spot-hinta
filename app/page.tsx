@@ -25,10 +25,8 @@ export default async function Page() {
   const lowestHourPrice = findLowestHourPrice(formattedPriceData);
   const averageHourPrice = findAverageHourPrice(formattedPriceData);
 
-  // TODO: move "Prices include 25.5% VAT" into main layout
   return (
     <>
-      <h1 className="me-4 mt-4 mb-6 text-end">Prices include 25.5% VAT</h1>
       <h1 className="mt-6 text-center">Prices - c/kWh</h1>
       <div className="m-6 grid grid-cols-6 justify-items-center">
         <div className="stat">
