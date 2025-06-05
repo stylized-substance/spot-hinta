@@ -1,21 +1,47 @@
 import LineChart from "@/app/ui/chart/LineChart";
 import { PriceDataArray, PriceDataInFrontend } from "@/app/types/priceData";
 import { fetchPrices } from "@/app/lib/fetchPrices";
-import { formatPriceData, formatPricesForChart } from "@/app/lib/priceDataProcessor";
+import {
+  formatPriceData,
+  formatPricesForChart,
+} from "@/app/lib/priceDataProcessor";
+import { fetchFingridData } from "@/app/lib/fetchFingridData";
+import {
+  formatPowerForecastData,
+  formatPowerForecastDataForChart,
+} from "@/app/lib/powerForecastDataProcessor";
 
 export default async function Page() {
-  // Fetch prices for the last week
+  // Fetch prices for the last day
   const priceData: PriceDataArray | [] = await fetchPrices(0);
 
   // Localize price data
   const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
 
   // Format price data for chart
-  const formattedData = formatPricesForChart(formattedPriceData);
+  const pricesForChart = formatPricesForChart(formattedPriceData);
+
+  // Fetch power forecast data for the last day
+  const fingridData = await fetchFingridData(0);
+
+  // Localize power forecast data
+  const formattedPowerForecastData = formatPowerForecastData(fingridData);
+
+  // Format power forecast data for chart
+  const powerForecastDataForChart = formatPowerForecastDataForChart(
+    formattedPowerForecastData,
+  );
+  console.log(powerForecastDataForChart);
+  console.log(powerForecastDataForChart.map((dataType) => dataType.id));
 
   return (
     <div className="grid justify-items-center">
-      <LineChart data={formattedData} />
+      <LineChart data={pricesForChart} />
+      {powerForecastDataForChart.map((dataType) => (
+        <div>
+          <LineChart data={dataType} />
+        </div>
+      ))}
     </div>
   );
 }

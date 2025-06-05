@@ -20,8 +20,8 @@ const migrations = [
     content: `
     CREATE TABLE IF NOT EXISTS power_forecast (
     id SERIAL PRIMARY KEY,
-    startTime TIMESTAMPTZ UNIQUE NOT NULL,
-    endTime TIMESTAMPTZ UNIQUE NOT NULL,
+    startttime TIMESTAMPTZ UNIQUE NOT NULL,
+    endtime TIMESTAMPTZ UNIQUE NOT NULL,
     consumption NUMERIC(6, 0) NOT NULL,
     production_total NUMERIC(6, 0) NOT NULL,
     production_wind NUMERIC(6, 0) NOT NULL,

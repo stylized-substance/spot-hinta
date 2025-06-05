@@ -2,6 +2,7 @@ import { DateTime } from "luxon";
 import { PriceDataArray, PriceDataInFrontend } from "../types/priceData";
 import { ChartData } from "@/app/types/chart/chart";
 
+// Utility functions for processing price data
 export function formatPriceData(
   priceData: PriceDataArray,
 ): PriceDataInFrontend[] {

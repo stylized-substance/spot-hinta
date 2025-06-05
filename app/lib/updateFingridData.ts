@@ -4,7 +4,7 @@ import { fetchWithRetry } from "@/app/lib/fetchWithRetry";
 import {
   ApiForecastDataArraySchema,
   ApiForecastDataArray,
-} from "@/app/types/powerForecast";
+} from "@/app/types/fingridData";
 
 // Fetch electricity data from Fingrid API
 export async function fetchFingridData(

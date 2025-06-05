@@ -20,6 +20,7 @@ export default function LineChart({ data }: { data: ChartData }) {
     ];
   }
 
+
   return (
     <>
       <Line
@@ -31,6 +32,7 @@ export default function LineChart({ data }: { data: ChartData }) {
         // defaultWidth={800}
         margin={{ top: 50, right: 110, bottom: 100, left: 60 }}
         xScale={{
+          format: "%m-%d-%h-%m",
           type: "time",
           precision: "hour",
         }}
@@ -49,13 +51,15 @@ export default function LineChart({ data }: { data: ChartData }) {
           tickValues: "every hour",
         }}
         axisLeft={{ legend: "Price - c/kWh", legendOffset: -45 }}
-        enablePoints={false}
+        enablePoints={true}
+        enablePointLabel
         pointSize={10}
         pointColor={{ theme: "background" }}
         pointBorderWidth={2}
         pointBorderColor={{ from: "seriesColor" }}
         pointLabelYOffset={-12}
         enableTouchCrosshair={true}
+        crosshairType={"cross"}
         useMesh={true}
         legends={[
           {
