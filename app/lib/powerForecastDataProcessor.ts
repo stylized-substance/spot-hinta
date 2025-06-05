@@ -47,11 +47,11 @@ export function formatPowerForecastDataForChart(
 
   // Map friendly names to forecast data types
   const friendlyNames: Record<ForecastKey, string> = {
-    consumption: "Electricity consumption forecast - updated once a day",
+    consumption: "Electricity consumption forecast",
     production_total:
-      "Electricity production prediction - updated every 15 minutes",
-    production_wind: "Wind power generation forecast - updated once a day",
-    production_solar: "Solar power generation forecast - updated once a day",
+      "Electricity production prediction",
+    production_wind: "Wind power generation forecast",
+    production_solar: "Solar power generation forecast",
   };
 
   const dataArray = [];
