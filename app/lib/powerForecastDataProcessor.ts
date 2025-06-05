@@ -28,7 +28,7 @@ export function formatPowerForecastData(
 // Format power forecast data for rendering in nivo line chart
 export function formatPowerForecastDataForChart(
   powerForecastData: ForecastDataInFrontend[],
-): ChartData[] {
+): ChartData {
   // Loop through forecast data types and, build ChartData objects for each type and return as an array of arrays
 
   // Define only the data type keys
@@ -47,17 +47,17 @@ export function formatPowerForecastDataForChart(
 
   // Map friendly names to forecast data types
   const friendlyNames: Record<ForecastKey, string> = {
-    consumption: "Electricity consumption forecast",
+    consumption: "Total electricity consumption",
     production_total:
-      "Electricity production prediction",
-    production_wind: "Wind power generation forecast",
-    production_solar: "Solar power generation forecast",
+      "Total electricity production",
+    production_wind: "Wind power generation",
+    production_solar: "Solar power generation",
   };
 
-  const dataArray = [];
+  const dataArray: ChartData = [];
 
   for (const key of keys) {
-    dataArray.push([
+    dataArray.push(
       {
         id: friendlyNames[key],
         data: powerForecastData.map((dataRow) => ({
@@ -65,7 +65,7 @@ export function formatPowerForecastDataForChart(
           y: dataRow[key],
         })),
       },
-    ]);
+    );
   }
 
   return dataArray;

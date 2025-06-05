@@ -26,12 +26,16 @@ export default function LineChart({
     ];
   }
 
+  console.log(data);
+
   // Set chart left axis legend based on data type being rendered
   const axisLeft = type === "price" ? "Price - c/kWh" : "Production - kWh";
 
   return (
     <>
-      <h1 className="text-center mt-4 mb-4 text-2xl">{data[0].id}</h1>
+      <h1 className="mt-4 mb-4 text-center text-2xl">
+        {type === "price" ? "Electricity prices" : "Power statistics"}
+      </h1>
       <Line
         data={data}
         height={800}
@@ -49,10 +53,9 @@ export default function LineChart({
           type: "linear",
           min: "auto",
           max: "auto",
-          stacked: true,
+          stacked: false,
           reverse: false,
         }}
-        axisRight={{ legend: "Production - kWh", legendOffset: 45 }}
         axisBottom={{
           legend: "Time",
           legendOffset: 35,
@@ -79,6 +82,7 @@ export default function LineChart({
             itemWidth: 100,
             itemHeight: 22,
             symbolSize: 20,
+            itemsSpacing: 120,
             symbolShape: "circle",
           },
         ]}
