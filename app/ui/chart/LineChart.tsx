@@ -4,7 +4,13 @@ import { Line, ResponsiveLine } from "@nivo/line";
 import { chartTheme } from "@/app/ui/chart/config";
 import { ChartData } from "@/app/types/chart/chart";
 
-export default function LineChart({ data }: { data: ChartData }) {
+export default function LineChart({
+  data,
+  type,
+}: {
+  data: ChartData;
+  type: "price" | "powerForecast";
+}) {
   // Render dummy values in chart if input data is not defined
   if (!data) {
     data = [
@@ -20,9 +26,12 @@ export default function LineChart({ data }: { data: ChartData }) {
     ];
   }
 
+  // Set chart left axis legend based on data type being rendered
+  const axisLeft = type === "price" ? "Price - c/kWh" : "Production - kWh";
 
   return (
     <>
+      <h1 className="text-center mt-4 mb-4 text-2xl">{data[0].id}</h1>
       <Line
         data={data}
         height={800}
@@ -50,7 +59,7 @@ export default function LineChart({ data }: { data: ChartData }) {
           format: "%H:%M",
           tickValues: "every hour",
         }}
-        axisLeft={{ legend: "Price - c/kWh", legendOffset: -45 }}
+        axisLeft={{ legend: axisLeft, legendOffset: -45 }}
         enablePoints={true}
         enablePointLabel
         pointSize={10}

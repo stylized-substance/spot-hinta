@@ -31,15 +31,13 @@ export default async function Page() {
   const powerForecastDataForChart = formatPowerForecastDataForChart(
     formattedPowerForecastData,
   );
-  console.log(powerForecastDataForChart);
-  console.log(powerForecastDataForChart.map((dataType) => dataType.id));
 
   return (
     <div className="grid justify-items-center">
-      <LineChart data={pricesForChart} />
+      <LineChart data={pricesForChart} type={"price"}/>
       {powerForecastDataForChart.map((dataType) => (
-        <div>
-          <LineChart data={dataType} />
+        <div key={dataType[0].id}>
+          <LineChart data={dataType} type={"powerForecast"}/>
         </div>
       ))}
     </div>
