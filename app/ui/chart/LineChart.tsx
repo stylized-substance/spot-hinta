@@ -1,8 +1,9 @@
 "use client";
 
-import { Line, ResponsiveLine } from "@nivo/line";
+import { Line, ResponsiveLine, Point } from "@nivo/line";
 import { chartTheme } from "@/app/ui/chart/config";
 import { ChartData } from "@/app/types/chart/chart";
+import { DateTime } from "luxon";
 
 export default function LineChart({
   data,
@@ -26,7 +27,23 @@ export default function LineChart({
     ];
   }
 
-  console.log(data);
+  const CustomTooltip = ({ point }: { point: Point<any> }) => {
+    console.log(point)
+    // Change date format in tooltip
+    const formattedDate = DateTime.fromJSDate(
+      new Date(point.data.x),
+    ).toLocaleString(DateTime.DATE_FULL);
+    return (
+      <div
+        style={{ padding: "10px", background: "", border: "1px solid #ccc" }}
+      >
+        // TODO: fix type error
+        <strong>{point.seriesId}</strong>
+        <div>{formattedDate}</div>
+        <div>{point.data.yFormatted} c/kWh</div>
+      </div>
+    );
+  };
 
   // Set chart left axis legend based on data type being rendered
   const axisLeft = type === "price" ? "Price - c/kWh" : "Production - kWh";
@@ -63,7 +80,7 @@ export default function LineChart({
           tickValues: "every hour",
         }}
         axisLeft={{ legend: axisLeft, legendOffset: -45 }}
-        enablePoints={true}
+        enablePoints={false}
         enablePointLabel
         pointSize={10}
         pointColor={{ theme: "background" }}
@@ -73,6 +90,7 @@ export default function LineChart({
         enableTouchCrosshair={true}
         crosshairType={"cross"}
         useMesh={true}
+        tooltip={CustomTooltip}
         legends={[
           {
             justify: false,
