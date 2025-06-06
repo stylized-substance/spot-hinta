@@ -9,7 +9,6 @@ import {
 } from "@/app/lib/priceDataProcessor";
 import { PriceDataArray, PriceDataInFrontend } from "@/app/types/priceData";
 
-
 export default async function PriceStats({}) {
   // Fetch electricity prices for last day
   const priceData: PriceDataArray | [] = await fetchPrices(0);
@@ -34,31 +33,41 @@ export default async function PriceStats({}) {
   const averageHourPrice: string = findAverageHourPrice(formattedPriceData);
   return (
     <>
-      <h1 className="mt-6 text-center">Prices - c/kWh</h1>
-      <div className="m-6 grid grid-cols-6 justify-items-center">
+      <div className="grid grid-cols-6 justify-items-center">
         <div className="stat">
-          <div className="stat-title">Price now</div>
-          <div className="stat-value">{currentHourPrice}</div>
-        </div>
-        <div className="stat">
-          <div className="stat-title">Price last hour</div>
+          <div className="stat-title text-base">Price last hour</div>
           <div className="stat-value">{previousHourPrice}</div>
         </div>
         <div className="stat">
-          <div className="stat-title">Price next hour</div>
-          <div className="stat-value">{nextHourPrice}</div>
+          <b className="stat-title text-base-content text-base">Price now</b>
+          <div className="stat-value">{currentHourPrice}</div>
         </div>
         <div className="stat">
-          <div className="stat-title">Average price today</div>
-          <div className="stat-value">{averageHourPrice}</div>
+          <div className="stat-title text-base">Price next hour</div>
+          <div className="stat-value">{nextHourPrice}</div>
         </div>
         {/* Lowest and highest price stat element contents are dynamically rendered. "NaN" is used as fallback*/}
         <div className="stat">
-          <div className="stat-title">Highest price today</div>
+          <div className="stat-title text-base">Lowest price today</div>
+          {lowestPricedHour ? (
+            <>
+              <div className="stat-value mt-4">{lowestPricedHour.priceString}</div>
+              <div className="stat-desc text-sm">
+                {formatHours(lowestPricedHour.timestamp)}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="stat-value">NaN</div>
+            </>
+          )}
+        </div>
+        <div className="stat">
+          <div className="stat-title text-base">Highest price today</div>
           {highestPricedHour ? (
             <>
-              <div className="stat-value">{highestPricedHour.priceString}</div>
-              <div className="stat-desc">
+              <div className="stat-value mt-4">{highestPricedHour.priceString}</div>
+              <div className="stat-desc text-sm">
                 {formatHours(highestPricedHour.timestamp)}
               </div>
             </>
@@ -68,20 +77,10 @@ export default async function PriceStats({}) {
             </>
           )}
         </div>
+
         <div className="stat">
-          <div className="stat-title">Lowest price today</div>
-          {lowestPricedHour ? (
-            <>
-              <div className="stat-value">{lowestPricedHour.priceString}</div>
-              <div className="stat-desc">
-                {formatHours(lowestPricedHour.timestamp)}
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="stat-value">NaN</div>
-            </>
-          )}
+          <div className="stat-title text-base">Average price today</div>
+          <div className="stat-value">{averageHourPrice}</div>
         </div>
       </div>
     </>
