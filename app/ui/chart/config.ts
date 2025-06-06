@@ -1,5 +1,4 @@
 // Theme object for LineChart component
-
 export const chartTheme = {
   text: {
     fontSize: 12,
