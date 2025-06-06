@@ -4,7 +4,7 @@ import ChartWrapper from "@/app/ui/chart/ChartWrapper";
 
 export default async function Page() {
   return (
-    <div className="grid justify-items-center gap-12">
+    <div className="grid justify-items-center">
       <Suspense
         fallback={
           <div>

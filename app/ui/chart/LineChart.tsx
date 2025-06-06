@@ -1,6 +1,6 @@
 "use client";
 
-import { Line, ResponsiveLine } from "@nivo/line";
+import { ResponsiveLine } from "@nivo/line";
 import { chartTheme } from "@/app/ui/chart/config";
 import { ChartData } from "@/app/types/chart/chart";
 import { DateTime } from "luxon";
@@ -67,21 +67,16 @@ export default function LineChart({
   const axisLeft = type === "price" ? "Price - c/kWh" : "Production - kWh";
 
   return (
-    <div style={{ width: "100%", height: 600 }}>
+    <div style={{ width: "100%", height: 600 }} className="mt-8 mb-16">
       <h1 className="mt-4 mb-4 text-center text-2xl">
         {type === "price" ? "Electricity prices" : "Power statistics"}
       </h1>
       <ResponsiveLine
         data={data}
-        // height={800}
-        // width={1600}
         theme={chartTheme}
-        // defaultHeight={400}
-        // defaultWidth={800}
         margin={{ top: 50, right: 110, bottom: 100, left: 60 }}
         xScale={{
           type: "time",
-          // format: "%m-%d-%h-%m",
           precision: "hour",
         }}
         yScale={{
