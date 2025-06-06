@@ -1,6 +1,6 @@
 "use client";
 
-import { Line, ResponsiveLine, LineDatum } from "@nivo/line";
+import { Line, ResponsiveLine } from "@nivo/line";
 import { chartTheme } from "@/app/ui/chart/config";
 import { ChartData } from "@/app/types/chart/chart";
 import { DateTime } from "luxon";
@@ -27,7 +27,28 @@ export default function LineChart({
     ];
   }
 
-  const CustomTooltip = ({ point }: { point: LineDatum }) => {
+  // Type for data points sent into custom tooltip component
+  interface DataPoint {
+    absIndex: number;
+    borderColor: string;
+    color: string;
+    data: {
+      x: string | number | Date;
+      y: string | number | Date;
+      xFormatted: string;
+      yFormatted: string;
+    };
+    id: string;
+    indexInSeries: number;
+    seriesColor: string;
+    seriesId: string | number;
+    seriesIndex: number;
+    x: number;
+    y: number;
+  }
+
+  // Custom chart tooltip box
+  const CustomTooltip = ({ point }: { point: DataPoint }) => {
     // Change date format in tooltip
     const formattedDate = DateTime.fromJSDate(
       new Date(point.data.x),
