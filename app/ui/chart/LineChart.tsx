@@ -53,10 +53,9 @@ export default function LineChart({
     const formattedDate = DateTime.fromJSDate(
       new Date(point.data.x),
     ).toLocaleString(DateTime.DATE_FULL);
+
     return (
-      <div
-        style={{ padding: "10px", background: "", border: "1px solid #ccc" }}
-      >
+      <div className="bg-base-content/70 text-neutral border p-2 text-center">
         <strong>{point.seriesId}</strong>
         <div>{formattedDate}</div>
         <div>{point.data.yFormatted} c/kWh</div>
