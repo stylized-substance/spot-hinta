@@ -33,53 +33,53 @@ export default async function PriceStats({}) {
   const averageHourPrice: string = findAverageHourPrice(formattedPriceData);
   return (
     <>
-      <div className="grid grid-cols-6 justify-items-center">
+      <div className="grid grid-cols-3 md:grid-cols-6 justify-items-center">
         <div className="stat">
-          <div className="stat-title text-base">Price last hour</div>
+          <div className="stat-title text-xs md:text-base">Price last hour</div>
           <div className="stat-value">{previousHourPrice}</div>
         </div>
         <div className="stat">
-          <b className="stat-title text-base-content text-base">Price now</b>
+          <b className="stat-title text-base-content text-xs md:text-base">Price now</b>
           <div className="stat-value">{currentHourPrice}</div>
         </div>
         <div className="stat">
-          <div className="stat-title text-base">Price next hour</div>
+          <div className="stat-title text-xs md:text-base">Price next hour</div>
           <div className="stat-value">{nextHourPrice}</div>
         </div>
         {/* Lowest and highest price stat element contents are dynamically rendered. "NaN" is used as fallback*/}
         <div className="stat">
-          <div className="stat-title text-base">Lowest price today</div>
+          <div className="stat-title text-xs md:text-base">Lowest today</div>
           {lowestPricedHour ? (
             <>
               <div className="stat-value mt-4">{lowestPricedHour.priceString}</div>
-              <div className="stat-desc text-sm">
+              <div className="stat-desc text-xs md:text-base">
                 {formatHours(lowestPricedHour.timestamp)}
               </div>
             </>
           ) : (
             <>
-              <div className="stat-value">NaN</div>
+              <div className="stat-value text-xs md:text-base">NaN</div>
             </>
           )}
         </div>
         <div className="stat">
-          <div className="stat-title text-base">Highest price today</div>
+          <div className="stat-title text-xs md:text-base">Highest today</div>
           {highestPricedHour ? (
             <>
               <div className="stat-value mt-4">{highestPricedHour.priceString}</div>
-              <div className="stat-desc text-sm">
+              <div className="stat-desc text-xs md:text-base">
                 {formatHours(highestPricedHour.timestamp)}
               </div>
             </>
           ) : (
             <>
-              <div className="stat-value">NaN</div>
+              <div className="stat-value text-xs md:text-base">NaN</div>
             </>
           )}
         </div>
 
         <div className="stat">
-          <div className="stat-title text-base">Average price today</div>
+          <div className="stat-title text-xs md:text-base">Average today</div>
           <div className="stat-value">{averageHourPrice}</div>
         </div>
       </div>
