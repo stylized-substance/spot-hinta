@@ -1,6 +1,6 @@
 "use client";
 
-import { Line, ResponsiveLine, Point } from "@nivo/line";
+import { Line, ResponsiveLine, LineDatum } from "@nivo/line";
 import { chartTheme } from "@/app/ui/chart/config";
 import { ChartData } from "@/app/types/chart/chart";
 import { DateTime } from "luxon";
@@ -27,8 +27,7 @@ export default function LineChart({
     ];
   }
 
-  const CustomTooltip = ({ point }: { point: Point<any> }) => {
-    console.log(point)
+  const CustomTooltip = ({ point }: { point: LineDatum }) => {
     // Change date format in tooltip
     const formattedDate = DateTime.fromJSDate(
       new Date(point.data.x),
@@ -37,7 +36,6 @@ export default function LineChart({
       <div
         style={{ padding: "10px", background: "", border: "1px solid #ccc" }}
       >
-        // TODO: fix type error
         <strong>{point.seriesId}</strong>
         <div>{formattedDate}</div>
         <div>{point.data.yFormatted} c/kWh</div>
