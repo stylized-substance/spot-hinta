@@ -66,6 +66,11 @@ export default function LineChart({
   // Set chart left axis legend based on data type being rendered
   const axisLeft = type === "price" ? "Price - c/kWh" : "Production - kWh";
 
+  // Get current time in Finland
+  const currentTimeInFinland = DateTime.utc()
+    .setZone("Europe/Helsinki")
+    .toJSDate();
+
   return (
     <div style={{ width: "100%", height: 600 }} className="mt-8 mb-16">
       <h1 className="mt-4 mb-4 text-center text-2xl">
@@ -115,6 +120,16 @@ export default function LineChart({
             symbolSize: 20,
             itemsSpacing: 120,
             symbolShape: "circle",
+          },
+        ]}
+        markers={[
+          {
+            axis: "x",
+            value: currentTimeInFinland,
+            lineStyle: { stroke: "red", strokeWidth: 2 },
+            legend: "Now",
+            legendPosition: "top-right",
+            textStyle: { fill: "red", fontWeight: "bold" },
           },
         ]}
       />
