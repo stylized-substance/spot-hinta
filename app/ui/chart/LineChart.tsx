@@ -74,7 +74,8 @@ export default function LineChart({
         enableTouchCrosshair={true}
         crosshairType={"cross"}
         useMesh={true}
-        tooltip={CustomTooltip}
+        /*Tooltip is wrapped in an inline function to facilitate passing custom "type" prop */
+        tooltip={(pointProps) => <CustomTooltip {...pointProps} type={type} />}
         legends={[
           {
             justify: false,

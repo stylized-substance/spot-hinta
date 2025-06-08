@@ -13,8 +13,8 @@ export type ChartData = {
     borderColor: string;
     color: string;
     data: {
-      x: string | number | Date;
-      y: string | number | Date;
+      x: string | number | Date | null;
+      y: string | number | Date | null;
       xFormatted: string;
       yFormatted: string;
     };
