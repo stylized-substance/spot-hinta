@@ -10,9 +10,11 @@ export default function CustomTooltip({
   type: "price" | "powerForecast";
 }) {
   // Change date format in tooltip
-  const formattedDate = point.data.x ? DateTime.fromJSDate(
-    new Date(point.data.x),
-  ).toLocaleString(DateTime.DATE_FULL) : "";
+  const formattedDate = point.data.x
+    ? DateTime.fromJSDate(new Date(point.data.x))
+        .setLocale("en-FI")
+        .toLocaleString(DateTime.DATETIME_MED)
+    : "";
 
   return (
     <div className="bg-base-content/70 text-neutral border p-2 text-center">
