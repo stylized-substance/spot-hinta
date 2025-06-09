@@ -29,7 +29,7 @@ export default function LineChart({
   }
 
   // Set chart y-axis legend based on data type being rendered
-  const yAxisLegend = type === "price" ? "Price - c/kWh" : "Production - kWh";
+  const yAxisLegend = type === "price" ? "Price - c/kWh" : "Production - kW";
 
   // Get current time in Finland
   const currentTimeInFinland = DateTime.utc()
@@ -57,10 +57,9 @@ export default function LineChart({
           reverse: false,
         }}
         axisBottom={{
-          legend: "Time",
           legendOffset: 35,
           format: "%H:%M",
-          tickValues: "every hour",
+          tickValues: "every 3 hours",
         }}
         axisLeft={{ legend: yAxisLegend, legendOffset: -45 }}
         axisRight={{ legend: yAxisLegend, legendOffset: -45 }}

@@ -17,11 +17,11 @@ export default function CustomTooltip({
     : "";
 
   return (
-    <div className="bg-base-content/70 text-neutral border p-2 text-center">
+    <div className="bg-base-content/70 text-neutral border p-2 text-center whitespace-nowrap">
       <strong>{point.seriesId}</strong>
       <div>{formattedDate}</div>
       <div>
-        {point.data.yFormatted} {type === "price" ? "c/kWh" : "kWh"}
+        {point.data.yFormatted} {type === "price" ? "c/kWh" : "kW"}
       </div>
     </div>
   );
