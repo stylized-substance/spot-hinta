@@ -1,6 +1,6 @@
 import { updatePrices } from "@/app/lib/updatePrices";
 import { fetchFingridData } from "@/app/lib/updateFingridData";
-import { captureException } from "@sentry/nextjs";
+import { captureException, captureMessage } from "@sentry/nextjs";
 
 export async function GET(request: Request) {
   // Check for existence of Vercel cron secret in authorization header
@@ -18,8 +18,11 @@ export async function GET(request: Request) {
   let fetchFingridDataResult;
 
   try {
-    await updatePrices();
+    const { sentryData } = await updatePrices();
     updatePricesResult = { status: "Success" };
+    captureMessage("Price data inserted into DB", {
+      extra: { priceData: sentryData },
+    });
   } catch (error) {
     console.error(`Error while updating price data: ${error}`);
     captureException(error);

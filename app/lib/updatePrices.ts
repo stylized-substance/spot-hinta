@@ -7,7 +7,13 @@ import { ApiPriceDataSchema, ApiPriceData } from "@/app/types/priceData";
 // Fetch price data from ENTSO-E
 export async function updatePrices(
   apiUrl: string = "https://web-api.tp.entsoe.eu/api",
-) {
+): Promise<{
+  sentryData: {
+    timestamp: string;
+    added_on: string;
+    price: number;
+  }[];
+}> {
   if (!process.env.ENTSO_E_APIKEY) {
     throw new Error("ENTSO-E API key missing");
   }
@@ -64,8 +70,14 @@ export async function updatePrices(
     added_on: utcTime,
   }));
 
-  // Date objects are converted to strings for batch database insert to work
-  // Datetime objects are converted to JS dates
+  // Transform price data DateTimes to strings for logging into Sentry
+  const sentryData = priceArray.map((hour) => ({
+    ...hour,
+    timestamp: hour.timestamp.toISO(),
+    added_on: hour.added_on.toISO(),
+  }));
+
+  // Datetime objects are converted to strings for batch database insert to work
   const valuesForDb = priceArray.map((hour) => [
     hour.timestamp.toISO(),
     hour.price,
@@ -73,10 +85,13 @@ export async function updatePrices(
   ]);
 
   await sql`
-      INSERT INTO price_data (timestamp, price, added_on)
-      VALUES ${sql(valuesForDb)}
-      ON CONFLICT (timestamp) DO NOTHING;
-    `;
+  INSERT INTO price_data (timestamp, price, added_on)
+  VALUES ${sql(valuesForDb)}
+  ON CONFLICT (timestamp) DO NOTHING;
+  `;
 
   console.log("Price data inserted into database");
+
+  // Price data is returned for logging into Sentry
+  return { sentryData };
 }
