@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import sql from "@/app/lib/db";
+import sql from "@/app/lib/db/db";
 import { fetchWithRetry } from "@/app/lib/fetchWithRetry";
 import {
   ApiForecastDataArraySchema,
@@ -44,7 +44,8 @@ export async function fetchFingridData(
   );
 
   const { data } = await response.json();
-  const parsedData: ApiForecastDataArray = ApiForecastDataArraySchema.parse(data)
+  const parsedData: ApiForecastDataArray =
+    ApiForecastDataArraySchema.parse(data);
 
   //Build data rows and save to database
   const valuesForDb = parsedData.map((entry) => [

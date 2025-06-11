@@ -1,5 +1,5 @@
 import { formatHours } from "@/app/lib/formatHours";
-import { fetchPrices } from "@/app/lib/fetchPrices";
+import { fetchPrices } from "@/app/lib/db/fetchPrices";
 import {
   formatPriceData,
   findHourPrices,
@@ -33,13 +33,15 @@ export default async function PriceStats({}) {
   const averageHourPrice: string = findAverageHourPrice(formattedPriceData);
   return (
     <>
-      <div className="grid grid-cols-3 md:grid-cols-6 justify-items-center">
+      <div className="grid grid-cols-3 justify-items-center md:grid-cols-6">
         <div className="stat">
           <div className="stat-title text-xs md:text-base">Price last hour</div>
           <div className="stat-value">{previousHourPrice}</div>
         </div>
         <div className="stat">
-          <b className="stat-title text-base-content text-xs md:text-base">Price now</b>
+          <b className="stat-title text-base-content text-xs md:text-base">
+            Price now
+          </b>
           <div className="stat-value">{currentHourPrice}</div>
         </div>
         <div className="stat">
@@ -51,7 +53,9 @@ export default async function PriceStats({}) {
           <div className="stat-title text-xs md:text-base">Lowest today</div>
           {lowestPricedHour ? (
             <>
-              <div className="stat-value mt-4">{lowestPricedHour.priceString}</div>
+              <div className="stat-value mt-4">
+                {lowestPricedHour.priceString}
+              </div>
               <div className="stat-desc text-xs md:text-base">
                 {formatHours(lowestPricedHour.timestamp)}
               </div>
@@ -66,7 +70,9 @@ export default async function PriceStats({}) {
           <div className="stat-title text-xs md:text-base">Highest today</div>
           {highestPricedHour ? (
             <>
-              <div className="stat-value mt-4">{highestPricedHour.priceString}</div>
+              <div className="stat-value mt-4">
+                {highestPricedHour.priceString}
+              </div>
               <div className="stat-desc text-xs md:text-base">
                 {formatHours(highestPricedHour.timestamp)}
               </div>

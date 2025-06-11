@@ -1,5 +1,5 @@
-import { updatePrices } from "@/app/lib/updatePrices";
-import { fetchFingridData } from "@/app/lib/updateFingridData";
+import { updatePrices } from "@/app/lib/db/updatePrices";
+import { fetchFingridData } from "@/app/lib/db/updateFingridData";
 import { captureException, captureMessage } from "@sentry/nextjs";
 
 export async function GET(request: Request) {

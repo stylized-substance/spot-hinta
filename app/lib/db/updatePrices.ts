@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import { XMLParser } from "fast-xml-parser";
-import sql from "@/app/lib/db";
+import sql from "@/app/lib/db/db";
 import { fetchWithRetry } from "@/app/lib/fetchWithRetry";
 import { ApiPriceDataSchema, ApiPriceData } from "@/app/types/priceData";
 

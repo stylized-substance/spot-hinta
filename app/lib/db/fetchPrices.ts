@@ -1,15 +1,10 @@
-import sql from "@/app/lib/db";
-import {
-  ForecastDataArraySchema,
-  ForecastDataArray,
-} from "@/app/types/fingridData";
+import sql from "@/app/lib/db/db";
+import { PriceDataArraySchema, PriceDataArray } from "@/app/types/priceData";
 import { DateTime } from "luxon";
 
-// Fetch power forecast data from database
+// Fetch price data from database
 // Fetching with days = 0 returns prices from beginning of today to end of today
-export async function fetchFingridData(
-  days: number,
-): Promise<ForecastDataArray> {
+export async function fetchPrices(days: number): Promise<PriceDataArray> {
   if (days < 0) {
     throw new Error("Interval for price query must be a positive number");
   }
@@ -24,16 +19,17 @@ export async function fetchFingridData(
   const endTime = currentTimeInFinland.endOf("day").toUTC().toISO();
 
   try {
-    const fingridData = await sql`
-      SELECT * FROM power_forecast
-      WHERE starttime >= ${startTime}
-      AND endtime < ${endTime}
-      ORDER BY starttime ASC
+    const priceData = await sql`
+    SELECT *
+    FROM price_data
+    WHERE timestamp >= ${startTime}
+    AND timestamp < ${endTime}
+    ORDER BY timestamp ASC
     `;
 
-    return ForecastDataArraySchema.parse(fingridData);
+    return PriceDataArraySchema.parse(priceData);
   } catch (error) {
-    console.error("Error while fetching Fingrid data:", error);
+    console.error("Error while fetching prices:", error);
     throw error;
   }
 }

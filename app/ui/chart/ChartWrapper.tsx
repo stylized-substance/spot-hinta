@@ -1,11 +1,11 @@
 import LineChart from "@/app/ui/chart/LineChart";
 import { PriceDataArray, PriceDataInFrontend } from "@/app/types/priceData";
-import { fetchPrices } from "@/app/lib/fetchPrices";
+import { fetchPrices } from "@/app/lib/db/fetchPrices";
 import {
   formatPriceData,
   formatPricesForChart,
 } from "@/app/lib/priceDataProcessor";
-import { fetchFingridData } from "@/app/lib/fetchFingridData";
+import { fetchFingridData } from "@/app/lib/db/fetchFingridData";
 import {
   formatPowerForecastData,
   formatPowerForecastDataForChart,
