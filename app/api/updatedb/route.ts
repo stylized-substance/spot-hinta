@@ -1,5 +1,5 @@
 import { updatePrices } from "@/app/lib/db/updatePrices";
-import { fetchFingridData } from "@/app/lib/db/updateFingridData";
+import { updateFingridData } from "@/app/lib/db/updateFingridData";
 import { captureException, captureMessage } from "@sentry/nextjs";
 
 export async function GET(request: Request) {
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
   }
 
   let updatePricesResult;
-  let fetchFingridDataResult;
+  let updateFingridDataResult;
 
   try {
     const { sentryData } = await updatePrices();
@@ -30,17 +30,17 @@ export async function GET(request: Request) {
   }
 
   try {
-    await fetchFingridData();
-    fetchFingridDataResult = { status: "Success" };
+    await updateFingridData();
+    updateFingridDataResult = { status: "Success" };
   } catch (error) {
-    console.error("Error while fetching Fingrid data:", error);
+    console.error("Error while updating Fingrid data:", error);
     captureException(error);
-    fetchFingridDataResult = { status: "Failure", error: error };
+    updateFingridDataResult = { status: "Failure", error: error };
   }
 
   return Response.json({
     message: "DB operations complete",
     updatePricesResult: updatePricesResult,
-    fetchFingridDataResult: fetchFingridDataResult,
+    updateFingridDataResult: updateFingridDataResult,
   });
 }

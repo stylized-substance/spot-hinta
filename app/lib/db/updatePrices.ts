@@ -59,7 +59,7 @@ export async function updatePrices(
   // Build price data rows and save to database
   const firstHour = DateTime.fromISO(priceData.timeInterval.start);
   if (!firstHour.isValid) {
-    throw new Error("Invalid timestamp on power forecast data");
+    throw new Error("Invalid timestamp on electricity production data");
   }
 
   const priceArray = priceData.Point.map((hour) => ({

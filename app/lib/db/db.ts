@@ -16,11 +16,11 @@ const migrations = [
   `,
   },
   {
-    name: "Create power_forecast table",
+    name: "Create electricity_production table",
     content: `
-    CREATE TABLE IF NOT EXISTS power_forecast (
+    CREATE TABLE IF NOT EXISTS electricity_production (
     id SERIAL PRIMARY KEY,
-    startttime TIMESTAMPTZ UNIQUE NOT NULL,
+    starttime TIMESTAMPTZ UNIQUE NOT NULL,
     endtime TIMESTAMPTZ UNIQUE NOT NULL,
     consumption NUMERIC(6, 0) NOT NULL,
     production_total NUMERIC(6, 0) NOT NULL,

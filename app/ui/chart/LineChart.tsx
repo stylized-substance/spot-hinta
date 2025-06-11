@@ -11,7 +11,7 @@ export default function LineChart({
   type,
 }: {
   data: ChartData;
-  type: "price" | "powerForecast";
+  type: "price" | "electricityProduction";
 }) {
   // Render dummy values in chart if input data is not defined
   if (!data) {

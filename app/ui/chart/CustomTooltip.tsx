@@ -7,7 +7,7 @@ export default function CustomTooltip({
   type,
 }: {
   point: DataPoint;
-  type: "price" | "powerForecast";
+  type: "price" | "electricityProduction";
 }) {
   // Change date format in tooltip
   const formattedDate = point.data.x

@@ -1,16 +1,16 @@
 import { DateTime } from "luxon";
 import {
-  ForecastDataArray,
-  ForecastDataInFrontend,
+  DbElectricityDataArray,
+  ElectricityDataInFrontend,
 } from "../types/fingridData";
 import { ChartData } from "@/app/types/chart/chart";
 
-// Utility functions for processing power forecast data
-export function formatPowerForecastData(
-  powerForecastData: ForecastDataArray,
-): ForecastDataInFrontend[] {
+// Utility functions for processing electricity production data
+export function formatDbElectricityData(
+  powerData: DbElectricityDataArray,
+): ElectricityDataInFrontend[] {
   // Convert start and end times to Finnish timezone
-  const localizedPowerForecastData = powerForecastData.map((dataRow) => ({
+  const localizedDbElectricityData = powerData.map((dataRow) => ({
     id: dataRow.id,
     startTime: DateTime.fromJSDate(dataRow.starttime).setZone(
       "Europe/Helsinki",
@@ -22,31 +22,31 @@ export function formatPowerForecastData(
     production_solar: parseInt(dataRow.production_solar),
   }));
 
-  return localizedPowerForecastData;
+  return localizedDbElectricityData;
 }
 
-// Format power forecast data for rendering in nivo line chart
-export function formatPowerForecastDataForChart(
-  powerForecastData: ForecastDataInFrontend[],
+// Format electricity production data for rendering in nivo line chart
+export function formatDbElectricityDataForChart(
+  powerData: ElectricityDataInFrontend[],
 ): ChartData {
-  // Loop through forecast data types and, build ChartData objects for each type and return as an array of arrays
+  // Loop through electricity production data types and, build ChartData objects for each type and return as an array of arrays
 
   // Define only the data type keys
-  type ForecastKey =
+  type DatatypeKey =
     | "consumption"
     | "production_total"
     | "production_wind"
     | "production_solar";
 
-  const keys: ForecastKey[] = [
+  const keys: DatatypeKey[] = [
     "consumption",
     "production_total",
     "production_wind",
     "production_solar",
   ];
 
-  // Map friendly names to forecast data types
-  const friendlyNames: Record<ForecastKey, string> = {
+  // Map friendly names to electricity production data types
+  const friendlyNames: Record<DatatypeKey, string> = {
     consumption: "Total electricity consumption",
     production_total:
       "Total electricity production",
@@ -60,7 +60,7 @@ export function formatPowerForecastDataForChart(
     dataArray.push(
       {
         id: friendlyNames[key],
-        data: powerForecastData.map((dataRow) => ({
+        data: powerData.map((dataRow) => ({
           x: dataRow.startTime.toJSDate(),
           y: dataRow[key],
         })),

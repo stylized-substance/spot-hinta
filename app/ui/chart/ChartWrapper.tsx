@@ -5,15 +5,15 @@ import {
   formatPriceData,
   formatPricesForChart,
 } from "@/app/lib/priceDataProcessor";
-import { fetchFingridData } from "@/app/lib/db/fetchFingridData";
+import { fetchFingridDataFromDb } from "@/app/lib/db/fetchFingridDataFromDb";
 import {
-  formatPowerForecastData,
-  formatPowerForecastDataForChart,
-} from "@/app/lib/powerForecastDataProcessor";
+  formatDbElectricityData,
+  formatDbElectricityDataForChart,
+} from "@/app/lib/DbElectricityDataProcessor";
 import { ChartData } from "@/app/types/chart/chart";
 import {
-  ForecastDataArray,
-  ForecastDataInFrontend,
+  DbElectricityDataArray,
+  ElectricityDataInFrontend,
 } from "@/app/types/fingridData";
 
 export default async function ChartWrapper() {
@@ -26,22 +26,22 @@ export default async function ChartWrapper() {
   // Format price data for chart
   const pricesForChart: ChartData = formatPricesForChart(formattedPriceData);
 
-  // Fetch power forecast data for the last day
-  const fingridData: ForecastDataArray = await fetchFingridData(0);
+  // Fetch electricity production data for the last day
+  const fingridData: DbElectricityDataArray = await fetchFingridDataFromDb(0);
 
-  // Localize power forecast data
-  const formattedPowerForecastData: ForecastDataInFrontend[] =
-    formatPowerForecastData(fingridData);
+  // Localize electricity production data
+  const formattedDbElectricityData: ElectricityDataInFrontend[] =
+    formatDbElectricityData(fingridData);
 
-  // Format power forecast data for chart
-  const powerForecastDataForChart: ChartData = formatPowerForecastDataForChart(
-    formattedPowerForecastData,
+  // Format electricity production data for chart
+  const DbElectricityDataForChart: ChartData = formatDbElectricityDataForChart(
+    formattedDbElectricityData,
   );
 
   return (
     <>
       <LineChart data={pricesForChart} type={"price"} />
-      <LineChart data={powerForecastDataForChart} type={"powerForecast"} />
+      <LineChart data={DbElectricityDataForChart} type={"electricityProduction"} />
     </>
   );
 }
