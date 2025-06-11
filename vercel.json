@@ -2,11 +2,11 @@
   "crons": [
     {
       "path": "/api/updatedb",
-      "schedule": "0 8 * * *"
+      "schedule": "0 4 * * *"
     },
     {
       "path": "/api/updatedb",
-      "schedule": "0 10 * * *"
+      "schedule": "0 8 * * *"
     }
   ]
 }
