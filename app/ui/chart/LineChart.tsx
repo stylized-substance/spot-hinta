@@ -61,8 +61,8 @@ export default function LineChart({
           format: "%H:%M",
           tickValues: "every 3 hours",
         }}
-        axisLeft={{ legend: yAxisLegend, legendOffset: -45 }}
-        axisRight={{ legend: yAxisLegend, legendOffset: -45 }}
+        axisLeft={{ legend: yAxisLegend, legendOffset: -50 }}
+        axisRight={{ legend: yAxisLegend, legendOffset: 50 }}
         enablePoints={false}
         enablePointLabel
         pointSize={10}
