@@ -33,3 +33,18 @@ export async function fetchPrices(days: number): Promise<PriceDataArray> {
     throw error;
   }
 }
+
+export async function fetchAllPrices(): Promise<PriceDataArray> {
+  try {
+    const priceData = await sql`
+    SELECT *
+    FROM price_data
+    ORDER BY timestamp ASC
+    `;
+
+    return PriceDataArraySchema.parse(priceData);
+  } catch (error) {
+    console.error("Error while fetching prices:", error);
+    throw error;
+  }
+}

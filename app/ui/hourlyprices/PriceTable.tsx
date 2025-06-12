@@ -1,10 +1,10 @@
 import { DateTime } from "luxon";
-import { PriceDataGroupedByDate } from "@/app/types/priceData";
+import { PriceDataGrouped } from "@/app/types/priceData";
 import { formatHours } from "@/app/lib/formatHours";
 import clsx from "clsx";
 
 // Render price table for a single date
-export default function PriceTable({ data }: { data: PriceDataGroupedByDate }) {
+export default function PriceTable({ data }: { data: PriceDataGrouped }) {
   // Create DateTime object from current time in Finland. Used for highlighting current hour in table
   const currentTimeInFinland: DateTime =
     DateTime.now().setZone("Europe/Helsinki");

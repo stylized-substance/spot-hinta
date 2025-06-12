@@ -44,8 +44,10 @@ export type PriceDataInFrontend = {
   priceString: string;
 };
 
-export type PriceDataGroupedByDate = {
-  date: string;
-  dateTitle: string;
+export type PriceDataGrouped = {
+  date?: string;
+  weekNumber?: number;
+  year?: string
+  dateTitle?: string;
   prices: PriceDataInFrontend[];
 };
