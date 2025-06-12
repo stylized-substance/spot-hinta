@@ -34,7 +34,9 @@ export const ApiElectricityDataSchema = z.object({
 });
 
 export const ApiElectricityDataArraySchema = z.array(ApiElectricityDataSchema);
-export type ApiElectricityDataArray = z.infer<typeof ApiElectricityDataArraySchema>;
+export type ApiElectricityDataArray = z.infer<
+  typeof ApiElectricityDataArraySchema
+>;
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -52,15 +54,26 @@ export const DbElectricityDataSchema = z.object({
 
 // Array schema for multiple rows
 export const DbElectricityDataArraySchema = z.array(DbElectricityDataSchema);
-export type DbElectricityDataArray = z.infer<typeof DbElectricityDataArraySchema>;
+
+export type DbElectricityData = z.infer<typeof DbElectricityDataSchema>;
+export type DbElectricityDataArray = DbElectricityData[];
+
+// Database and API data combined
+export type CombinedElectricityProductionData = DbElectricityData & {
+  production_nuclear: number;
+};
+
+// Array type for multiple rows
+export type CombinedElectricityProductionDataArray =
+  CombinedElectricityProductionData[];
 
 // Type for processing price data in frontend
 export type ElectricityDataInFrontend = {
-  id: number;
   startTime: DateTime<true> | DateTime<false>;
   endTime: DateTime<true> | DateTime<false>;
   consumption: number;
   production_total: number;
   production_wind: number;
   production_solar: number;
+  production_nuclear?: number;
 };
