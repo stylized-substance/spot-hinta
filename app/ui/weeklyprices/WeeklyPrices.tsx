@@ -13,92 +13,79 @@ import { DateTime } from "luxon";
 export default async function WeeklyPrices() {
   // Fetch prices for the last week
   const priceData: PriceDataArray | [] = await fetchAllPrices();
-  // console.log(priceData);
 
   // Localize price data
   const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
 
-  // Group price data by year
-  let pricesGroupedByYear: {
-    year: number;
-    pricesGroupedByWeek: PriceDataInFrontend[];
-  }[] = []
-
-  const pricesGroupedByWeek: PriceDataGrouped[] = [];
-
-  for (const object of formattedPriceData) {
-    // const weekNumber = object.timestamp.weekNumber;
-    const year = object.timestamp.year
-
-    if (object.timestamp) {
-      // Find existing group in array, add it if not found
-      let group = pricesGroupedByYear.find(
-        (entry) => entry.year === year,
-      );
-      if (!group) {
-        group = {
-          year,
-          pricesGroupedByWeek: [],
-        };
-        pricesGroupedByYear.push(group);
-      }
-
-      group.pricesGroupedByWeek.push(object);
-    }
-  }
+  // Add week number and year properties
+  const withWeeksAndYears = formattedPriceData.map((priceObject) => ({
+    ...priceObject,
+    year: priceObject.timestamp.year,
+    weekNumber: priceObject.timestamp.weekNumber,
+  }));
 
   // Group price data by week
-  pricesGroupedByYear = pricesGroupedByYear.map((year) => {
-    return {
-      year,
-      pricesGroupedByWeek: pricesGroupedByWeek.map(())
+  const pricesGroupedByWeek: PriceDataGrouped[] = [];
+
+  for (const object of withWeeksAndYears) {
+    // Find existing week group
+    let weekGroup = pricesGroupedByWeek.find(
+      (entry) => entry.weekNumber === object.weekNumber,
+    );
+
+    // If week group doesn't exist, create it and push to array
+    if (!weekGroup) {
+      weekGroup = {
+        year: object.year,
+        weekNumber: object.weekNumber,
+        prices: [],
+      };
+      pricesGroupedByWeek.push(weekGroup);
     }
-  })
-  // for (const object of pricesGroupedByYear.pricesGroupedByWeek) {
 
-  //   if (object.timestamp) {
-  //     // Find existing group in array, add it if not found
-  //     let group = pricesGroupedByWeek.find(
-  //       (entry) => entry.weekNumber === weekNumber,
-  //     );
-  //     if (!group) {
-  //       group = {
-  //         weekNumber,
-  //         prices: [],
-  //       };
-  //       pricesGroupedByWeek.push(group);
-  //     }
-
-  //     group.prices.push(object);
-  //   }
-
-  console.log(pricesGroupedByYear)
+    // Add prices to week group
+    weekGroup.prices.push(object);
+  }
 
   // Calculate average price for each week
   const averagePriceWeeks = pricesGroupedByWeek.map((week) => ({
+    year: week.year,
     weekNumber: week.weekNumber,
     averagePrice: findAverageHourPrice(week.prices),
   }));
 
-  // Grouup weeks by year
-  // const weeksGroupedByYear = averagePriceWeeks.
-  // console.log(averagePriceWeeks);
+  // Add week numbers 1-52 to array
+  const allWeekNumbers = [...Array(52).keys()].map((i) => i + 1);
 
+  // Add all year numbers in data to array
+  const allYears: number[] = [];
+
+  for (const week of averagePriceWeeks) {
+    if (week.year && !allYears.includes(week.year)) {
+      allYears.push(week.year);
+    }
+  }
   return (
     <>
       <h1 className="mb-4 text-center text-2xl font-bold">Weekly prices</h1>
       <table className="table">
         <thead>
-          <th>Week number</th>
-          <th>Average price - c/kWh</th>
+          {allYears.map((year) => (
+            <th key={year}>{year}</th>
+          ))}
         </thead>
         <tbody>
-          {averagePriceWeeks.map((week) => (
+          {allWeekNumbers.map((number) => (
+            <tr key={number}>
+              <td>{number}</td>
+            </tr>
+          ))}
+          {/* {averagePriceWeeks.map((week) => (
             <tr>
               <td>{week.weekNumber}</td>
               <td>{week.averagePrice}</td>
             </tr>
-          ))}
+          ))} */}
         </tbody>
       </table>
     </>
