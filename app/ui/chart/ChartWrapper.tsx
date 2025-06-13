@@ -15,7 +15,6 @@ import { ChartData } from "@/app/types/chart/chart";
 import {
   ApiElectricityDataArray,
   DbElectricityDataArray,
-  CombinedElectricityProductionDataArray,
   ElectricityDataInFrontend,
 } from "@/app/types/fingridData";
 import { DateTime } from "luxon";

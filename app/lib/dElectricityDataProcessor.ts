@@ -1,8 +1,7 @@
 import { DateTime } from "luxon";
 import {
-  DbElectricityDataArray,
   ElectricityDataInFrontend,
-  CombinedElectricityProductionDataArray
+  CombinedElectricityProductionDataArray,
 } from "../types/fingridData";
 import { ChartData } from "@/app/types/chart/chart";
 
@@ -20,7 +19,7 @@ export function formatDbElectricityData(
     production_total: parseInt(dataRow.production_total),
     production_wind: parseInt(dataRow.production_wind),
     production_solar: parseInt(dataRow.production_solar),
-    production_nuclear: dataRow.production_nuclear
+    production_nuclear: dataRow.production_nuclear,
   }));
 
   return localizedDbElectricityData;
@@ -30,7 +29,7 @@ export function formatDbElectricityData(
 export function formatDbElectricityDataForChart(
   powerData: ElectricityDataInFrontend[],
 ): ChartData {
-  console.log(powerData)
+  console.log(powerData);
   // Loop through electricity production data types and, build ChartData objects for each type and return as an array of arrays
 
   // Define only the data type keys
@@ -39,38 +38,35 @@ export function formatDbElectricityDataForChart(
     | "production_total"
     | "production_wind"
     | "production_solar"
-    | "production_nuclear"
+    | "production_nuclear";
 
   const keys: DatatypeKey[] = [
     "consumption",
     "production_total",
     "production_wind",
     "production_solar",
-    "production_nuclear"
+    "production_nuclear",
   ];
 
   // Map friendly names to electricity production data types
   const friendlyNames: Record<DatatypeKey, string> = {
     consumption: "Total electricity consumption",
-    production_total:
-      "Total electricity production",
+    production_total: "Total electricity production",
     production_wind: "Wind power generation",
     production_solar: "Solar power generation",
-    production_nuclear: "Nuclear power generation"
+    production_nuclear: "Nuclear power generation",
   };
 
   const dataArray: ChartData = [];
 
   for (const key of keys) {
-    dataArray.push(
-      {
-        id: friendlyNames[key],
-        data: powerData.map((dataRow) => ({
-          x: dataRow.startTime.toJSDate(),
-          y: dataRow[key] ?? 0,
-        })),
-      },
-    );
+    dataArray.push({
+      id: friendlyNames[key],
+      data: powerData.map((dataRow) => ({
+        x: dataRow.startTime.toJSDate(),
+        y: dataRow[key] ?? 0,
+      })),
+    });
   }
 
   return dataArray;

@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { PriceDataGroupedHourly, PriceDataInFrontend } from "@/app/types/priceData";
+import { PriceDataGroupedHourly } from "@/app/types/priceData";
 import { formatHours } from "@/app/lib/formatHours";
 import { generatePriceColors } from "@/app/lib/generatePriceColors"
 import clsx from "clsx";
