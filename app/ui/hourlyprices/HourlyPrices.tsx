@@ -5,7 +5,7 @@ import PriceTable from "@/app/ui/hourlyprices/PriceTable";
 import {
   PriceDataArray,
   PriceDataInFrontend,
-  PriceDataGrouped,
+  PriceDataGroupedHourly,
 } from "@/app/types/priceData";
 
 // Render hourly electricity price tables grouped by date
@@ -17,7 +17,7 @@ export default async function HourlyPrices() {
   const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
 
   // Group price data by date and add dateTitle property for comsumption by PriceTable component
-  const pricesGroupedByDate: PriceDataGrouped[] = [];
+  const pricesGroupedByDate: PriceDataGroupedHourly[] = [];
 
   for (const object of formattedPriceData) {
     const date = object.timestamp.toISODate();
@@ -45,7 +45,7 @@ export default async function HourlyPrices() {
 
   // Sort date groups in descending order
   pricesGroupedByDate.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    (a, b) => new Date(b.date ?? "").getTime() - new Date(a.date ?? "").getTime(),
   );
 
   if (formattedPriceData.length === 0) {

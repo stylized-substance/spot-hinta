@@ -1,10 +1,11 @@
 import { DateTime } from "luxon";
-import { PriceDataGrouped } from "@/app/types/priceData";
+import { PriceDataGroupedHourly, PriceDataInFrontend } from "@/app/types/priceData";
 import { formatHours } from "@/app/lib/formatHours";
+import { generatePriceColors } from "@/app/lib/generatePriceColors"
 import clsx from "clsx";
 
 // Render price table for a single date
-export default function PriceTable({ data }: { data: PriceDataGrouped }) {
+export default function PriceTable({ data }: { data: PriceDataGroupedHourly }) {
   // Create DateTime object from current time in Finland. Used for highlighting current hour in table
   const currentTimeInFinland: DateTime =
     DateTime.now().setZone("Europe/Helsinki");
@@ -33,20 +34,7 @@ export default function PriceTable({ data }: { data: PriceDataGrouped }) {
               >
                 {/* Format hours to format eg. 10:00 - 20:00 */}
                 <td>{formatHours(row.timestamp)}</td>
-                <td
-                  className={clsx(
-                    Number(row.price) <= 5 && "text-success",
-                    Number(row.price) > 5 &&
-                      Number(row.price) <= 10 &&
-                      "text-warning",
-                    Number(row.price) > 10 &&
-                      Number(row.price) <= 20 &&
-                      "text-error",
-                    Number(row.price) > 20 && "text-base-content",
-                  )}
-                >
-                  {row.price}
-                </td>
+                <td className={generatePriceColors(row.price)}>{row.price}</td>
               </tr>
             );
           })}

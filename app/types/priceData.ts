@@ -44,10 +44,14 @@ export type PriceDataInFrontend = {
   priceString: string;
 };
 
-export type PriceDataGrouped = {
-  date?: string;
-  weekNumber?: number;
-  year?: number
+export type PriceDataGroupedHourly = {
+  date: string;
   dateTitle?: string;
+  prices: PriceDataInFrontend[];
+};
+
+export type PriceDataGroupedWeekly = {
+  weekNumber: number;
+  year: number
   prices: PriceDataInFrontend[];
 };

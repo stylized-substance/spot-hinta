@@ -3,12 +3,12 @@ import {
   findAverageHourPrice,
   formatPriceData,
 } from "@/app/lib/priceDataProcessor";
+import { generatePriceColors } from "@/app/lib/generatePriceColors";
 import {
   PriceDataArray,
-  PriceDataGrouped,
+  PriceDataGroupedWeekly,
   PriceDataInFrontend,
 } from "@/app/types/priceData";
-import { DateTime } from "luxon";
 
 export default async function WeeklyPrices() {
   // Fetch prices for the last week
@@ -25,7 +25,7 @@ export default async function WeeklyPrices() {
   }));
 
   // Group price data by week
-  const pricesGroupedByWeek: PriceDataGrouped[] = [];
+  const pricesGroupedByWeek: PriceDataGroupedWeekly[] = [];
 
   for (const object of withWeeksAndYears) {
     // Find existing week group
@@ -47,47 +47,62 @@ export default async function WeeklyPrices() {
     weekGroup.prices.push(object);
   }
 
-  // Calculate average price for each week
-  const averagePriceWeeks = pricesGroupedByWeek.map((week) => ({
-    year: week.year,
-    weekNumber: week.weekNumber,
-    averagePrice: findAverageHourPrice(week.prices),
-  }));
+  // Add all unique year numbers in price data to array
+  const allYears = Array.from(
+    new Set(pricesGroupedByWeek.map((priceObject) => priceObject.year)),
+  );
 
-  // Add week numbers 1-52 to array
-  const allWeekNumbers = [...Array(52).keys()].map((i) => i + 1);
+  // Add all unique week numbers in price data to array
+  const allWeeks = Array.from(
+    new Set(pricesGroupedByWeek.map((priceObject) => priceObject.weekNumber)),
+  );
 
-  // Add all year numbers in data to array
-  const allYears: number[] = [];
-
-  for (const week of averagePriceWeeks) {
-    if (week.year && !allYears.includes(week.year)) {
-      allYears.push(week.year);
+  // Build a lookup that matches week numbers and years in data to table cells. Find average hourly price for each week
+  const weekYearPrice: Record<number, Record<number, string>> = {};
+  for (const week of pricesGroupedByWeek) {
+    if (!weekYearPrice[week.weekNumber]) {
+      weekYearPrice[week.weekNumber] = {};
     }
+    console.log(week);
+    weekYearPrice[week.weekNumber][week.year] = findAverageHourPrice(
+      week.prices,
+    );
   }
+
   return (
-    <>
-      <h1 className="mb-4 text-center text-2xl font-bold">Weekly prices</h1>
-      <table className="table">
-        <thead>
-          {allYears.map((year) => (
-            <th key={year}>{year}</th>
-          ))}
-        </thead>
-        <tbody>
-          {allWeekNumbers.map((number) => (
-            <tr key={number}>
-              <td>{number}</td>
-            </tr>
-          ))}
-          {/* {averagePriceWeeks.map((week) => (
-            <tr>
-              <td>{week.weekNumber}</td>
-              <td>{week.averagePrice}</td>
-            </tr>
-          ))} */}
-        </tbody>
-      </table>
-    </>
+    <div className="grid place-items-center">
+      <h1 className="mb-8 text-2xl font-bold">Average price per week</h1>
+      <div className="w-full max-w-2xl">
+        <table className="table">
+          <thead>
+            <th>Week number</th>
+            {allYears.map((year) => (
+              <th key={year} className="text-right">
+                {year}
+              </th>
+            ))}
+          </thead>
+          <tbody>
+            {allWeeks.map((weekNumber) => (
+              <tr key={weekNumber}>
+                <td>{weekNumber}</td>
+                {allYears.map((year) => (
+                  <td
+                    key={year}
+                    className={
+                      generatePriceColors(
+                        Number(weekYearPrice[weekNumber][year]),
+                      ) + " text-right"
+                    }
+                  >
+                    {weekYearPrice[weekNumber][year]}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 }
