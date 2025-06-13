@@ -6,26 +6,27 @@ import {
 import { generatePriceColors } from "@/app/lib/generatePriceColors";
 import {
   PriceDataArray,
-  PriceDataGroupedWeekly,
+  PriceDataGroupedByTimespan,
   PriceDataInFrontend,
+  PricesWithWeeksAndYears,
 } from "@/app/types/priceData";
 
 export default async function WeeklyPrices() {
-  // Fetch prices for the last week
+  // Fetch all prices from database
   const priceData: PriceDataArray | [] = await fetchAllPrices();
 
   // Localize price data
   const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
 
   // Add week number and year properties
-  const withWeeksAndYears = formattedPriceData.map((priceObject) => ({
+  const withWeeksAndYears: PricesWithWeeksAndYears[] = formattedPriceData.map((priceObject) => ({
     ...priceObject,
     year: priceObject.timestamp.year,
     weekNumber: priceObject.timestamp.weekNumber,
   }));
 
   // Group price data by week
-  const pricesGroupedByWeek: PriceDataGroupedWeekly[] = [];
+  const pricesGroupedByWeek: PriceDataGroupedByTimespan[] = [];
 
   for (const object of withWeeksAndYears) {
     // Find existing week group

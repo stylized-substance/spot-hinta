@@ -40,7 +40,16 @@ export type PriceDataArray = z.infer<typeof PriceDataArraySchema>;
 export type PriceDataInFrontend = {
   id: number;
   timestamp: DateTime<true> | DateTime<false>;
-  price: number
+  price: number;
+  priceString: string;
+};
+
+export type PricesWithWeeksAndYears = {
+  year: number;
+  weekNumber: number;
+  id: number;
+  timestamp: DateTime<true> | DateTime<false>;
+  price: number;
   priceString: string;
 };
 
@@ -50,8 +59,8 @@ export type PriceDataGroupedHourly = {
   prices: PriceDataInFrontend[];
 };
 
-export type PriceDataGroupedWeekly = {
+export type PriceDataGroupedByTimespan = {
   weekNumber: number;
-  year: number
+  year: number;
   prices: PriceDataInFrontend[];
 };
