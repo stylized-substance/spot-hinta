@@ -6,9 +6,7 @@ import {
 import { generatePriceColors } from "@/app/lib/generatePriceColors";
 import {
   PriceDataArray,
-  PriceDataGroupedByTimespan,
   PriceDataInFrontend,
-  PricesWithWeeksAndYears,
 } from "@/app/types/priceData";
 
 export default async function YearlyPrices() {
@@ -25,7 +23,7 @@ export default async function YearlyPrices() {
   );
 
   // Calculate average price for each year and push to array
-  const yearlyAverages = [];
+  const yearlyAverages: { year: string; averagePrice: string }[] = [];
 
   for (const [key, values] of Object.entries(groupedByYear)) {
     if (values) {
@@ -40,18 +38,24 @@ export default async function YearlyPrices() {
     <div className="grid place-items-center">
       <h1 className="mb-8 text-2xl font-bold">Average price per year</h1>
       <div className="w-full max-w-2xl">
-        <table>
+        <table className="table">
           <thead>
             <tr>
               <th>Year</th>
-              <th>Average Price</th>
+              <th className="text-right">Average Price</th>
             </tr>
           </thead>
           <tbody>
             {yearlyAverages.map(({ year, averagePrice }) => (
               <tr key={year}>
                 <td>{year}</td>
-                <td>{averagePrice}</td>
+                <td
+                  className={
+                    generatePriceColors(Number(averagePrice)) + " text-right"
+                  }
+                >
+                  {averagePrice}
+                </td>
               </tr>
             ))}
           </tbody>

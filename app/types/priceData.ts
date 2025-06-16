@@ -59,7 +59,7 @@ export type PriceDataGroupedHourly = {
   prices: PriceDataInFrontend[];
 };
 
-export type PriceDataGroupedByTimespan = {
+export type PriceDataGroupedByWeek = {
   weekNumber: number;
   year: number;
   prices: PriceDataInFrontend[];

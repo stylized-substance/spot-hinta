@@ -6,7 +6,7 @@ import {
 import { generatePriceColors } from "@/app/lib/generatePriceColors";
 import {
   PriceDataArray,
-  PriceDataGroupedByTimespan,
+  PriceDataGroupedByWeek,
   PriceDataInFrontend,
   PricesWithWeeksAndYears,
 } from "@/app/types/priceData";
@@ -26,7 +26,7 @@ export default async function WeeklyPrices() {
   }));
 
   // Group price data by week
-  const pricesGroupedByWeek: PriceDataGroupedByTimespan[] = [];
+  const pricesGroupedByWeek: PriceDataGroupedByWeek[] = [];
 
   for (const object of withWeeksAndYears) {
     // Find existing week group
@@ -64,7 +64,6 @@ export default async function WeeklyPrices() {
     if (!weekYearPrice[week.weekNumber]) {
       weekYearPrice[week.weekNumber] = {};
     }
-    console.log(week);
     weekYearPrice[week.weekNumber][week.year] = findAverageHourPrice(
       week.prices,
     );
