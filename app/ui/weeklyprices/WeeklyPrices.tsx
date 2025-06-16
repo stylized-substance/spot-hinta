@@ -91,7 +91,7 @@ export default async function WeeklyPrices() {
                     key={year}
                     className={
                       generatePriceColors(
-                        Number(weekYearPrice[weekNumber][year]),
+                        weekYearPrice[weekNumber][year],
                       ) + " text-right"
                     }
                   >

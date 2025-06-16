@@ -51,7 +51,7 @@ export default async function YearlyPrices() {
                 <td>{year}</td>
                 <td
                   className={
-                    generatePriceColors(Number(averagePrice)) + " text-right"
+                    generatePriceColors(averagePrice) + " text-right"
                   }
                 >
                   {averagePrice}
