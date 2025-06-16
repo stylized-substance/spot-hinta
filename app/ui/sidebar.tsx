@@ -51,6 +51,13 @@ export default function SideBar() {
           >
             Weekly prices
           </Link>
+          <Link
+            href="/yearlyprices"
+            className="hover:bg-base-300 block p-2"
+            onClick={handleLinkClick}
+          >
+            Yearly prices
+          </Link>
         </li>
       </ul>
     </aside>

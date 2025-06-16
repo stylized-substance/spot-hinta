@@ -6,26 +6,27 @@ import {
 import { generatePriceColors } from "@/app/lib/generatePriceColors";
 import {
   PriceDataArray,
-  PriceDataGroupedWeekly,
+  PriceDataGroupedByWeek,
   PriceDataInFrontend,
+  PricesWithWeeksAndYears,
 } from "@/app/types/priceData";
 
 export default async function WeeklyPrices() {
-  // Fetch prices for the last week
+  // Fetch all prices from database
   const priceData: PriceDataArray | [] = await fetchAllPrices();
 
   // Localize price data
   const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
 
   // Add week number and year properties
-  const withWeeksAndYears = formattedPriceData.map((priceObject) => ({
+  const withWeeksAndYears: PricesWithWeeksAndYears[] = formattedPriceData.map((priceObject) => ({
     ...priceObject,
     year: priceObject.timestamp.year,
     weekNumber: priceObject.timestamp.weekNumber,
   }));
 
   // Group price data by week
-  const pricesGroupedByWeek: PriceDataGroupedWeekly[] = [];
+  const pricesGroupedByWeek: PriceDataGroupedByWeek[] = [];
 
   for (const object of withWeeksAndYears) {
     // Find existing week group
@@ -63,7 +64,6 @@ export default async function WeeklyPrices() {
     if (!weekYearPrice[week.weekNumber]) {
       weekYearPrice[week.weekNumber] = {};
     }
-    console.log(week);
     weekYearPrice[week.weekNumber][week.year] = findAverageHourPrice(
       week.prices,
     );
