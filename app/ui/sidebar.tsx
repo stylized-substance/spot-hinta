@@ -45,6 +45,14 @@ export default function SideBar() {
             Hourly prices
           </Link>
           <Link
+            href="/dailyprices"
+            className="hover:bg-base-300 block p-2"
+            onClick={handleLinkClick}
+          >
+            Daily prices
+          </Link>
+
+          <Link
             href="/weeklyprices"
             className="hover:bg-base-300 block p-2"
             onClick={handleLinkClick}
