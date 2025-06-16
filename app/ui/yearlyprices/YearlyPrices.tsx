@@ -18,33 +18,23 @@ export default async function YearlyPrices() {
   // Localize price data
   const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
 
-  const calculateYearlyAverages = (
-    formattedPriceData: PriceDataInFrontend[],
-  ) => {
-    const averages = Object.values(
-      formattedPriceData.reduce(
-        (acc, item) => {
-          const year = item.timestamp.year;
-          if (!acc[year]) {
-            acc[year] = { year, total: 0, count: 0 };
-          }
-          acc[year].total += item.price;
-          acc[year].count += 1;
-          return acc;
-        },
-        {} as Record<number, { year: number; total: number; count: number }>,
-      ),
-    ).map(({ year, total, count }) => ({
-      year,
-      averagePrice: (total / count).toFixed(2),
-    }));
+  // Group prices by year
+  const groupedByYear = Object.groupBy(
+    formattedPriceData,
+    (object) => object.timestamp.year,
+  );
 
-    return averages;
-  };
+  // Calculate average price for each year and push to array
+  const yearlyAverages = [];
 
-  const averages = calculateYearlyAverages(formattedPriceData);
-  console.log(formattedPriceData);
-  console.log(averages);
+  for (const [key, values] of Object.entries(groupedByYear)) {
+    if (values) {
+      yearlyAverages.push({
+        year: key,
+        averagePrice: findAverageHourPrice(values),
+      });
+    }
+  }
 
   return (
     <div className="grid place-items-center">
@@ -58,7 +48,7 @@ export default async function YearlyPrices() {
             </tr>
           </thead>
           <tbody>
-            {averages.map(({ year, averagePrice }) => (
+            {yearlyAverages.map(({ year, averagePrice }) => (
               <tr key={year}>
                 <td>{year}</td>
                 <td>{averagePrice}</td>
