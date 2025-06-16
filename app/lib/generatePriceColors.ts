@@ -1,7 +1,12 @@
 import clsx from "clsx";
 
 // Generate color codes for prices in tables
-export function generatePriceColors(price: number) {
+export function generatePriceColors(price: number | string) {
+  // Coerce strings to numbers
+  if (typeof price === "string") {
+    price = Number(price)
+  }
+
   return clsx(
     price <= 5 && "text-success",
     price > 5 && price <= 10 && "text-warning",

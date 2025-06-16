@@ -1,5 +1,6 @@
 import { formatHours } from "@/app/lib/formatHours";
 import { fetchPrices } from "@/app/lib/db/fetchPrices";
+import { generatePriceColors } from "@/app/lib/generatePriceColors"
 import {
   formatPriceData,
   findHourPrices,
@@ -36,24 +37,24 @@ export default async function PriceStats({}) {
       <div className="grid grid-cols-3 justify-items-center md:grid-cols-6">
         <div className="stat">
           <div className="stat-title text-xs md:text-base">Price last hour</div>
-          <div className="stat-value">{previousHourPrice}</div>
+          <div className={generatePriceColors(previousHourPrice) + " stat-value"}>{previousHourPrice}</div>
         </div>
         <div className="stat">
           <b className="stat-title text-base-content text-xs md:text-base">
             Price now
           </b>
-          <div className="stat-value">{currentHourPrice}</div>
+          <div className={generatePriceColors(currentHourPrice) + " stat-value"}>{currentHourPrice}</div>
         </div>
         <div className="stat">
           <div className="stat-title text-xs md:text-base">Price next hour</div>
-          <div className="stat-value">{nextHourPrice}</div>
+          <div className={generatePriceColors(nextHourPrice) + " stat-value"}>{nextHourPrice}</div>
         </div>
         {/* Lowest and highest price stat element contents are dynamically rendered. "NaN" is used as fallback*/}
         <div className="stat">
           <div className="stat-title text-xs md:text-base">Lowest today</div>
           {lowestPricedHour ? (
             <>
-              <div className="stat-value mt-4">
+              <div className={generatePriceColors(lowestPricedHour.priceString) + " stat-value mt-4"}>
                 {lowestPricedHour.priceString}
               </div>
               <div className="stat-desc text-xs md:text-base">
@@ -70,7 +71,7 @@ export default async function PriceStats({}) {
           <div className="stat-title text-xs md:text-base">Highest today</div>
           {highestPricedHour ? (
             <>
-              <div className="stat-value mt-4">
+              <div className={generatePriceColors(highestPricedHour.priceString) + " stat-value mt-4"}>
                 {highestPricedHour.priceString}
               </div>
               <div className="stat-desc text-xs md:text-base">
@@ -86,7 +87,7 @@ export default async function PriceStats({}) {
 
         <div className="stat">
           <div className="stat-title text-xs md:text-base">Average today</div>
-          <div className="stat-value">{averageHourPrice}</div>
+          <div className={generatePriceColors(averageHourPrice) + " stat-value"}>{averageHourPrice}</div>
         </div>
       </div>
     </>
