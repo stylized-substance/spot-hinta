@@ -3,10 +3,11 @@ import { updateFingridData } from "@/app/lib/db/updateFingridData";
 import { captureException, captureMessage } from "@sentry/nextjs";
 
 export async function GET(request: Request) {
-  // Check for existence of Vercel cron secret in authorization header
+  // Check for existence of Vercel or Github cron secret in authorization header
   const authHeader = request.headers.get("authorization");
   if (
-    authHeader !== `Bearer ${process.env.CRON_SECRET}` &&
+    (authHeader !== `Bearer ${process.env.CRON_SECRET}` ||
+      authHeader !== `Bearer ${process.env.CRON_SECRET_GITHUB}`) &&
     process.env.NODE_ENV !== "development"
   ) {
     return new Response("Unauthorized", {

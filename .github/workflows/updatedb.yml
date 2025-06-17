@@ -1,0 +1,15 @@
+name: Update database hourly
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+
+jobs:
+  get-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Make GET request
+        run: |
+          curl -X GET https://spot-hinta.vercel.com/api/updatedb \
+          -H "Authorization: Bearer ${{ secrets.CRON_SECRET_GITHUB }}" \
+          -H "Content-Type: application/json"
