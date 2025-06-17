@@ -29,13 +29,11 @@ export function dataCombiner(
       }
     });
 
+    const nuclearProduction = nuclearProductionForTimestamp?.["Nuclear power production - real time data"] ?? null
+
     return {
       ...dbObject,
-      production_nuclear: nuclearProductionForTimestamp
-        ? (nuclearProductionForTimestamp[
-            "Nuclear power production - real time data"
-          ] ?? 0)
-        : 0,
+      production_nuclear: nuclearProduction,
     };
   });
 
