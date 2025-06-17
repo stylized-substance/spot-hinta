@@ -10,6 +10,6 @@ jobs:
     steps:
       - name: Make GET request
         run: |
-          curl -X GET https://spot-hinta.vercel.com/api/updatedb \
+          curl -X GET https://spot-hinta.vercel.app/api/updatedb \
           -H "Authorization: Bearer ${{ secrets.CRON_SECRET_GITHUB }}" \
           -H "Content-Type: application/json"
