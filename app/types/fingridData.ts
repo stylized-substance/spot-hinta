@@ -75,5 +75,5 @@ export type ElectricityDataInFrontend = {
   production_total: number;
   production_wind: number;
   production_solar: number;
-  production_nuclear?: number;
+  production_nuclear?: number | null;
 };
