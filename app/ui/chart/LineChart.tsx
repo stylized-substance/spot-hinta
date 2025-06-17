@@ -47,7 +47,7 @@ export default function LineChart({
         margin={{ top: 50, right: 110, bottom: 100, left: 60 }}
         xScale={{
           type: "time",
-          precision: "hour",
+          precision: type === "price" ? "hour" : "minute",
         }}
         yScale={{
           type: "linear",
