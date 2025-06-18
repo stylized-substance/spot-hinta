@@ -1,8 +1,7 @@
 import { fetchAllPrices } from "@/app/lib/db/fetchPrices";
 import { formatPriceData } from "@/app/lib/priceDataProcessor";
-import {
-  findAverageHourPrice,
-} from "@/app/lib/priceDataProcessor";
+import { findAverageHourPrice } from "@/app/lib/priceDataProcessor";
+import { GroupedAndAveraged } from "@/app/types/dailyprices/DailyPrices";
 
 import { PriceDataArray, PriceDataInFrontend } from "@/app/types/priceData";
 
@@ -13,44 +12,33 @@ export default async function DailyPrices() {
   // Localize price data
   const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
 
-  console.log(formattedPriceData);
+  // Group prices by year, month and day and find average hourly price for each day
+  const grouped = formattedPriceData.reduce(
+    (acc: GroupedAndAveraged, current: PriceDataInFrontend) => {
+      const { year, month, day } = current.timestamp;
 
-  const groupedByYear = Object.groupBy(
-    formattedPriceData,
-    (object) => object.timestamp.year,
-  );
-  const groupedByDay = Object.groupBy(
-    formattedPriceData,
-    (object) => object.timestamp.day,
-  );
-
-  const dailyAverages: { year: string; month: string; day: string } = [];
-
-  for (let [key, value] of Object.entries(groupedByYear)) {
-    if (value) {
-      const groupedByMonths = Object.groupBy(
-        value,
-        (object) => object.timestamp.month,
-      );
-      for (const [key, value] of Object.entries(groupedByMonths)) {
-        if (value) {
-          const groupedByDays = Object.groupBy(
-            value,
-            (object) => object.timestamp.day,
-          );
-          for (let [key, value] of Object.entries(groupedByDays)) {
-            if (value) {
-              const averagePrice = findAverageHourPrice(value)
-            }
-          }
-          console.log(groupedByDays);
-        }
+      if (!acc[year]) {
+        acc[year] = {};
       }
-    }
-  }
 
-  // console.log(groupedByYear);
-  // console.log(groupedByDay);
+      if (!acc[year][month]) {
+        acc[year][month] = {};
+      }
+
+      if (!acc[year][month][day]) {
+        acc[year][month][day] = { prices: [], averagePrice: "" };
+      }
+
+      acc[year][month][day].prices.push(current);
+
+      acc[year][month][day].averagePrice = findAverageHourPrice(
+        acc[year][month][day].prices,
+      );
+
+      return acc;
+    },
+    {} as GroupedAndAveraged, // Initial acc
+  );
 
   return <></>;
 }

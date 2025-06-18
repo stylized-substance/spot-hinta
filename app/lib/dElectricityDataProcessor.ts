@@ -29,7 +29,6 @@ export function formatDbElectricityData(
 export function formatDbElectricityDataForChart(
   powerData: ElectricityDataInFrontend[],
 ): ChartData {
-  console.log(powerData);
   // Loop through electricity production data types and, build ChartData objects for each type and return as an array of arrays
 
   // Define only the data type keys
