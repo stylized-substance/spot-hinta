@@ -36,6 +36,8 @@ export default function LineChart({
     .setZone("Europe/Helsinki")
     .toJSDate();
 
+    console.log(currentTimeInFinland)
+
   return (
     <div className="mt-8 mb-16 h-[60vh] max-h-[500px] min-h-[200px] w-full">
       <h1 className="mt-4 mb-4 text-center text-2xl">
