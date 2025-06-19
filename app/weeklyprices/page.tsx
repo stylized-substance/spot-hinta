@@ -1,3 +1,5 @@
+export const experimental_ppr = true
+
 import { Suspense } from "react";
 import WeeklyPrices from "@/app/ui/weeklyprices/WeeklyPrices";
 

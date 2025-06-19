@@ -1,6 +1,9 @@
+export const experimental_ppr = true
+
 import { Suspense } from "react";
 import PriceStats from "@/app/ui/chart/PriceStats";
 import ChartWrapper from "@/app/ui/chart/ChartWrapper";
+
 
 export default async function Page() {
   return (
