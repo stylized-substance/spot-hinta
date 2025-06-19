@@ -1,3 +1,5 @@
+export const experimental_ppr = true
+
 import { Suspense } from "react";
 import YearlyPrices from "@/app/ui/yearlyprices/YearlyPrices";
 

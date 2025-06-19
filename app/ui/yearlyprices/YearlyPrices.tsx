@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"
+
 import { fetchAllPrices } from "@/app/lib/db/fetchPrices";
 import {
   findAverageHourPrice,
