@@ -26,12 +26,17 @@ export async function updateFingridData() {
 
   const datasetIds = [165, 241, 246, 247];
 
-  const data: ApiElectricityDataArray = await fetchFingridDataFromApi(
+  const data: ApiElectricityDataArray | null = await fetchFingridDataFromApi(
     undefined,
     startTime,
     endTime,
     datasetIds,
   );
+
+  // Skip database operation if data fetching wasn't successful
+  if (!data) {
+    return
+  }
 
   // Build data rows and save to database
   const valuesForDb = data.map((entry) => [

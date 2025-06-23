@@ -35,7 +35,7 @@ export async function fetchFingridDataFromApi(
 
     return parsedData;
   } catch (error) {
-    console.error("Error while fetching data from Fingrid API")
+    console.error("Error while fetching data from Fingrid API:", error)
     return null;
   }
 }

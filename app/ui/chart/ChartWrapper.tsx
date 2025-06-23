@@ -15,7 +15,6 @@ import {
 } from "@/app/lib/dElectricityDataProcessor";
 import { ChartData } from "@/app/types/chart/chart";
 import {
-  ApiElectricityDataArray,
   DbElectricityDataArray,
   ElectricityDataInFrontend,
 } from "@/app/types/fingridData";
