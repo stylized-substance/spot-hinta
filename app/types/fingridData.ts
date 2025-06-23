@@ -60,7 +60,7 @@ export type DbElectricityDataArray = DbElectricityData[];
 
 // Database and API data combined
 export type CombinedElectricityProductionData = DbElectricityData & {
-  production_nuclear: number | null;
+  production_nuclear?: number | null;
 };
 
 // Array type for multiple rows
