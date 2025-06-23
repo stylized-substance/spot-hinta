@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic"
+export const dynamic = "force-dynamic";
 
 import LineChart from "@/app/ui/chart/LineChart";
 import { PriceDataArray, PriceDataInFrontend } from "@/app/types/priceData";
@@ -20,7 +20,10 @@ import {
   ElectricityDataInFrontend,
 } from "@/app/types/fingridData";
 import { DateTime } from "luxon";
-import { dataCombiner, filterTo15Minutes } from "@/app/lib/apiElectricityDataProcessor";
+import {
+  dataCombiner,
+  filterTo15Minutes,
+} from "@/app/lib/apiElectricityDataProcessor";
 
 export default async function ChartWrapper() {
   // Fetch prices for the last day
@@ -39,27 +42,28 @@ export default async function ChartWrapper() {
   // Fetch realtime nuclear energy production data from Fingrid API, starting from midnight today
   // Current UTC time
   const utcTime = DateTime.utc();
-  const nuclearEnergyProduction: ApiElectricityDataArray =
-    await fetchFingridDataFromApi(
-      undefined,
-      utcTime.setZone("Europe/Helsinki").startOf("day").toUTC(),
-      utcTime,
-      [188],
-    );
+
+  let nuclearEnergyProduction = await fetchFingridDataFromApi(
+    undefined,
+    utcTime.setZone("Europe/Helsinki").startOf("day").toUTC(),
+    utcTime,
+    [188],
+  );
 
   // Filter API data to 15 minute intervals to coincide with data from database
-  const filteredTo15minutes = filterTo15Minutes(nuclearEnergyProduction);
+  if (nuclearEnergyProduction) {
+    nuclearEnergyProduction = filterTo15Minutes(nuclearEnergyProduction);
+  }
 
   // Combine data from database and from API
-  const combinedElectricityData = dataCombiner(
-    fingridDataFromDb,
-    filteredTo15minutes,
-  );
+  const electricityData = nuclearEnergyProduction
+    ? dataCombiner(fingridDataFromDb, nuclearEnergyProduction)
+    : fingridDataFromDb;
 
   // Localize electricity production data
   const formattedDbElectricityData: ElectricityDataInFrontend[] =
-  formatDbElectricityData(combinedElectricityData);
-  
+    formatDbElectricityData(electricityData);
+
   // Format electricity production data for chart
   const dbElectricityDataForChart: ChartData = formatDbElectricityDataForChart(
     formattedDbElectricityData,

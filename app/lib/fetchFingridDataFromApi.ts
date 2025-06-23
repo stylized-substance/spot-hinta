@@ -11,26 +11,31 @@ export async function fetchFingridDataFromApi(
   startTime: DateTime,
   endTime: DateTime,
   datasetIds: number[],
-): Promise<ApiElectricityDataArray> {
+): Promise<ApiElectricityDataArray | null> {
   if (!process.env.FINGRID_APIKEY) {
     throw new Error("Fingrid API key missing");
   }
 
-  const response = await fetchWithRetry(
-    `${apiUrl}?datasets=${datasetIds}&startTime=${startTime}&endTime=${endTime}&oneRowPerTimePeriod=true&locale=en&pageSize=1000`,
-    3,
-    {
-      method: "GET",
-      headers: {
-        "x-api-key": process.env.FINGRID_APIKEY,
+  try {
+    const response = await fetchWithRetry(
+      `${apiUrl}?datasets=${datasetIds}&startTime=${startTime}&endTime=${endTime}&oneRowPerTimePeriod=true&locale=en&pageSize=1000`,
+      3,
+      {
+        method: "GET",
+        headers: {
+          "x-api-key": process.env.FINGRID_APIKEY,
+        },
       },
-    },
-  );
+    );
 
-  const { data } = await response.json();
+    const { data } = await response.json();
 
-  const parsedData: ApiElectricityDataArray =
-    ApiElectricityDataArraySchema.parse(data);
+    const parsedData: ApiElectricityDataArray =
+      ApiElectricityDataArraySchema.parse(data);
 
-  return parsedData;
+    return parsedData;
+  } catch (error) {
+    console.error("Error while fetching data from Fingrid API")
+    return null;
+  }
 }

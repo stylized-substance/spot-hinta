@@ -19,7 +19,9 @@ export function formatDbElectricityData(
     production_total: parseInt(dataRow.production_total),
     production_wind: parseInt(dataRow.production_wind),
     production_solar: parseInt(dataRow.production_solar),
-    production_nuclear: dataRow.production_nuclear,
+    ...("production_nuclear" in dataRow
+      ? { production_nuclear: dataRow.production_nuclear }
+      : {}),
   }));
 
   return localizedDbElectricityData;
