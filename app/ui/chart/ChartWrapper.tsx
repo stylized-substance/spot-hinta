@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import LineChart from "@/app/ui/chart/LineChart";
 import { PriceDataArray, PriceDataInFrontend } from "@/app/types/priceData";
 import { fetchPrices } from "@/app/lib/db/fetchPrices";

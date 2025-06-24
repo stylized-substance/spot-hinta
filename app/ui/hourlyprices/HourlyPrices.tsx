@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic"
-
 import { DateTime } from "luxon";
 import { fetchPrices } from "@/app/lib/db/fetchPrices";
 import { formatPriceData } from "@/app/lib/priceDataProcessor";
