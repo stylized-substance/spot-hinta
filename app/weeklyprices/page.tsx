@@ -1,4 +1,4 @@
-export const experimental_ppr = true
+export const dynamic = "force-dynamic"
 
 import { Suspense } from "react";
 import WeeklyPrices from "@/app/ui/weeklyprices/WeeklyPrices";

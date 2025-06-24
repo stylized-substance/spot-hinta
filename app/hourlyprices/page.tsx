@@ -1,4 +1,4 @@
-export const experimental_ppr = true
+export const dynamic = "force-dynamic"
 
 import { Suspense } from "react";
 import HourlyPrices from "@/app/ui/hourlyprices/HourlyPrices";

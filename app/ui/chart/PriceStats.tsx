@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic"
-
 import { formatHours } from "@/app/lib/formatHours";
 import { fetchPrices } from "@/app/lib/db/fetchPrices";
 import { generatePriceColors } from "@/app/lib/generatePriceColors"
