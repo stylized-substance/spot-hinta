@@ -83,37 +83,41 @@ export default async function WeeklyPrices() {
       <div className="w-full max-w-2xl">
         <table className="table">
           <thead>
-            <th>Week number</th>
-            {allYears.map((year) => (
-              <th key={year} className="text-right">
-                {year}
-              </th>
-            ))}
+            <tr>
+              <th>Week number</th>
+              {allYears.map((year) => (
+                <th key={year} className="text-right">
+                  {year}
+                </th>
+              ))}
+            </tr>
           </thead>
           <tbody>
             {allWeeks.map((weekNumber) => {
-              const isCurrentWeek = weekNumber === currentTimeInFinland.weekNumber
+              const isCurrentWeek =
+                weekNumber === currentTimeInFinland.weekNumber;
               return (
-              <tr
-                className={clsx(
-                  isCurrentWeek && "border-info border-2 border-dotted",
-                )}
-                key={weekNumber}
-              >
-                <td>{weekNumber}</td>
-                {allYears.map((year) => (
-                  <td
-                    key={year}
-                    className={
-                      generatePriceColors(weekYearPrice[weekNumber][year]) +
-                      " text-right"
-                    }
-                  >
-                    {weekYearPrice[weekNumber][year]}
-                  </td>
-                ))}
-              </tr>
-            )})}
+                <tr
+                  className={clsx(
+                    isCurrentWeek && "border-info border-2 border-dotted",
+                  )}
+                  key={weekNumber}
+                >
+                  <td>{weekNumber}</td>
+                  {allYears.map((year) => (
+                    <td
+                      key={year}
+                      className={
+                        generatePriceColors(weekYearPrice[weekNumber][year]) +
+                        " text-right"
+                      }
+                    >
+                      {weekYearPrice[weekNumber][year]}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
