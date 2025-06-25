@@ -17,28 +17,80 @@ export default async function DailyPrices() {
     (acc: GroupedAndAveraged, current: PriceDataInFrontend) => {
       const { year, month, day } = current.timestamp;
 
-      if (!acc[year]) {
-        acc[year] = {};
+      // Find or create year, month, day
+      const yearObject = acc.find((y) => y.year === year);
+      if (!yearObject) {
+        acc.push({
+          year: year,
+          data: [],
+        });
       }
 
-      if (!acc[year][month]) {
-        acc[year][month] = {};
+      const monthObject = yearObject?.data.find((m) => m.month === month);
+      if (!monthObject) {
+        yearObject?.data.push({
+          month: month,
+          data: [],
+        });
       }
 
-      if (!acc[year][month][day]) {
-        acc[year][month][day] = { prices: [], averagePrice: "" };
+      const dayObject = monthObject?.data.find((d) => d.day === day);
+      if (!dayObject) {
+        monthObject?.data.push({
+          day: day,
+          data: {
+            prices: [],
+            averagePrice: "",
+          },
+        });
       }
 
-      acc[year][month][day].prices.push(current);
-
-      acc[year][month][day].averagePrice = findAverageHourPrice(
-        acc[year][month][day].prices,
-      );
+      if (dayObject) {
+        dayObject.data.prices.push(current);
+        dayObject.data.averagePrice = findAverageHourPrice(
+          dayObject?.data.prices,
+        );
+      }
 
       return acc;
     },
-    {} as GroupedAndAveraged, // Initial acc
+    [] as GroupedAndAveraged, // Initial acc
   );
 
-  return <></>;
+  return (
+    <></>
+    // <div className="grid place-items-center">
+    //   <h1 className="mb-8 text-2xl font-bold">Average price per week</h1>
+    //   <div className="w-full max-w-2xl">
+    //     <table className="table">
+    //       <thead>
+    //         <th>Week number</th>
+    //         {allYears.map((year) => (
+    //           <th key={year} className="text-right">
+    //             {year}
+    //           </th>
+    //         ))}
+    //       </thead>
+    //       <tbody>
+    //         {allWeeks.map((weekNumber) => (
+    //           <tr key={weekNumber}>
+    //             <td>{weekNumber}</td>
+    //             {allYears.map((year) => (
+    //               <td
+    //                 key={year}
+    //                 className={
+    //                   generatePriceColors(weekYearPrice[weekNumber][year]) +
+    //                   " text-right"
+    //                 }
+    //               >
+    //                 {weekYearPrice[weekNumber][year]}
+    //               </td>
+    //             ))}
+    //           </tr>
+    //         ))}
+    //       </tbody>
+    //     </table>
+    //   </div>
+    // </div>
+  );
 }
