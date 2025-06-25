@@ -10,8 +10,14 @@ import {
   PriceDataInFrontend,
   PricesWithWeeksAndYears,
 } from "@/app/types/priceData";
+import clsx from "clsx";
+import { DateTime } from "luxon";
 
 export default async function WeeklyPrices() {
+  // Create DateTime object from current time in Finland. Used for highlighting current hour in table
+  const currentTimeInFinland: DateTime =
+    DateTime.now().setZone("Europe/Helsinki");
+
   // Fetch all prices from database
   const priceData: PriceDataArray | [] = await fetchAllPrices();
 
@@ -19,11 +25,13 @@ export default async function WeeklyPrices() {
   const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
 
   // Add week number and year properties
-  const withWeeksAndYears: PricesWithWeeksAndYears[] = formattedPriceData.map((priceObject) => ({
-    ...priceObject,
-    year: priceObject.timestamp.year,
-    weekNumber: priceObject.timestamp.weekNumber,
-  }));
+  const withWeeksAndYears: PricesWithWeeksAndYears[] = formattedPriceData.map(
+    (priceObject) => ({
+      ...priceObject,
+      year: priceObject.timestamp.year,
+      weekNumber: priceObject.timestamp.weekNumber,
+    }),
+  );
 
   // Group price data by week
   const pricesGroupedByWeek: PriceDataGroupedByWeek[] = [];
@@ -83,23 +91,29 @@ export default async function WeeklyPrices() {
             ))}
           </thead>
           <tbody>
-            {allWeeks.map((weekNumber) => (
-              <tr key={weekNumber}>
+            {allWeeks.map((weekNumber) => {
+              const isCurrentWeek = weekNumber === currentTimeInFinland.weekNumber
+              return (
+              <tr
+                className={clsx(
+                  isCurrentWeek && "border-info border-2 border-dotted",
+                )}
+                key={weekNumber}
+              >
                 <td>{weekNumber}</td>
                 {allYears.map((year) => (
                   <td
                     key={year}
                     className={
-                      generatePriceColors(
-                        weekYearPrice[weekNumber][year],
-                      ) + " text-right"
+                      generatePriceColors(weekYearPrice[weekNumber][year]) +
+                      " text-right"
                     }
                   >
                     {weekYearPrice[weekNumber][year]}
                   </td>
                 ))}
               </tr>
-            ))}
+            )})}
           </tbody>
         </table>
       </div>
