@@ -35,7 +35,7 @@ export async function updateFingridData() {
 
   // Skip database operation if data fetching wasn't successful
   if (!data) {
-    return
+    return;
   }
 
   // Build data rows and save to database
@@ -60,6 +60,13 @@ export async function updateFingridData() {
     added_on
     )
     VALUES ${sql(valuesForDb)}
-    ON CONFLICT DO NOTHING;
+    ON CONFLICT (starttime)
+    DO UPDATE SET
+      endtime = EXCLUDED.endtime,
+      consumption = EXCLUDED.consumption,
+      production_total = EXCLUDED.production_total,
+      production_wind = EXCLUDED.production_wind,
+      production_solar = EXCLUDED.production_solar,
+      added_on = EXCLUDED.added_on;
   `;
 }
