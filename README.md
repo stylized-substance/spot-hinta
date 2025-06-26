@@ -6,3 +6,4 @@ Price tracker for Finnish electricity prices built with Next.js and PostgreSQL
 - Data is read from database and visualized to end-user
 - Project runs on Vercel, new releases to this repository are automatically deployed
 - Sentry.io integration - errors and other messages are sent to external log service
+- Frontend styled with Tailwind CSS and daisyUI
