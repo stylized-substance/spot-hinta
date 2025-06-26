@@ -34,7 +34,7 @@ export default function PriceTable({ data }: { data: PriceDataGroupedHourly }) {
               >
                 {/* Format hours to format eg. 10:00 - 20:00 */}
                 <td>{formatHours(row.timestamp)}</td>
-                <td className={generatePriceColors(row.price)}>{row.price}</td>
+                <td className={generatePriceColors(row.price)}>{row.priceString}</td>
               </tr>
             );
           })}
