@@ -6,11 +6,11 @@ import {
 import { ChartData } from "@/app/types/chart/chart";
 
 // Utility functions for processing electricity production data
-export function formatDbElectricityData(
-  powerData: CombinedElectricityProductionDataArray,
+export function formatElectricityData(
+  electricityData: CombinedElectricityProductionDataArray,
 ): ElectricityDataInFrontend[] {
   // Convert start and end times to Finnish timezone
-  const localizedDbElectricityData = powerData.map((dataRow) => ({
+  const localizedDbElectricityData = electricityData.map((dataRow) => ({
     startTime: DateTime.fromJSDate(dataRow.starttime).setZone(
       "Europe/Helsinki",
     ),
@@ -28,8 +28,8 @@ export function formatDbElectricityData(
 }
 
 // Format electricity production data for rendering in nivo line chart
-export function formatDbElectricityDataForChart(
-  powerData: ElectricityDataInFrontend[],
+export function formatElectricityDataForChart(
+  electricityData: ElectricityDataInFrontend[],
 ): ChartData {
   // Loop through electricity production data types and, build ChartData objects for each type and return as an array of arrays
 
@@ -60,13 +60,18 @@ export function formatDbElectricityDataForChart(
 
   const dataArray: ChartData = [];
 
+  // TODO: filter out zero values
   for (const key of keys) {
     dataArray.push({
       id: friendlyNames[key],
-      data: powerData.map((dataRow) => ({
-        x: dataRow.startTime.toJSDate(),
-        y: dataRow[key] ?? 0,
-      })),
+      data: electricityData
+        .filter((dataRow) => dataRow[key] !== 0) // Filter out zero values
+        .map((dataRow) => {
+          return {
+            x: dataRow.startTime.toJSDate(),
+            y: dataRow[key] ?? 0,
+          };
+        }),
     });
   }
 

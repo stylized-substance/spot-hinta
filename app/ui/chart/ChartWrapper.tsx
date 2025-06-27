@@ -8,9 +8,9 @@ import {
 } from "@/app/lib/priceDataProcessor";
 import { fetchFingridDataFromDb } from "@/app/lib/db/fetchFingridDataFromDb";
 import {
-  formatDbElectricityData,
-  formatDbElectricityDataForChart,
-} from "@/app/lib/dElectricityDataProcessor";
+  formatElectricityData,
+  formatElectricityDataForChart,
+} from "@/app/lib/electricityDataProcessor";
 import { ChartData } from "@/app/types/chart/chart";
 import {
   DbElectricityDataArray,
@@ -58,19 +58,19 @@ export default async function ChartWrapper() {
     : fingridDataFromDb;
 
   // Localize electricity production data
-  const formattedDbElectricityData: ElectricityDataInFrontend[] =
-    formatDbElectricityData(electricityData);
+  const formattedElectricityData: ElectricityDataInFrontend[] =
+    formatElectricityData(electricityData);
 
   // Format electricity production data for chart
-  const dbElectricityDataForChart: ChartData = formatDbElectricityDataForChart(
-    formattedDbElectricityData,
+  const electricityDataForChart: ChartData = formatElectricityDataForChart(
+    formattedElectricityData,
   );
 
   return (
     <>
       <LineChart data={pricesForChart} type={"price"} />
       <LineChart
-        data={dbElectricityDataForChart}
+        data={electricityDataForChart}
         type={"electricityProduction"}
       />
     </>
