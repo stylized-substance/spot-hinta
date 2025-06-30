@@ -1,6 +1,6 @@
 import { fetchAllPrices } from "@/app/lib/db/fetchPrices";
 import { generatePriceColors } from "@/app/lib/generatePriceColors";
-import { formatPriceData } from "@/app/lib/priceDataProcessor";
+import { localizePriceData } from "@/app/lib/priceDataProcessor";
 import { findAverageHourPrice } from "@/app/lib/priceDataProcessor";
 import { GroupedAndAveraged } from "@/app/types/dailyprices/DailyPrices";
 import { PriceDataArray, PriceDataInFrontend } from "@/app/types/priceData";
@@ -16,7 +16,8 @@ export default async function DailyPrices() {
   const priceData: PriceDataArray | [] = await fetchAllPrices();
 
   // Localize price data
-  const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
+  const formattedPriceData: PriceDataInFrontend[] =
+    localizePriceData(priceData);
 
   // Group prices by year, month and day and find average hourly price for each day
   const groupedAndAveraged = formattedPriceData.reduce(

@@ -1,9 +1,9 @@
 import { DateTime } from "luxon";
-import { PriceDataArray, PriceDataInFrontend } from "../types/priceData";
-import { ChartData } from "@/app/types/chart/chart";
+import { PriceDataArray, PriceDataGroupedHourly, PriceDataInFrontend } from "../types/priceData";
+import { LineChartData } from "@/app/types/chart/chart";
 
 // Utility functions for processing price data
-export function formatPriceData(
+export function localizePriceData(
   priceData: PriceDataArray,
 ): PriceDataInFrontend[] {
   // Add Finnish VAT to prices and round to two decimals
@@ -117,9 +117,9 @@ export function findAverageHourPrice(priceData: PriceDataInFrontend[]): string {
 }
 
 // Format price data for rendering in nivo line chart
-export function formatPricesForChart(
+export function formatPricesForLineChart(
   priceData: PriceDataInFrontend[],
-): ChartData {
+): LineChartData {
   return [
     {
       id: "Electricity price",
@@ -129,4 +129,41 @@ export function formatPricesForChart(
       })),
     },
   ];
+}
+
+export function formatPricesForTable(priceData: PriceDataInFrontend[]) {
+  // Group price data by date and add dateTitle property for comsumption by PriceTable component
+  const pricesForTable: PriceDataGroupedHourly[] = [];
+
+  for (const object of priceData) {
+    const date = object.timestamp.toISODate();
+    const dateTitle = object.timestamp.toLocaleString(DateTime.DATE_FULL);
+
+    if (date) {
+      // Find existing group in array, add it if not found
+      let group = pricesForTable.find((entry) => entry.date === date);
+      if (!group) {
+        group = {
+          date,
+          dateTitle,
+          prices: [],
+        };
+        pricesForTable.push(group);
+      }
+
+      // Add prices to group and hours in descending order
+      group.prices.push(object);
+      group.prices.sort(
+        (a, b) => b.timestamp.toMillis() - a.timestamp.toMillis(),
+      );
+    }
+  }
+
+  // Sort date groups in descending order
+  pricesForTable.sort(
+    (a, b) =>
+      new Date(b.date ?? "").getTime() - new Date(a.date ?? "").getTime(),
+  );
+
+  return pricesForTable
 }

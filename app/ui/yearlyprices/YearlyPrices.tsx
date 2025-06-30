@@ -1,20 +1,18 @@
 import { fetchAllPrices } from "@/app/lib/db/fetchPrices";
 import {
   findAverageHourPrice,
-  formatPriceData,
+  localizePriceData,
 } from "@/app/lib/priceDataProcessor";
 import { generatePriceColors } from "@/app/lib/generatePriceColors";
-import {
-  PriceDataArray,
-  PriceDataInFrontend,
-} from "@/app/types/priceData";
+import { PriceDataArray, PriceDataInFrontend } from "@/app/types/priceData";
 
 export default async function YearlyPrices() {
   // Fetch all price data from database
   const priceData: PriceDataArray | [] = await fetchAllPrices();
 
   // Localize price data
-  const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
+  const formattedPriceData: PriceDataInFrontend[] =
+    localizePriceData(priceData);
 
   // Group prices by year
   const groupedByYear = Object.groupBy(
@@ -50,9 +48,7 @@ export default async function YearlyPrices() {
               <tr key={year}>
                 <td>{year}</td>
                 <td
-                  className={
-                    generatePriceColors(averagePrice) + " text-right"
-                  }
+                  className={generatePriceColors(averagePrice) + " text-right"}
                 >
                   {averagePrice}
                 </td>

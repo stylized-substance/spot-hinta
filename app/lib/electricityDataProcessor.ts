@@ -3,7 +3,7 @@ import {
   ElectricityDataInFrontend,
   CombinedElectricityProductionDataArray,
 } from "../types/fingridData";
-import { ChartData } from "@/app/types/chart/chart";
+import { LineChartData } from "@/app/types/chart/chart";
 
 // Utility functions for processing electricity production data
 export function formatElectricityData(
@@ -30,8 +30,8 @@ export function formatElectricityData(
 // Format electricity production data for rendering in nivo line chart
 export function formatElectricityDataForChart(
   electricityData: ElectricityDataInFrontend[],
-): ChartData {
-  // Loop through electricity production data types and, build ChartData objects for each type and return as an array of arrays
+): LineChartData {
+  // Loop through electricity production data types and, build LineChartData objects for each type and return as an array of arrays
 
   // Define only the data type keys
   type DatatypeKey =
@@ -58,7 +58,7 @@ export function formatElectricityDataForChart(
     production_nuclear: "Nuclear power generation",
   };
 
-  const dataArray: ChartData = [];
+  const dataArray: LineChartData = [];
 
   for (const key of keys) {
     dataArray.push({

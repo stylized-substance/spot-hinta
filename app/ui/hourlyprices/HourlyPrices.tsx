@@ -1,63 +1,53 @@
+"use client";
+
 import { DateTime } from "luxon";
 import { fetchPrices } from "@/app/lib/db/fetchPrices";
-import { formatPriceData } from "@/app/lib/priceDataProcessor";
+import {
+  formatPricesForTable,
+  localizePriceData,
+} from "@/app/lib/priceDataProcessor";
 import PriceTable from "@/app/ui/hourlyprices/PriceTable";
+import PriceBarChart from "@/app/ui/PriceBarChart";
 import {
   PriceDataArray,
   PriceDataInFrontend,
   PriceDataGroupedHourly,
 } from "@/app/types/priceData";
+import { use, useState } from "react";
 
 // Render hourly electricity price tables grouped by date
-export default async function HourlyPrices() {
-  // Fetch prices for the last week
-  const priceData: PriceDataArray | [] = await fetchPrices(7);
+export default async function HourlyPrices({
+  prices,
+}: {
+  prices: Promise<PriceDataArray | []>;
+}) {
+  const [viewType, setViewType] = useState<"table" | "barChart">("table");
+
+  // Read promise passed from parent component
+  const priceData = use(prices);
 
   // Localize price data
-  const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
+  const localizedPriceData: PriceDataInFrontend[] =
+    localizePriceData(priceData);
 
-  // Group price data by date and add dateTitle property for comsumption by PriceTable component
-  const pricesGroupedByDate: PriceDataGroupedHourly[] = [];
+  // Format prices for table
+  const pricesForTable = formatPricesForTable(localizedPriceData);
 
-  for (const object of formattedPriceData) {
-    const date = object.timestamp.toISODate();
-    const dateTitle = object.timestamp.toLocaleString(DateTime.DATE_FULL);
-
-    if (date) {
-      // Find existing group in array, add it if not found
-      let group = pricesGroupedByDate.find((entry) => entry.date === date);
-      if (!group) {
-        group = {
-          date,
-          dateTitle,
-          prices: [],
-        };
-        pricesGroupedByDate.push(group);
-      }
-
-      // Add prices to group and hours in descending order
-      group.prices.push(object);
-      group.prices.sort(
-        (a, b) => b.timestamp.toMillis() - a.timestamp.toMillis(),
-      );
-    }
-  }
-
-  // Sort date groups in descending order
-  pricesGroupedByDate.sort(
-    (a, b) => new Date(b.date ?? "").getTime() - new Date(a.date ?? "").getTime(),
-  );
-
-  if (formattedPriceData.length === 0) {
+  if (localizedPriceData.length === 0) {
     return <div>No price data found</div>;
   }
 
   return (
     <section>
       <div className="grid place-items-center gap-8">
-        {pricesGroupedByDate.map((date) => (
+        {pricesForTable.map((date) => (
           <div key={date.date} className="w-full max-w-2xl">
-            <PriceTable data={date} />
+            {viewType === "table" ? (
+              <PriceTable data={date} />
+            ) : (
+              <></>
+              // <PriceBarChart data={date} />
+            )}
           </div>
         ))}
       </div>

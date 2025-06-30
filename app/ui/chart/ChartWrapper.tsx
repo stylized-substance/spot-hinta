@@ -3,15 +3,15 @@ import { PriceDataArray, PriceDataInFrontend } from "@/app/types/priceData";
 import { fetchPrices } from "@/app/lib/db/fetchPrices";
 import { fetchFingridDataFromApi } from "@/app/lib/fetchFingridDataFromApi";
 import {
-  formatPriceData,
-  formatPricesForChart,
+  localizePriceData,
+  formatPricesForLineChart,
 } from "@/app/lib/priceDataProcessor";
 import { fetchFingridDataFromDb } from "@/app/lib/db/fetchFingridDataFromDb";
 import {
   formatElectricityData,
   formatElectricityDataForChart,
 } from "@/app/lib/electricityDataProcessor";
-import { ChartData } from "@/app/types/chart/chart";
+import { LineChartData } from "@/app/types/chart/chart";
 import {
   DbElectricityDataArray,
   ElectricityDataInFrontend,
@@ -27,10 +27,12 @@ export default async function ChartWrapper() {
   const priceData: PriceDataArray = await fetchPrices(0);
 
   // Localize price data
-  const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
+  const formattedPriceData: PriceDataInFrontend[] =
+    localizePriceData(priceData);
 
   // Format price data for chart
-  const pricesForChart: ChartData = formatPricesForChart(formattedPriceData);
+  const pricesForChart: LineChartData =
+    formatPricesForLineChart(formattedPriceData);
 
   // Fetch electricity production data from database for the last day
   const fingridDataFromDb: DbElectricityDataArray =
@@ -62,7 +64,7 @@ export default async function ChartWrapper() {
     formatElectricityData(electricityData);
 
   // Format electricity production data for chart
-  const electricityDataForChart: ChartData = formatElectricityDataForChart(
+  const electricityDataForChart: LineChartData = formatElectricityDataForChart(
     formattedElectricityData,
   );
 

@@ -1,16 +1,14 @@
-"use client";
-
 import { ResponsiveLine } from "@nivo/line";
 import CustomTooltip from "@/app/ui/chart/CustomTooltip";
 import { chartTheme } from "@/app/ui/chart/config";
-import { ChartData } from "@/app/types/chart/chart";
+import { LineChartData } from "@/app/types/chart/chart";
 import { DateTime } from "luxon";
 
 export default function LineChart({
   data,
   type,
 }: {
-  data: ChartData;
+  data: LineChartData;
   type: "price" | "electricityProduction";
 }) {
   // Render dummy values in chart if input data is not defined

@@ -1,7 +1,7 @@
 import { fetchAllPrices } from "@/app/lib/db/fetchPrices";
 import {
   findAverageHourPrice,
-  formatPriceData,
+  localizePriceData,
 } from "@/app/lib/priceDataProcessor";
 import { generatePriceColors } from "@/app/lib/generatePriceColors";
 import {
@@ -22,7 +22,8 @@ export default async function WeeklyPrices() {
   const priceData: PriceDataArray | [] = await fetchAllPrices();
 
   // Localize price data
-  const formattedPriceData: PriceDataInFrontend[] = formatPriceData(priceData);
+  const formattedPriceData: PriceDataInFrontend[] =
+    localizePriceData(priceData);
 
   // Add week number and year properties
   const withWeeksAndYears: PricesWithWeeksAndYears[] = formattedPriceData.map(

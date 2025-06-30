@@ -1,9 +1,14 @@
-export const dynamic = "force-dynamic"
+export const dynamic = "force-dynamic";
 
 import { Suspense } from "react";
 import HourlyPrices from "@/app/ui/hourlyprices/HourlyPrices";
+import { PriceDataArray } from "@/app/types/priceData";
+import { fetchPrices } from "@/app/lib/db/fetchPrices";
 
 export default async function Page() {
+  // Fetch prices for the last week
+  const prices: Promise<PriceDataArray | []> = fetchPrices(7);
+
   return (
     <div>
       <Suspense
@@ -13,7 +18,7 @@ export default async function Page() {
           </div>
         }
       >
-        <HourlyPrices />
+        <HourlyPrices prices={prices} />
       </Suspense>
     </div>
   );
