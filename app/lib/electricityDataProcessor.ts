@@ -60,12 +60,12 @@ export function formatElectricityDataForChart(
 
   const dataArray: ChartData = [];
 
-  // TODO: filter out zero values
   for (const key of keys) {
     dataArray.push({
       id: friendlyNames[key],
       data: electricityData
-        .filter((dataRow) => dataRow[key] !== 0) // Filter out zero values
+        // Filter out null values
+        .filter((dataRow) => dataRow[key] !== null)
         .map((dataRow) => {
           return {
             x: dataRow.startTime.toJSDate(),
